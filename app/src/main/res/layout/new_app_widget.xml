@@ -1,0 +1,343 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/whole_widget_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/central"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp"
+                android:orientation="vertical">
+
+                <TextClock
+                    android:id="@+id/textclock_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoSizeMaxTextSize="100sp"
+                    android:autoSizeMinTextSize="12sp"
+                    android:autoSizeStepGranularity="2sp"
+                    android:autoSizeTextType="uniform"
+                    android:format12Hour="h:mm a"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:textColor="#ffffff"
+                    android:textSize="32sp"
+                    tools:text="4:22 AM" />
+
+                <TextClock
+                    android:id="@+id/clock_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:format12Hour="EEE, d MMM"
+                    android:format24Hour="EEE, d MMM"
+                    android:includeFontPadding="false"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    tools:text="Wed, 3 Dec" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="12dp"
+            android:layout_weight="3"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3">
+
+
+                <ImageView
+                    android:id="@+id/widget_current_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:adjustViewBounds="true"
+                    tools:src="@drawable/day_305" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/location_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/widget_current_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:autoSizeMaxTextSize="100sp"
+                        android:autoSizeMinTextSize="12sp"
+                        android:autoSizeStepGranularity="2sp"
+                        android:autoSizeTextType="uniform"
+                        android:gravity="bottom|right"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:textColor="#ffffff"
+                        android:textSize="12sp"
+                        tools:text="South Brisbane" />
+
+                    <ImageView
+                        android:id="@+id/location_icon"
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="2dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/location_flag"
+                        android:tint="@android:color/white" />
+                </LinearLayout>
+
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/temp_holder_inside"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/widget_main_temp"
+                        style="@style/textView_major"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autoSizeMaxTextSize="100sp"
+                        android:autoSizeMinTextSize="12sp"
+                        android:autoSizeStepGranularity="2sp"
+                        android:autoSizeTextType="uniform"
+                        tools:text="32" />
+
+                    <TextView
+                        android:id="@+id/widget_feel_temp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:includeFontPadding="false"
+                        android:textColor="#ffffff"
+                        tools:text="°C" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right">
+
+                    <TextView
+                        android:id="@+id/widget_item_temp_high"
+                        style="@style/textView_minor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:autoSizeMaxTextSize="100sp"
+                        android:autoSizeMinTextSize="12sp"
+                        android:autoSizeStepGranularity="2sp"
+                        android:autoSizeTextType="uniform"
+                        tools:text="20°" />
+
+                    <TextView
+                        android:id="@+id/dash"
+                        style="@style/textView_minor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text=" / " />
+
+                    <TextView
+                        android:id="@+id/widget_item_temp_low"
+                        style="@style/textView_minor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        tools:text="19°" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </RelativeLayout>
+    </LinearLayout>
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_above="@id/central"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="1"-->
+    <!--android:orientation="vertical">-->
+
+    <!--<TextClock-->
+    <!--android:id="@+id/textclock_time"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:format12Hour="hh:mm a"-->
+    <!--android:includeFontPadding="false"-->
+    <!--android:textColor="#ffffff"-->
+    <!--android:textSize="32sp"-->
+    <!--android:typeface="sans"-->
+    <!--tools:text="18:00" />-->
+
+    <!--<TextClock-->
+    <!--android:id="@+id/clock_date"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:format12Hour="@null"-->
+    <!--android:format24Hour="EEE, d MMM"-->
+    <!--android:includeFontPadding="false"-->
+    <!--android:textColor="#ffffff"-->
+    <!--android:textSize="16sp"-->
+    <!--android:typeface="normal"-->
+    <!--tools:text="Wed, 3 Dec" />-->
+    <!--</LinearLayout>-->
+
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="1"-->
+    <!--android:orientation="vertical">-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:gravity="right"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/temp_holder_inside"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/widget_main_temp"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:autoSizeMaxTextSize="100sp"-->
+    <!--android:autoSizeMinTextSize="12sp"-->
+    <!--android:autoSizeStepGranularity="2sp"-->
+    <!--android:autoSizeTextType="uniform"-->
+    <!--android:textColor="#ffffff"-->
+    <!--android:textSize="40sp"-->
+    <!--android:typeface="sans"-->
+    <!--tools:text="28" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/widget_feel_temp"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:text="°C"-->
+    <!--android:textColor="#ffffff"-->
+    <!--android:typeface="monospace" />-->
+    <!--</LinearLayout>-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/widget_current_icon"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:adjustViewBounds="true"-->
+    <!--tools:src="@drawable/day_305" />-->
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/location_holder"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="right"-->
+    <!--android:gravity="right"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/widget_current_location"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:autoSizeMaxTextSize="100sp"-->
+    <!--android:autoSizeMinTextSize="12sp"-->
+    <!--android:autoSizeStepGranularity="2sp"-->
+    <!--android:autoSizeTextType="uniform"-->
+    <!--android:gravity="right|center_vertical"-->
+    <!--android:includeFontPadding="false"-->
+    <!--android:textColor="#ffffff"-->
+    <!--android:textSize="12sp"-->
+    <!--android:typeface="sans"-->
+    <!--tools:text="South Brisbane" />-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/location_icon"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:layout_marginRight="3dp"-->
+    <!--android:adjustViewBounds="true"-->
+    <!--android:src="@drawable/location_flag"-->
+    <!--android:tint="@android:color/white" />-->
+
+    <!--</LinearLayout>-->
+
+    <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+
+    <LinearLayout
+        android:id="@+id/central"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_centerInParent="true"
+        android:orientation="vertical" />
+
+    <GridView
+        android:id="@+id/widget_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/central"
+        android:layout_alignParentBottom="true"
+        android:numColumns="5"
+        tools:listitem="@layout/widget_item">
+
+    </GridView>
+
+
+</RelativeLayout>

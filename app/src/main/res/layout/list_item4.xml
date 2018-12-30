@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp">
+
+    <LinearLayout
+        android:id="@+id/location_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/temp_main_4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp">
+
+        <ImageView
+            android:id="@+id/location_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginRight="6dp"
+            android:src="@drawable/location_flag" />
+
+        <TextView
+            android:id="@+id/location_main_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colour_five"
+            android:textSize="28sp"
+            tools:text="Brisbane" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/temp_main_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:includeFontPadding="false"
+        android:textColor="@color/colour_five"
+        android:textSize="90sp"
+        tools:text="24" />
+
+    <TextView
+        android:id="@+id/temp_unit_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/temp_main_4"
+        android:layout_toEndOf="@id/temp_main_4"
+        android:layout_toRightOf="@id/temp_main_4"
+        android:includeFontPadding="false"
+        android:text="°C"
+        android:textColor="@color/colour_five"
+        android:textSize="30sp" />
+
+    <LinearLayout
+        android:layout_below="@id/location_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="3">
+
+        </View>
+
+        <ImageView
+            android:id="@+id/icon_main_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:src="@drawable/day_305" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="15dp"
+            android:layout_weight="6"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/condition_main_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:textColor="@color/colour_five"
+                tools:text="Patchy rain possible" />
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>
