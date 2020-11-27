@@ -16,14 +16,14 @@
         android:required="true" />
 
     <application
+        android:name=".mvvm.application.AppClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name="com.appttude.h_mal.atlas_weather.MainActivity"
+        <activity android:name=".mvvm.ui.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
@@ -34,24 +34,39 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<!--        <activity-->
+<!--            android:name=".legacy.ui.home.MainActivity"-->
+<!--            android:label="@string/app_name"-->
+<!--            android:launchMode="singleTop"-->
+<!--            android:theme="@style/AppTheme.NoActionBar">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
 
-        <receiver android:name="com.appttude.h_mal.atlas_weather.NotificationReceiver"
-            android:parentActivityName="com.appttude.h_mal.atlas_weather.MainActivity"/>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
-        <activity android:name="com.appttude.h_mal.atlas_weather.FurtherInfoActivity"
-            android:parentActivityName="com.appttude.h_mal.atlas_weather.MainActivity"/>
-        <activity
-            android:name="com.appttude.h_mal.atlas_weather.AddForecast"
+        <receiver
+            android:name=".legacy.services.notifcation.NotificationReceiver"
             android:parentActivityName="com.appttude.h_mal.atlas_weather.MainActivity" />
-        <activity android:name="com.appttude.h_mal.atlas_weather.UnitSettings"
-            android:parentActivityName="com.appttude.h_mal.atlas_weather.MainActivity"/>
+
+        <activity
+            android:name=".legacy.ui.FurtherInfoActivity"
+            android:parentActivityName=".legacy.ui.home.MainActivity" />
+        <activity
+            android:name=".legacy.ui.AddForecastActivity"
+            android:parentActivityName=".legacy.ui.home.MainActivity" />
+        <activity
+            android:name=".legacy.ui.UnitSettingsActivity"
+            android:parentActivityName=".legacy.ui.home.MainActivity" />
 
         <provider
-            android:name="com.appttude.h_mal.atlas_weather.dbfiles.ForecastProvider"
+            android:name=".legacy.data.sql.ForecastProvider"
             android:authorities="com.appttude.h_mal.atlas_weather"
             android:exported="false" />
 
-        <receiver android:name="com.appttude.h_mal.atlas_weather.AppWidget.NewAppWidget">
+        <receiver android:name=".legacy.AppWidget.NewAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="android.appwidget.action.APPWIDGET_ENABLED" />
@@ -63,19 +78,17 @@
                 android:resource="@xml/new_app_widget_info" />
         </receiver>
 
-        <activity android:name="com.appttude.h_mal.atlas_weather.WorldItemActivity"
-            android:parentActivityName="com.appttude.h_mal.atlas_weather.MainActivity">
-
-        </activity>
+        <activity
+            android:name=".legacy.ui.WorldItemActivity"
+            android:parentActivityName=".legacy.ui.home.MainActivity"></activity>
 
         <service
-            android:name="com.appttude.h_mal.atlas_weather.AppWidget.WidgetRemoteViewsService"
-            android:permission="android.permission.BIND_REMOTEVIEWS"></service>
+            android:name=".legacy.AppWidget.WidgetRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-        <activity android:name="com.appttude.h_mal.atlas_weather.InfoActivity"
-            android:parentActivityName="com.appttude.h_mal.atlas_weather.MainActivity">
-
-        </activity>
+        <activity
+            android:name=".legacy.ui.InfoActivity"
+            android:parentActivityName=".legacy.ui.home.MainActivity"></activity>
     </application>
 
 </manifest>
