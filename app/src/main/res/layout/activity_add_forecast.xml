@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".AddForecast">
+    tools:context=".legacy.ui.AddForecastActivity">
 
     <ProgressBar
         android:id="@+id/pb_add"
@@ -24,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="12dp"
+            android:layout_marginLeft="24dp"
             android:layout_marginRight="12dp"
             android:orientation="horizontal"
             android:paddingBottom="@dimen/activity_horizontal_margin">
@@ -55,12 +54,21 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_margin="12dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginBottom="36dp"
             android:background="@drawable/button_layout"
             android:text="@string/submit"
             android:textColor="#ffffff"
             android:textStyle="bold"
             style="?android:attr/borderlessButtonStyle"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
 
     </RelativeLayout>

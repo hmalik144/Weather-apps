@@ -16,14 +16,14 @@
         android:required="true" />
 
     <application
+        android:name="com.appttude.h_mal.atlas_weather.application.AppClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name="com.appttude.h_mal.atlas_weather.MainActivity"
+        <activity android:name="com.appttude.h_mal.atlas_weather.ui.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
@@ -35,23 +35,15 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="com.appttude.h_mal.atlas_weather.NotificationReceiver"
-            android:parentActivityName="com.appttude.h_mal.atlas_weather.MainActivity"/>
-
-        <activity android:name="com.appttude.h_mal.atlas_weather.FurtherInfoActivity"
-            android:parentActivityName="com.appttude.h_mal.atlas_weather.MainActivity"/>
         <activity
-            android:name="com.appttude.h_mal.atlas_weather.AddForecast"
+            android:name="com.appttude.h_mal.atlas_weather.ui.settings.UnitSettingsActivity"
+            android:label="Settings" />
+
+        <receiver
+            android:name=".notification.NotificationReceiver"
             android:parentActivityName="com.appttude.h_mal.atlas_weather.MainActivity" />
-        <activity android:name="com.appttude.h_mal.atlas_weather.UnitSettings"
-            android:parentActivityName="com.appttude.h_mal.atlas_weather.MainActivity"/>
 
-        <provider
-            android:name="com.appttude.h_mal.atlas_weather.dbfiles.ForecastProvider"
-            android:authorities="com.appttude.h_mal.atlas_weather"
-            android:exported="false" />
-
-        <receiver android:name="com.appttude.h_mal.atlas_weather.AppWidget.NewAppWidget">
+        <receiver android:name=".widget.NewAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="android.appwidget.action.APPWIDGET_ENABLED" />
@@ -63,19 +55,10 @@
                 android:resource="@xml/new_app_widget_info" />
         </receiver>
 
-        <activity android:name="com.appttude.h_mal.atlas_weather.WorldItemActivity"
-            android:parentActivityName="com.appttude.h_mal.atlas_weather.MainActivity">
-
-        </activity>
 
         <service
-            android:name="com.appttude.h_mal.atlas_weather.AppWidget.WidgetRemoteViewsService"
-            android:permission="android.permission.BIND_REMOTEVIEWS"></service>
-
-        <activity android:name="com.appttude.h_mal.atlas_weather.InfoActivity"
-            android:parentActivityName="com.appttude.h_mal.atlas_weather.MainActivity">
-
-        </activity>
+            android:name=".widget.WidgetRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>
