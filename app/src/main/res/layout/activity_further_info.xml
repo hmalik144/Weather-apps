@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".legacy.ui.FurtherInfoActivity">
+    android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,14 +13,16 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/thermom"
+            <FrameLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="12dp"
-                android:layout_weight="1"
-                android:tint="@color/colour_five"
-                app:srcCompat="@drawable/somethingnew" />
+                android:layout_weight="1">
+
+                <ImageView
+                    android:src="@drawable/somethingnew"
+                    style="@style/icon_style__further_deatils" />
+            </FrameLayout>
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -30,10 +31,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true">
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -48,14 +45,14 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="2"
                                 android:text="Maximum: " />
 
                             <TextView
                                 android:id="@+id/maxtemp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="3"
                                 android:text="85%"
                                 android:textColor="#000000" />
                         </LinearLayout>
@@ -66,14 +63,14 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="2"
                                 android:text="Average: " />
 
                             <TextView
                                 android:id="@+id/averagetemp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="3"
                                 android:text="11mm"
                                 android:textColor="#000000" />
                         </LinearLayout>
@@ -84,14 +81,14 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="2"
                                 android:text="Minimum: " />
 
                             <TextView
                                 android:id="@+id/minimumtemp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="3"
                                 android:text="11mm"
                                 android:textColor="#000000" />
                         </LinearLayout>
@@ -106,14 +103,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <FrameLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="12dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:src="@drawable/breeze"
-                android:tint="@color/colour_five" />
+                android:layout_weight="1">
+
+                <ImageView
+                    android:src="@drawable/breeze"
+                    style="@style/icon_style__further_deatils" />
+            </FrameLayout>
             <RelativeLayout
                 android:layout_weight="2"
                 android:layout_width="0dp"
@@ -123,10 +122,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true">
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -137,14 +132,14 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:text="Wind: " />
 
                         <TextView
                             android:id="@+id/windtext"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight="3"
                             android:text="7mph"
                             android:textColor="#000000" />
                     </LinearLayout>
@@ -155,14 +150,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <FrameLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="12dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:src="@drawable/water_drop"
-                android:tint="@color/colour_five" />
+                android:layout_weight="1">
+
+                <ImageView
+                    android:src="@drawable/water_drop"
+                    style="@style/icon_style__further_deatils" />
+            </FrameLayout>
             <RelativeLayout
                 android:layout_weight="2"
                 android:layout_width="0dp"
@@ -171,10 +168,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true">
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -189,14 +182,14 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="2"
                                 android:text="Humidity: " />
 
                             <TextView
                                 android:id="@+id/humiditytext"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="3"
                                 android:text="85%"
                                 android:textColor="#000000" />
                         </LinearLayout>
@@ -207,14 +200,14 @@
                                 <TextView
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
+                                    android:layout_weight="2"
                                     android:text="Precipitation: " />
 
                                 <TextView
                                     android:id="@+id/preciptext"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
+                                    android:layout_weight="3"
                                     android:text="11mm"
                                     android:textColor="#000000" />
                             </LinearLayout>
@@ -229,14 +222,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <FrameLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="12dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:src="@drawable/sunrise"
-                android:tint="@color/colour_five" />
+                android:layout_weight="1">
+
+                <ImageView
+                    android:src="@drawable/sunrise"
+                    style="@style/icon_style__further_deatils" />
+            </FrameLayout>
             <RelativeLayout
                 android:layout_weight="2"
                 android:layout_width="0dp"
@@ -245,10 +240,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true">
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -263,14 +254,14 @@
                             <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:text="UV: " />
 
                             <TextView
                             android:id="@+id/uvtext"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight="3"
                             android:text="7"
                             android:textColor="#000000" />
                         </LinearLayout>
@@ -282,14 +273,14 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="2"
                                 android:text="Sunrise:" />
 
                             <TextView
                                 android:id="@+id/sunrisetext"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="3"
                                 android:text="05:30am"
                                 android:textColor="#000000" />
                         </LinearLayout>
@@ -300,14 +291,14 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="2"
                                 android:text="Sunset:" />
 
                             <TextView
                                 android:id="@+id/sunsettext"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="3"
                                 android:text="06:12pm"
                                 android:textColor="#000000" />
                         </LinearLayout>

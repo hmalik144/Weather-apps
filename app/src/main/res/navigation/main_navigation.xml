@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.appttude.h_mal.atlas_weather.mvvm.ui.home.HomeFragment"
+        android:name="com.appttude.h_mal.atlas_weather.ui.home.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home">
         <action
@@ -22,16 +22,16 @@
 
     <fragment
         android:id="@+id/furtherDetailsFragment"
-        android:name="com.appttude.h_mal.atlas_weather.mvvm.ui.details.FurtherInfoFragment"
+        android:name="com.appttude.h_mal.atlas_weather.ui.details.FurtherInfoFragment"
         android:label="Further Details">
         <argument
             android:name="forecast"
-            app:argType="com.appttude.h_mal.atlas_weather.mvvm.model.forecast.Forecast" />
+            app:argType="com.appttude.h_mal.atlas_weather.model.forecast.Forecast" />
     </fragment>
 
     <fragment
         android:id="@+id/nav_world"
-        android:name="com.appttude.h_mal.atlas_weather.mvvm.ui.world.WorldFragment"
+        android:name="com.appttude.h_mal.atlas_weather.ui.world.WorldFragment"
         android:label="World"
         tools:layout="@layout/fragment__two">
         <action
@@ -51,12 +51,12 @@
     </fragment>
     <fragment
         android:id="@+id/addLocationFragment"
-        android:name="com.appttude.h_mal.atlas_weather.mvvm.ui.world.AddLocationFragment"
+        android:name="com.appttude.h_mal.atlas_weather.ui.world.AddLocationFragment"
         android:label="Add Weather Location"
         tools:layout="@layout/activity_add_forecast" />
     <fragment
         android:id="@+id/worldItemFragment"
-        android:name="com.appttude.h_mal.atlas_weather.mvvm.ui.WorldItemFragment"
+        android:name="com.appttude.h_mal.atlas_weather.ui.WorldItemFragment"
         android:label="Overview"
         tools:layout="@layout/fragment_home">
         <action
@@ -68,7 +68,7 @@
             app:popExitAnim="@anim/fragment_open_exit" />
         <argument
             android:name="weatherDisplay"
-            app:argType="com.appttude.h_mal.atlas_weather.mvvm.model.forecast.WeatherDisplay" />
+            app:argType="com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay" />
     </fragment>
 
 </navigation>
