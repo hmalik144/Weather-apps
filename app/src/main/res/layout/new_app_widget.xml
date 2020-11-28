@@ -23,21 +23,20 @@
                 android:layout_marginLeft="12dp"
                 android:orientation="vertical">
 
-                <TextClock
-                    android:id="@+id/textclock_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autoSizeMaxTextSize="100sp"
-                    android:autoSizeMinTextSize="12sp"
-                    android:autoSizeStepGranularity="2sp"
-                    android:autoSizeTextType="uniform"
-                    android:format12Hour="h:mm a"
-                    android:includeFontPadding="false"
-                    android:maxLines="1"
-                    android:textColor="#ffffff"
-                    android:textSize="32sp"
-                    tools:text="4:22 AM" />
-
+<!--                <TextClock-->
+<!--                    android:id="@+id/textclock_time"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:autoSizeMaxTextSize="100sp"-->
+<!--                    android:autoSizeMinTextSize="12sp"-->
+<!--                    android:autoSizeStepGranularity="2sp"-->
+<!--                    android:autoSizeTextType="uniform"-->
+<!--                    android:format12Hour="h:mm a"-->
+<!--                    android:includeFontPadding="false"-->
+<!--                    android:maxLines="1"-->
+<!--                    android:textColor="#ffffff"-->
+<!--                    android:textSize="32sp"-->
+<!--                    tools:text="4:22 AM" />-->
                 <TextClock
                     android:id="@+id/clock_date"
                     android:layout_width="wrap_content"
@@ -158,38 +157,7 @@
                         tools:text="°C" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right">
 
-                    <TextView
-                        android:id="@+id/widget_item_temp_high"
-                        style="@style/textView_minor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:autoSizeMaxTextSize="100sp"
-                        android:autoSizeMinTextSize="12sp"
-                        android:autoSizeStepGranularity="2sp"
-                        android:autoSizeTextType="uniform"
-                        tools:text="20°" />
-
-                    <TextView
-                        android:id="@+id/dash"
-                        style="@style/textView_minor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text=" / " />
-
-                    <TextView
-                        android:id="@+id/widget_item_temp_low"
-                        style="@style/textView_minor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        tools:text="19°" />
-                </LinearLayout>
             </LinearLayout>
 
 

@@ -20,6 +20,9 @@ interface WeatherDao {
     @Query("SELECT * FROM EntityItem WHERE id = :userId LIMIT 1")
     fun getCurrentFullWeather(userId: String) : LiveData<EntityItem>
 
+    @Query("SELECT * FROM EntityItem WHERE id = :userId LIMIT 1")
+    suspend fun getCurrentFullWeatherSingle(userId: String) : EntityItem
+
     @Query("SELECT * FROM EntityItem WHERE id != :id")
     fun getAllFullWeatherWithoutCurrent(id: String = CURRENT_LOCATION) : LiveData<List<EntityItem>>
 

@@ -11,6 +11,7 @@ interface Repository {
     suspend fun saveWeatherListToRoom(list: List<EntityItem>)
     fun loadAllWeatherExceptCurrentFromRoom(): LiveData<List<EntityItem>>
     fun loadCurrentWeatherFromRoom(id: String): LiveData<EntityItem>
+    suspend fun loadSingleCurrentWeatherFromRoom(id: String): EntityItem
     fun isSearchValid(locationName: String): Boolean
     fun saveLastSavedAt(locationName: String)
     suspend fun deleteSavedWeatherEntry(locationName: String)

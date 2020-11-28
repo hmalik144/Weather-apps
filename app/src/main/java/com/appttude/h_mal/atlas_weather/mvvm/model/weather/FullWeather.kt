@@ -9,7 +9,7 @@ data class FullWeather(
 		val daily: List<DailyWeather>? = null,
 		val lon: Double = 0.00,
 		val lat: Double = 0.00
-){
+) {
 
 	constructor(weatherResponse: WeatherResponse): this(
 			weatherResponse.current?.let { Current(it) },
@@ -19,6 +19,7 @@ data class FullWeather(
 			weatherResponse.lon,
 			weatherResponse.lat
 	)
+
 }
 
 

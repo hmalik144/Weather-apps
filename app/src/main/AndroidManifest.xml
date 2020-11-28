@@ -34,39 +34,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<!--        <activity-->
-<!--            android:name=".legacy.ui.home.MainActivity"-->
-<!--            android:label="@string/app_name"-->
-<!--            android:launchMode="singleTop"-->
-<!--            android:theme="@style/AppTheme.NoActionBar">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <action android:name="android.intent.action.VIEW" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
 
         <receiver
-            android:name=".legacy.services.notifcation.NotificationReceiver"
+            android:name=".notifcation.NotificationReceiver"
             android:parentActivityName="com.appttude.h_mal.atlas_weather.MainActivity" />
 
-        <activity
-            android:name=".legacy.ui.FurtherInfoActivity"
-            android:parentActivityName=".legacy.ui.home.MainActivity" />
-        <activity
-            android:name=".legacy.ui.AddForecastActivity"
-            android:parentActivityName=".legacy.ui.home.MainActivity" />
-        <activity
-            android:name=".legacy.ui.UnitSettingsActivity"
-            android:parentActivityName=".legacy.ui.home.MainActivity" />
-
-        <provider
-            android:name=".legacy.data.sql.ForecastProvider"
-            android:authorities="com.appttude.h_mal.atlas_weather"
-            android:exported="false" />
-
-        <receiver android:name=".legacy.AppWidget.NewAppWidget">
+        <receiver android:name=".widget.NewAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="android.appwidget.action.APPWIDGET_ENABLED" />
@@ -78,17 +51,10 @@
                 android:resource="@xml/new_app_widget_info" />
         </receiver>
 
-        <activity
-            android:name=".legacy.ui.WorldItemActivity"
-            android:parentActivityName=".legacy.ui.home.MainActivity"></activity>
 
         <service
-            android:name=".legacy.AppWidget.WidgetRemoteViewsService"
+            android:name=".widget.WidgetRemoteViewsService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
-
-        <activity
-            android:name=".legacy.ui.InfoActivity"
-            android:parentActivityName=".legacy.ui.home.MainActivity"></activity>
     </application>
 
 </manifest>

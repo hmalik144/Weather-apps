@@ -44,6 +44,8 @@ class RepositoryImpl(
 
     override fun loadCurrentWeatherFromRoom(id: String) = db.getSimpleDao().getCurrentFullWeather(id)
 
+    override suspend fun loadSingleCurrentWeatherFromRoom(id: String) = db.getSimpleDao().getCurrentFullWeatherSingle(id)
+
     override fun isSearchValid(locationName: String): Boolean {
         val lastSaved = prefs.getLastSavedAt(locationName) ?: return true
         val difference = System.currentTimeMillis() - lastSaved

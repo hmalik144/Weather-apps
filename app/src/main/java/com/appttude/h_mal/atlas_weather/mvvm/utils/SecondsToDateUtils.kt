@@ -32,6 +32,17 @@ fun Int.toDayName(): String {
     }
 }
 
+fun Int.toSmallDayName(): String {
+    return try {
+        val date = Date(this.makeMilliseconds())
+        val format = SimpleDateFormat("EEE", Locale.getDefault())
+        format.format(date)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        "Unable to parse date"
+    }
+}
+
 fun String.changeDateFormat(): String {
     return try {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

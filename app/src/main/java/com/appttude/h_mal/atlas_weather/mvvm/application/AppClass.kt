@@ -8,8 +8,10 @@ import com.appttude.h_mal.atlas_weather.mvvm.data.network.interceptors.NetworkCo
 import com.appttude.h_mal.atlas_weather.mvvm.data.network.interceptors.QueryParamsInterceptor
 import com.appttude.h_mal.atlas_weather.mvvm.data.prefs.PreferenceProvider
 import com.appttude.h_mal.atlas_weather.mvvm.data.repository.RepositoryImpl
+import com.appttude.h_mal.atlas_weather.mvvm.data.repository.SettingsRepositoryImpl
 import com.appttude.h_mal.atlas_weather.mvvm.data.room.AppDatabase
 import com.appttude.h_mal.atlas_weather.mvvm.viewmodel.ApplicationViewModelFactory
+import com.appttude.h_mal.atlas_weather.notifcation.ServicesHelper
 import com.google.gson.Gson
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -33,13 +35,16 @@ class AppClass : Application(), KodeinAware {
         import(androidXModule(this@AppClass))
 
         bind() from singleton { Gson() }
+
         bind() from singleton { NetworkConnectionInterceptor(instance()) }
         bind() from singleton { QueryParamsInterceptor() }
         bind() from singleton { WeatherApi(instance(), instance())}
         bind() from singleton { AppDatabase(instance()) }
         bind() from singleton { PreferenceProvider(instance()) }
         bind() from singleton { RepositoryImpl(instance(), instance(), instance()) }
+        bind() from singleton { SettingsRepositoryImpl(instance()) }
         bind() from singleton { LocationProvider(instance()) }
+        bind() from singleton { ServicesHelper(instance(), instance(), instance()) }
         bind() from provider { ApplicationViewModelFactory(instance(), instance()) }
     }
 

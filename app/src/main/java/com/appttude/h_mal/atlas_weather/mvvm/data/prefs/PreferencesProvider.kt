@@ -37,4 +37,10 @@ class PreferenceProvider(
         preference.edit().remove(locationName).apply()
     }
 
+    fun isNotificationsEnabled(): Boolean = preference.getBoolean("notif_boolean", true)
+
+    fun setFirstTimeRun(){
+        preference.edit().putBoolean("FIRST_TIME_RUN", false).apply()
+    }
+
 }

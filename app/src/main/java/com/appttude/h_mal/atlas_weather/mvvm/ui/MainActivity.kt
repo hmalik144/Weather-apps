@@ -10,9 +10,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.appttude.h_mal.atlas_weather.R
-import com.appttude.h_mal.atlas_weather.legacy.ui.InfoActivity
-import com.appttude.h_mal.atlas_weather.legacy.ui.UnitSettingsActivity
 import com.appttude.h_mal.atlas_weather.mvvm.ui.home.BaseActivity
+import com.appttude.h_mal.atlas_weather.mvvm.ui.settings.UnitSettingsActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main_navigation.*
 
@@ -57,11 +56,6 @@ class MainActivity : BaseActivity() {
             R.id.action_settings -> {
                 val i = Intent(this, UnitSettingsActivity::class.java)
                 startActivity(i)
-                return true
-            }
-            R.id.action_into -> {
-                val infoActivity = Intent(this, InfoActivity::class.java)
-                startActivity(infoActivity)
                 return true
             }
         }
