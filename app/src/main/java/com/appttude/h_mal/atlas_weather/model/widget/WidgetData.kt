@@ -42,7 +42,7 @@ data class WidgetData(
 data class InnerWidgetData(
         val date: String?,
         val icon: Bitmap?,
-        val currentTemp: String?
+        val highTemp: String?
 ):Parcelable{
 
     constructor(parcel: Parcel) : this(
@@ -54,7 +54,7 @@ data class InnerWidgetData(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(date)
         parcel.writeParcelable(icon, flags)
-        parcel.writeString(currentTemp)
+        parcel.writeString(highTemp)
     }
 
     override fun describeContents(): Int {

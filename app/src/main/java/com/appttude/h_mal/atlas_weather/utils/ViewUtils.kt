@@ -1,6 +1,7 @@
 package com.appttude.h_mal.atlas_weather.utils
 
 import android.content.Context
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +31,7 @@ fun Fragment.displayToast(message: String) {
 fun ImageView.loadImage(url: String?){
     Picasso.get()
             .load(url)
-            .placeholder(R.mipmap.ic_launcher)
+            .error(R.drawable.ic_baseline_cloud_off_24)
             .into(this)
 }
 
@@ -41,11 +42,13 @@ fun ViewGroup.generateView(layoutId: Int): View = LayoutInflater
 fun ImageView.loadImage(url: String?, height: Int, width: Int){
     Picasso.get()
             .load(url)
-            .resize(width, height)
+            .resize(width.dpToPx(), height.dpToPx())
             .centerCrop()
-            .placeholder(R.mipmap.ic_launcher)
+            .error(R.drawable.ic_baseline_cloud_off_24)
             .into(this)
 }
+
+fun Int.dpToPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 
 fun SearchView.onSubmitListener(searchSubmit: (String) -> Unit) {
     this.setOnQueryTextListener(object :

@@ -20,7 +20,6 @@ class MainViewModel(
     private val repository: Repository
 ): ViewModel(){
 
-    val currentWeatherLiveData = MutableLiveData<Current>()
     val weatherLiveData = MutableLiveData<WeatherDisplay>()
 
     val operationState = MutableLiveData<Event<Boolean>>()

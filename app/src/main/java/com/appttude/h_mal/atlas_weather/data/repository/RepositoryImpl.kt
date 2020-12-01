@@ -56,9 +56,9 @@ class RepositoryImpl(
         prefs.saveLastSavedAt("$LOCATION_CONST$locationName")
     }
 
-    override suspend fun deleteSavedWeatherEntry(locationName: String){
-        db.getSimpleDao().deleteEntry(locationName)
+    override suspend fun deleteSavedWeatherEntry(locationName: String): Boolean {
         prefs.deleteLocation(locationName)
+        return db.getSimpleDao().deleteEntry(locationName) > 0
     }
 
     override fun getSavedLocations(): List<String> {

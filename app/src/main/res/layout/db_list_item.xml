@@ -1,96 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="1dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.cardview.widget.CardView
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="22dp"
-        card_view:cardPreventCornerOverlap="false"
-        card_view:cardUseCompatPadding="true">
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/db_location"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colour_five"
-                    android:textSize="22sp"
-                    tools:text="Bakkafjörður"
-                    android:includeFontPadding="false"/>
-
-            </LinearLayout>
-
             <ImageView
-                android:id="@+id/db_icon"
+                android:id="@+id/location_icon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginRight="12dp"
+                android:tint="@color/colorAccent"
+                app:srcCompat="@drawable/maps_and_flags" />
+
+            <TextView
+                android:id="@+id/db_location"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:src="@drawable/day_305" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="15dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:id="@+id/list_temp_holder"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/db_main_temp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:includeFontPadding="false"
-                        android:textColor="@color/colour_five"
-                        android:textSize="28sp"
-                        tools:text="28" />
-
-                    <TextView
-                        android:id="@+id/db_minor_temp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:includeFontPadding="false"
-                        tools:text="°C" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/db_condition"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:includeFontPadding="false"
-                    android:gravity="right"
-                    tools:text="Patchy rain possible" />
-            </LinearLayout>
+                android:layout_height="match_parent"
+                android:textSize="22sp"
+                android:maxLines="2"
+                tools:text="Greater London" />
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/db_icon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            tools:padding="10dp"
+            tools:tint="@color/colorAccent"
+            tools:src="@drawable/cloud_symbol" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/list_temp_holder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/db_main_temp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:textSize="22sp"
+                    tools:text="28" />
+
+                <TextView
+                    android:id="@+id/db_minor_temp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:includeFontPadding="false"
+                    tools:text="°C" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/db_condition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:textSize="12sp"
+                android:includeFontPadding="false"
+                tools:text="Patchy rain possible" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 </RelativeLayout>

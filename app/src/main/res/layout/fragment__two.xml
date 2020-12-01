@@ -3,14 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".legacy.ui.home.FragmentTwo">
+    tools:context=".ui.home.FragmentTwo">
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/listview"
-        android:divider="@null">
-    </ListView>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/world_recycler"
+        android:divider="@null"
+        tools:listitem="@layout/db_list_item">
+    </androidx.recyclerview.widget.RecyclerView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -18,15 +23,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_marginBottom="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:clickable="true"
-        app:srcCompat="@android:drawable/ic_input_add"
-        android:tint="@android:color/white"
-        app:elevation="0dp"
-        android:focusable="true" />
+        app:srcCompat="@drawable/ic_baseline_add_24"/>
 
     <ProgressBar
         android:id="@+id/progressBar2"
@@ -34,5 +33,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:visibility="visible"/>
 </RelativeLayout>

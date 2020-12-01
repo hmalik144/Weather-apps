@@ -37,7 +37,6 @@ class LocationProvider(
 
         return result?.let { location ->
             location.locality?.let { return it }
-            location.thoroughfare?.let { return it }
             location.subAdminArea?.let { return it }
         } ?: "$lat, $long"
     }

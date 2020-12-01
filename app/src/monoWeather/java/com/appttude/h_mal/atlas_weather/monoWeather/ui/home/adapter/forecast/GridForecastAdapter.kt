@@ -1,0 +1,38 @@
+package com.appttude.h_mal.atlas_weather.monoWeather.ui.home.adapter.forecast
+
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.appttude.h_mal.atlas_weather.R
+import com.appttude.h_mal.atlas_weather.model.forecast.Forecast
+import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
+import com.appttude.h_mal.atlas_weather.monoWeather.ui.home.adapter.ViewHolderCurrent
+import com.appttude.h_mal.atlas_weather.utils.generateView
+
+class GridForecastAdapter(
+        val itemClick: (Forecast) -> Unit
+): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+    var weather: MutableList<Forecast> = mutableListOf()
+
+    fun addCurrent(current: List<Forecast>?){
+        weather.clear()
+        current?.let { weather.addAll(it) }
+        notifyDataSetChanged()
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val viewCurrent = parent.generateView(R.layout.mono_forecast_grid_item)
+        return GridCellHolder(viewCurrent)
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val view = holder as GridCellHolder
+        val forecast = weather[position]
+        view.bindView(forecast)
+        view.itemView.setOnClickListener {
+            itemClick.invoke(forecast)
+        }
+    }
+
+    override fun getItemCount(): Int = weather.size
+
+}

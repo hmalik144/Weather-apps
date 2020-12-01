@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Altas_-_Weather.iml" filepath="$PROJECT_DIR$/Altas_-_Weather.iml" group="Altas_-_Weather" />
-      <module fileurl="file://$PROJECT_DIR$/app/Altas_-_Weather-app.iml" filepath="$PROJECT_DIR$/app/Altas_-_Weather-app.iml" group="Altas_-_Weather/app" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Android Studio Projects-Altas_-_Weather.iml" filepath="$PROJECT_DIR$/.idea/modules/Android Studio Projects-Altas_-_Weather.iml" group="Altas_-_Weather" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Android Studio Projects-Altas_-_Weather-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Android Studio Projects-Altas_-_Weather-app.iml" group="Altas_-_Weather/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Altas_-_Weather.iml" filepath="$PROJECT_DIR$/.idea/modules/Altas_-_Weather.iml" group="Altas_-_Weather" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Altas_-_Weather-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Altas_-_Weather-app.iml" group="Altas_-_Weather/app" />
       <module fileurl="file://$PROJECT_DIR$/Weather_app.iml" filepath="$PROJECT_DIR$/Weather_app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

@@ -14,6 +14,6 @@ interface Repository {
     suspend fun loadSingleCurrentWeatherFromRoom(id: String): EntityItem
     fun isSearchValid(locationName: String): Boolean
     fun saveLastSavedAt(locationName: String)
-    suspend fun deleteSavedWeatherEntry(locationName: String)
+    suspend fun deleteSavedWeatherEntry(locationName: String): Boolean
     fun getSavedLocations(): List<String>
 }

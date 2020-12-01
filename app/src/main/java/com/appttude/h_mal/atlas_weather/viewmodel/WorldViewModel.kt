@@ -30,6 +30,10 @@ class WorldViewModel(
 
     init {
         weatherListLiveData.observeForever {
+            it.forEach {  item->
+                println(item)
+            }
+
             val list = it.map { data ->
                 WeatherDisplay(data.weather).apply {
                     unit = "°C"
@@ -43,7 +47,7 @@ class WorldViewModel(
     fun fetchDataForSingleLocation(locationName: String) {
         CoroutineScope(Dispatchers.IO).launch {
             operationState.postValue(Event(true))
-
+            // Check if location exists
             if (repository.getSavedLocations().contains(locationName)){
                 operationError.postValue(Event("$locationName already exists"))
                 return@launch
@@ -53,14 +57,24 @@ class WorldViewModel(
                 // Get location
                 val latLong =
                         locationProvider.getLatLongFromLocationString(locationName)
+                val lat = latLong.first
+                val lon = latLong.second
+
                 // Get weather from api
                 val weather = repository
-                        .getWeatherFromApi(latLong.first.toString(), latLong.second.toString())
+                        .getWeatherFromApi(lat.toString(), lon.toString())
+
+                // retrieved location name
+                val retrievedLocation = locationProvider.getLocationName(weather.lat, weather.lon)
+                if (repository.getSavedLocations().contains(retrievedLocation)){
+                    operationError.postValue(Event("$retrievedLocation already exists"))
+                    return@launch
+                }
 
                 // Save data if not null
                 weather.let {
-                    repository.saveCurrentWeatherToRoom(locationName, it)
-                    operationComplete.postValue(Event("$locationName saved"))
+                    repository.saveCurrentWeatherToRoom(retrievedLocation, it)
+                    operationComplete.postValue(Event("$retrievedLocation saved"))
                     return@launch
                 }
             } catch (e: IOException) {
@@ -93,6 +107,22 @@ class WorldViewModel(
                     } catch (e: IOException) { }
                 }
                 repository.saveWeatherListToRoom(list)
+            } catch (e: IOException) {
+                operationError.postValue(Event(e.message!!))
+            } finally {
+                operationState.postValue(Event(false))
+            }
+        }
+    }
+
+    fun deleteLocation(locationName: String){
+        CoroutineScope(Dispatchers.IO).launch {
+            operationState.postValue(Event(true))
+            try {
+                val success = repository.deleteSavedWeatherEntry(locationName)
+                if (!success){
+                    operationError.postValue(Event("Failed to delete"))
+                }
             } catch (e: IOException) {
                 operationError.postValue(Event(e.message!!))
             } finally {

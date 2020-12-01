@@ -11,7 +11,7 @@ import com.appttude.h_mal.atlas_weather.data.repository.RepositoryImpl
 import com.appttude.h_mal.atlas_weather.data.repository.SettingsRepositoryImpl
 import com.appttude.h_mal.atlas_weather.data.room.AppDatabase
 import com.appttude.h_mal.atlas_weather.viewmodel.ApplicationViewModelFactory
-import com.appttude.h_mal.atlas_weather.notification.ServicesHelper
+import com.appttude.h_mal.atlas_weather.helper.ServicesHelper
 import com.google.gson.Gson
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
