@@ -51,6 +51,7 @@
     <string name="title_world">World</string>
     <string name="location_name">Enter Location name</string>
     <string name="degrees_c">°C</string>
+    <string name="degrees">°</string>
     <string name="min">Min:</string>
     <string name="max">Max:</string>
     <string name="average">Average:</string>

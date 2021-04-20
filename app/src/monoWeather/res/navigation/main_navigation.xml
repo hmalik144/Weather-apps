@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name=".ui.home.HomeFragment"
+        android:name="com.appttude.h_mal.atlas_weather.monoWeather.ui.home.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home">
         <action
@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/furtherDetailsFragment"
-        android:name=".ui.details.FurtherInfoFragment"
+        android:name="com.appttude.h_mal.atlas_weather.monoWeather.ui.details.FurtherInfoFragment"
         android:label="Further Details">
         <argument
             android:name="forecast"
@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/nav_world"
-        android:name=".ui.world.WorldFragment"
+        android:name="com.appttude.h_mal.atlas_weather.monoWeather.ui.world.WorldFragment"
         android:label="World"
         tools:layout="@layout/fragment__two">
         <action
@@ -51,12 +51,12 @@
     </fragment>
     <fragment
         android:id="@+id/addLocationFragment"
-        android:name=".ui.world.AddLocationFragment"
+        android:name="com.appttude.h_mal.atlas_weather.monoWeather.ui.world.AddLocationFragment"
         android:label="Add Weather Location"
         tools:layout="@layout/activity_add_forecast" />
     <fragment
         android:id="@+id/worldItemFragment"
-        android:name=".ui.WorldItemFragment"
+        android:name="com.appttude.h_mal.atlas_weather.monoWeather.ui.WorldItemFragment"
         android:label="Overview"
         tools:layout="@layout/fragment_home">
         <action
@@ -67,8 +67,9 @@
             app:popEnterAnim="@anim/fragment_open_enter"
             app:popExitAnim="@anim/fragment_open_exit" />
         <argument
-            android:name="weatherDisplay"
-            app:argType="com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay" />
+            android:name="locationName"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 
 </navigation>

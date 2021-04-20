@@ -14,18 +14,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/forecast_listview"
-            tools:listitem="@layout/list_item_further">
+            tools:listitem="@layout/db_list_item">
         </androidx.recyclerview.widget.RecyclerView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <ProgressBar
+    <FrameLayout
         android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
         android:visibility="gone"
-        tools:visibility="visible"/>
+        tools:visibility="visible">
+        <ProgressBar
+            android:layout_gravity="center"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
+
+
 
 </RelativeLayout>

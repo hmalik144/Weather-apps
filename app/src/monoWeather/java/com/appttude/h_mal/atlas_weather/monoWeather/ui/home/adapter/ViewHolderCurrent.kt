@@ -17,9 +17,9 @@ class ViewHolderCurrent(listItemView: View) : RecyclerView.ViewHolder(listItemVi
     var tempUnit: TextView = listItemView.findViewById(R.id.temp_unit_4)
 
     fun bindData(weather: WeatherDisplay?){
-        locationTV.text = weather?.location
+        locationTV.text = weather?.displayName
         conditionTV.text = weather?.description
-        weatherIV.loadImage(weather?.iconURL, 64, 64)
+        weatherIV.loadImage(weather?.iconURL)
         avgTempTV.text = weather?.averageTemp?.toInt().toString()
         tempUnit.text = weather?.unit
     }

@@ -1,22 +1,18 @@
 package com.appttude.h_mal.atlas_weather.monoWeather.ui.home.adapter.forecast
 
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.appttude.h_mal.atlas_weather.R
-import com.appttude.h_mal.atlas_weather.model.forecast.Forecast
-import com.appttude.h_mal.atlas_weather.utils.loadImage
+import com.appttude.h_mal.atlas_weather.model.weather.Hour
 
 class ViewHolderForecast(
-        itemView: View,
-        private val itemClick: (Forecast) -> Unit
+        itemView: View
 ) : RecyclerView.ViewHolder(itemView) {
 
     var recyclerView: RecyclerView = itemView.findViewById(R.id.forecast_recyclerview)
 
-    fun bindView(forecasts: List<Forecast>?) {
-        val adapter = GridForecastAdapter(itemClick)
+    fun bindView(forecasts: List<Hour>?) {
+        val adapter = GridForecastAdapter()
         adapter.addCurrent(forecasts)
         recyclerView.adapter = adapter
 

@@ -4,25 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.monoWeather.ui.BaseFragment
 import com.appttude.h_mal.atlas_weather.utils.displayToast
 import com.appttude.h_mal.atlas_weather.utils.goBack
-import com.appttude.h_mal.atlas_weather.viewmodel.ApplicationViewModelFactory
+import com.appttude.h_mal.atlas_weather.utils.hideKeyboard
 import com.appttude.h_mal.atlas_weather.viewmodel.WorldViewModel
 import kotlinx.android.synthetic.main.activity_add_forecast.*
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.kodein
-import org.kodein.di.generic.instance
 
 
-class AddLocationFragment : BaseFragment(), KodeinAware {
-    override val kodein by kodein()
-    private val factory by instance<ApplicationViewModelFactory>()
+class AddLocationFragment : BaseFragment() {
 
-    private val viewModel by viewModels<WorldViewModel> { factory }
+    private val viewModel by getFragmentViewModel<WorldViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -39,18 +33,19 @@ class AddLocationFragment : BaseFragment(), KodeinAware {
                 location_name_tv.error = "Location cannot be blank"
                 return@setOnClickListener
             }
-            viewModel.fetchDataForSingleLocation(locationName)
+            viewModel.fetchDataForSingleLocationSearch(locationName)
+            hideKeyboard()
         }
 
         viewModel.operationState.observe(viewLifecycleOwner, progressBarStateObserver(progressBar))
         viewModel.operationError.observe(viewLifecycleOwner, errorObserver())
 
         viewModel.operationComplete.observe(viewLifecycleOwner) {
-            it?.getContentIfNotHandled()?.let {message ->
+            it?.getContentIfNotHandled()?.let { message ->
                 displayToast(message)
             }
             goBack()
+
         }
     }
-
 }

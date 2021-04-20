@@ -1,6 +1,5 @@
 package com.appttude.h_mal.atlas_weather.data.room
 
-import android.text.BoringLayout
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
@@ -26,6 +25,9 @@ interface WeatherDao {
 
     @Query("SELECT * FROM EntityItem WHERE id != :id")
     fun getAllFullWeatherWithoutCurrent(id: String = CURRENT_LOCATION) : LiveData<List<EntityItem>>
+
+    @Query("SELECT * FROM EntityItem WHERE id != :id")
+    suspend fun getWeatherListWithoutCurrent(id: String = CURRENT_LOCATION) : List<EntityItem>
 
     @Query("DELETE FROM EntityItem WHERE id = :userId")
     suspend fun deleteEntry(userId: String): Int

@@ -2,16 +2,17 @@ package com.appttude.h_mal.atlas_weather.application
 
 import android.app.Application
 import androidx.test.espresso.idling.CountingIdlingResource
-import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
+import com.appttude.h_mal.atlas_weather.data.location.LocationProviderImpl
 import com.appttude.h_mal.atlas_weather.data.network.WeatherApi
 import com.appttude.h_mal.atlas_weather.data.network.interceptors.NetworkConnectionInterceptor
 import com.appttude.h_mal.atlas_weather.data.network.interceptors.QueryParamsInterceptor
+import com.appttude.h_mal.atlas_weather.data.network.networkUtils.loggingInterceptor
 import com.appttude.h_mal.atlas_weather.data.prefs.PreferenceProvider
 import com.appttude.h_mal.atlas_weather.data.repository.RepositoryImpl
 import com.appttude.h_mal.atlas_weather.data.repository.SettingsRepositoryImpl
 import com.appttude.h_mal.atlas_weather.data.room.AppDatabase
-import com.appttude.h_mal.atlas_weather.viewmodel.ApplicationViewModelFactory
 import com.appttude.h_mal.atlas_weather.helper.ServicesHelper
+import com.appttude.h_mal.atlas_weather.viewmodel.ApplicationViewModelFactory
 import com.google.gson.Gson
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -22,9 +23,10 @@ import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 
 const val LOCATION_PERMISSION_REQUEST = 505
+
 class AppClass : Application(), KodeinAware {
 
-    companion object{
+    companion object {
         // idling resource to be used for espresso testing
         // when we need to wait for async operations to complete
         val idlingResources = CountingIdlingResource("Data_loader")
@@ -35,15 +37,15 @@ class AppClass : Application(), KodeinAware {
         import(androidXModule(this@AppClass))
 
         bind() from singleton { Gson() }
-
         bind() from singleton { NetworkConnectionInterceptor(instance()) }
         bind() from singleton { QueryParamsInterceptor() }
-        bind() from singleton { WeatherApi(instance(), instance())}
+        bind() from singleton { loggingInterceptor }
+        bind() from singleton { WeatherApi("https://api.openweathermap.org/data/2.5/", instance(), instance(), instance()) }
         bind() from singleton { AppDatabase(instance()) }
         bind() from singleton { PreferenceProvider(instance()) }
         bind() from singleton { RepositoryImpl(instance(), instance(), instance()) }
         bind() from singleton { SettingsRepositoryImpl(instance()) }
-        bind() from singleton { LocationProvider(instance()) }
+        bind() from singleton { LocationProviderImpl(instance()) }
         bind() from singleton { ServicesHelper(instance(), instance(), instance()) }
         bind() from provider { ApplicationViewModelFactory(instance(), instance()) }
     }

@@ -1,16 +1,16 @@
 package com.appttude.h_mal.atlas_weather.utils
 
+import android.app.Activity
 import android.content.Context
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.appttude.h_mal.atlas_weather.R
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 
 fun View.show() {
     this.visibility = View.VISIBLE
@@ -28,38 +28,24 @@ fun Fragment.displayToast(message: String) {
     Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
 }
 
-fun ImageView.loadImage(url: String?){
-    Picasso.get()
-            .load(url)
-            .error(R.drawable.ic_baseline_cloud_off_24)
-            .into(this)
-}
-
 fun ViewGroup.generateView(layoutId: Int): View = LayoutInflater
         .from(context)
         .inflate(layoutId, this, false)
 
-fun ImageView.loadImage(url: String?, height: Int, width: Int){
-    Picasso.get()
+fun ImageView.loadImage(url: String?){
+    val c = Glide.with(this)
             .load(url)
-            .resize(width.dpToPx(), height.dpToPx())
-            .centerCrop()
+    viewTreeObserver.addOnPreDrawListener {
+        c.override(width, height)
+        true
+    }
+    c.placeholder(R.drawable.ic_baseline_cloud_queue_24)
             .error(R.drawable.ic_baseline_cloud_off_24)
+            .fitCenter()
             .into(this)
 }
 
-fun Int.dpToPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
-
-fun SearchView.onSubmitListener(searchSubmit: (String) -> Unit) {
-    this.setOnQueryTextListener(object :
-            SearchView.OnQueryTextListener {
-        override fun onQueryTextSubmit(s: String): Boolean {
-            searchSubmit.invoke(s)
-            return true
-        }
-
-        override fun onQueryTextChange(s: String): Boolean {
-            return true
-        }
-    })
+fun Fragment.hideKeyboard() {
+    val imm = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
+    imm?.hideSoftInputFromWindow(view?.windowToken, 0)
 }

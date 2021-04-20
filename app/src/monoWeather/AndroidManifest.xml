@@ -2,17 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
     <application
         android:name="com.appttude.h_mal.atlas_weather.application.AppClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:node="merge">
 
-        <activity android:name=".ui.MainActivity"
+        <activity android:name="com.appttude.h_mal.atlas_weather.monoWeather.ui.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
@@ -25,14 +28,10 @@
         </activity>
 
         <activity
-            android:name=".ui.settings.UnitSettingsActivity"
+            android:name="com.appttude.h_mal.atlas_weather.monoWeather.ui.settings.UnitSettingsActivity"
             android:label="Settings" />
 
-        <receiver
-            android:name=".notification.NotificationReceiver"
-            android:parentActivityName=".MainActivity" />
-
-        <receiver android:name=".widget.NewAppWidget">
+        <receiver android:name="com.appttude.h_mal.atlas_weather.monoWeather.widget.NewAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="android.appwidget.action.APPWIDGET_ENABLED" />
@@ -46,8 +45,13 @@
 
 
         <service
-            android:name=".widget.WidgetRemoteViewsService"
+            android:name="com.appttude.h_mal.atlas_weather.monoWeather.widget.WidgetRemoteViewsService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <service
+            android:name="com.appttude.h_mal.atlas_weather.monoWeather.widget.WidgetJobServiceIntent"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

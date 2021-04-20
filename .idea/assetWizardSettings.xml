@@ -378,7 +378,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/cloud_off/baseline_cloud_off_24.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/cloud_queue/baseline_cloud_queue_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -389,7 +389,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_baseline_cloud_off_24" />
+                            <entry key="outputName" value="ic_baseline_cloud_queue_24" />
                             <entry key="sourceFile" value="D:\Android Studio Projects\Private work\Altas_-_Weather" />
                           </map>
                         </option>

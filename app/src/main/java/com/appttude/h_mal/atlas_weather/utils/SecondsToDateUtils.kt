@@ -4,11 +4,9 @@ package com.appttude.h_mal.atlas_weather.utils
 import android.os.Build
 import java.text.SimpleDateFormat
 import java.time.Instant
-import java.time.LocalDate
 import java.time.OffsetTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
 import java.util.*
 
 fun Int.toDayString(): String {

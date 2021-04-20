@@ -3,17 +3,13 @@ package com.appttude.h_mal.atlas_weather.monoWeather.ui.home.adapter.forecast
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.appttude.h_mal.atlas_weather.R
-import com.appttude.h_mal.atlas_weather.model.forecast.Forecast
-import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
-import com.appttude.h_mal.atlas_weather.monoWeather.ui.home.adapter.ViewHolderCurrent
+import com.appttude.h_mal.atlas_weather.model.weather.Hour
 import com.appttude.h_mal.atlas_weather.utils.generateView
 
-class GridForecastAdapter(
-        val itemClick: (Forecast) -> Unit
-): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
-    var weather: MutableList<Forecast> = mutableListOf()
+class GridForecastAdapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+    var weather: MutableList<Hour> = mutableListOf()
 
-    fun addCurrent(current: List<Forecast>?){
+    fun addCurrent(current: List<Hour>?){
         weather.clear()
         current?.let { weather.addAll(it) }
         notifyDataSetChanged()
@@ -28,9 +24,6 @@ class GridForecastAdapter(
         val view = holder as GridCellHolder
         val forecast = weather[position]
         view.bindView(forecast)
-        view.itemView.setOnClickListener {
-            itemClick.invoke(forecast)
-        }
     }
 
     override fun getItemCount(): Int = weather.size

@@ -23,7 +23,7 @@
         android:layout_gravity="center"
         android:layout_weight="1"
         android:adjustViewBounds="true"
-        tools:src="@drawable/demo_icon" />
+        tools:src="@drawable/ic_baseline_cloud_off_24" />
 
     <TextView
         android:id="@+id/widget_item_temp_high"

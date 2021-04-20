@@ -13,6 +13,9 @@ data class WeatherResponse(
 		@field:SerializedName("timezone_offset")
 	val timezoneOffset: Int? = null,
 
+		@field:SerializedName("hourly")
+		val hourly: List<Hour>? = null,
+
 		@field:SerializedName("daily")
 	val daily: List<DailyItem>? = null,
 

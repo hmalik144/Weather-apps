@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
+import com.appttude.h_mal.atlas_weather.monoWeather.ui.EmptyViewHolder
 import com.appttude.h_mal.atlas_weather.utils.generateView
 import com.appttude.h_mal.atlas_weather.utils.loadImage
 
@@ -25,7 +26,7 @@ class WorldRecyclerAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (getDataType(viewType)){
             is ViewType.Empty -> {
-                val emptyViewHolder = View(parent.context)
+                val emptyViewHolder = parent.generateView(R.layout.empty_state_layout)
                 EmptyViewHolder(emptyViewHolder)
             }
             is ViewType.Current -> {
@@ -56,7 +57,7 @@ class WorldRecyclerAdapter(
         when (getDataType(getItemViewType(position))){
             is ViewType.Empty -> {
                 holder as EmptyViewHolder
-
+                holder.bindData(null, "World List Empty", "Please add a location")
             }
             is ViewType.Current -> {
                 val viewHolderCurrent = holder as WorldHolderCurrent
@@ -83,20 +84,17 @@ class WorldRecyclerAdapter(
         var conditionTV: TextView = listItemView.findViewById(R.id.db_condition)
         var weatherIV: ImageView = listItemView.findViewById(R.id.db_icon)
         var avgTempTV: TextView = listItemView.findViewById(R.id.db_main_temp)
-        var tempUnit: TextView = listItemView.findViewById(R.id.db_minor_temp)
+        var tempUnit: TextView = listItemView.findViewById(R.id.db_temp_unit)
 
         fun bindData(weather: WeatherDisplay?){
-            locationTV.text = weather?.location
+            locationTV.text = weather?.displayName
             conditionTV.text = weather?.description
-            weatherIV.loadImage(weather?.iconURL, 64, 64)
+            weatherIV.loadImage(weather?.iconURL)
             avgTempTV.text = weather?.forecast?.get(0)?.mainTemp
-            tempUnit.text = weather?.unit
+            tempUnit.text = itemView.context.getString(R.string.degrees)
         }
 
     }
 
-
-
-    internal class EmptyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
 }

@@ -32,14 +32,21 @@ class FurtherInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        maxtemp.text = param1?.mainTemp
-        averagetemp.text = param1?.averageTemp
-        minimumtemp.text = param1?.minorTemp
-        windtext.text = param1?.windText
-        preciptext.text = param1?.precipitation
-        humiditytext.text = param1?.humidity
+        maxtemp.text = param1?.mainTemp.appendWith(requireContext().getString(R.string.degrees))
+        averagetemp.text = param1?.averageTemp.appendWith(requireContext().getString(R.string.degrees))
+        minimumtemp.text = param1?.minorTemp.appendWith(requireContext().getString(R.string.degrees))
+        windtext.text = param1?.windText.appendWith(" km")
+        preciptext.text = param1?.precipitation.appendWith(" %")
+        cloudtext.text =   param1?.cloud.appendWith(" %")
+        humiditytext.text = param1?.humidity.appendWith(" %")
         uvtext.text = param1?.uvi
         sunrisetext.text = param1?.sunrise
         sunsettext.text = param1?.sunset
+    }
+
+    fun String?.appendWith(suffix: String): String?{
+        return this?.let {
+            StringBuilder().append(it).append(suffix).toString()
+        }
     }
 }

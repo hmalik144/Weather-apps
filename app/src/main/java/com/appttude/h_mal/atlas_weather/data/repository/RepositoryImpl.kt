@@ -7,7 +7,7 @@ import com.appttude.h_mal.atlas_weather.data.prefs.LOCATION_CONST
 import com.appttude.h_mal.atlas_weather.data.prefs.PreferenceProvider
 import com.appttude.h_mal.atlas_weather.data.room.AppDatabase
 import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
-import com.appttude.h_mal.atlas_weather.model.weather.FullWeather
+
 
 private const val FIVE_MINS = 300000L
 class RepositoryImpl(
@@ -23,15 +23,8 @@ class RepositoryImpl(
         return responseUnwrap { api.getFromApi(lat, long) }
     }
 
-    override suspend fun saveCurrentWeatherToRoom(
-            locationId: String,
-            weatherResponse: WeatherResponse
-    ){
-        val entity = EntityItem(
-                locationId,
-                FullWeather(weatherResponse)
-        )
-        db.getSimpleDao().upsertFullWeather(entity)
+    override suspend fun saveCurrentWeatherToRoom(entityItem: EntityItem){
+        db.getSimpleDao().upsertFullWeather(entityItem)
     }
 
     override suspend fun saveWeatherListToRoom(
@@ -40,15 +33,26 @@ class RepositoryImpl(
         db.getSimpleDao().upsertListOfFullWeather(list)
     }
 
-    override fun loadAllWeatherExceptCurrentFromRoom() = db.getSimpleDao().getAllFullWeatherWithoutCurrent()
+    override fun loadRoomWeatherLiveData() = db.getSimpleDao().getAllFullWeatherWithoutCurrent()
 
-    override fun loadCurrentWeatherFromRoom(id: String) = db.getSimpleDao().getCurrentFullWeather(id)
+    override suspend fun loadWeatherList() : List<String>{
+        return db.getSimpleDao()
+                .getWeatherListWithoutCurrent()
+                .map { it.id }
+    }
 
-    override suspend fun loadSingleCurrentWeatherFromRoom(id: String) = db.getSimpleDao().getCurrentFullWeatherSingle(id)
+    override fun loadCurrentWeatherFromRoom(id: String)
+            = db.getSimpleDao().getCurrentFullWeather(id)
+
+    override suspend fun loadSingleCurrentWeatherFromRoom(id: String)
+            = db.getSimpleDao().getCurrentFullWeatherSingle(id)
 
     override fun isSearchValid(locationName: String): Boolean {
-        val lastSaved = prefs.getLastSavedAt(locationName) ?: return true
+        val lastSaved = prefs
+                .getLastSavedAt("$LOCATION_CONST$locationName")
+                ?: return true
         val difference = System.currentTimeMillis() - lastSaved
+
         return difference > FIVE_MINS
     }
 
@@ -63,6 +67,10 @@ class RepositoryImpl(
 
     override fun getSavedLocations(): List<String> {
         return prefs.getAllKeys().toList()
+    }
+
+    override suspend fun getSingleWeather(locationName: String): EntityItem {
+        return db.getSimpleDao().getCurrentFullWeatherSingle(locationName)
     }
 
 }

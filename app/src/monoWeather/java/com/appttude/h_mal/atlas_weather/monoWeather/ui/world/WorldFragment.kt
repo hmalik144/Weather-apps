@@ -1,37 +1,36 @@
 package com.appttude.h_mal.atlas_weather.monoWeather.ui.world
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.monoWeather.ui.BaseFragment
-import com.appttude.h_mal.atlas_weather.monoWeather.ui.world.WorldFragmentDirections
+import com.appttude.h_mal.atlas_weather.monoWeather.ui.WorldItemFragmentDirections
+import com.appttude.h_mal.atlas_weather.monoWeather.ui.world.WorldFragmentDirections.actionWorldFragmentToWorldItemFragment
 import com.appttude.h_mal.atlas_weather.utils.navigateTo
-import com.appttude.h_mal.atlas_weather.viewmodel.ApplicationViewModelFactory
 import com.appttude.h_mal.atlas_weather.viewmodel.WorldViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.fragment_add_location.*
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.kodein
-import org.kodein.di.generic.instance
+import kotlinx.android.synthetic.main.fragment__two.*
+import kotlinx.android.synthetic.main.fragment_add_location.floatingActionButton
+import kotlinx.android.synthetic.main.fragment_add_location.world_recycler
 
 
 /**
  * A simple [Fragment] subclass.
  * create an instance of this fragment.
  */
-class WorldFragment : BaseFragment(), KodeinAware {
-    override val kodein by kodein()
-    private val factory by instance<ApplicationViewModelFactory>()
+class WorldFragment : BaseFragment() {
+    private val viewModel by getFragmentViewModel<WorldViewModel>()
 
-    val viewModel by viewModels<WorldViewModel> { factory }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        viewModel.fetchAllLocations()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -44,7 +43,7 @@ class WorldFragment : BaseFragment(), KodeinAware {
 
         val recyclerAdapter = WorldRecyclerAdapter({
             val direction =
-                    WorldFragmentDirections.actionWorldFragmentToWorldItemFragment(it)
+                    actionWorldFragmentToWorldItemFragment(it.location)
             navigateTo(direction)
         }){
             MaterialAlertDialogBuilder(requireContext())
@@ -71,15 +70,9 @@ class WorldFragment : BaseFragment(), KodeinAware {
             navigateTo(R.id.action_worldFragment_to_addLocationFragment)
         }
 
-        viewModel.operationState.observe(viewLifecycleOwner, progressBarStateObserver(progressBar2))
+        viewModel.operationState.observe(viewLifecycleOwner, progressBarStateObserver(progressBar))
         viewModel.operationError.observe(viewLifecycleOwner, errorObserver())
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        viewModel.fetchAllLocations()
     }
 
 }

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -11,11 +12,10 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.monoWeather.ui.settings.UnitSettingsActivity
-import com.appttude.h_mal.atlas_weather.utils.goBack
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main_navigation.*
 
-class MainActivity : BaseActivity() {
+class MainActivity : AppCompatActivity() {
 
     lateinit var navHost: NavHostFragment
 
@@ -32,9 +32,7 @@ class MainActivity : BaseActivity() {
         navController.setGraph(R.navigation.main_navigation)
 
         setupBottomBar(navView, navController)
-
     }
-
 
     private fun setupBottomBar(navView: BottomNavigationView, navController: NavController) {
         val tabs = setOf(R.id.nav_home, R.id.nav_world)

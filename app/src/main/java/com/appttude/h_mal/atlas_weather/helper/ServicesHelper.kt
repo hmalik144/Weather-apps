@@ -2,61 +2,55 @@ package com.appttude.h_mal.atlas_weather.helper
 
 import android.Manifest
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import androidx.annotation.RequiresPermission
 import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
 import com.appttude.h_mal.atlas_weather.data.repository.Repository
 import com.appttude.h_mal.atlas_weather.data.repository.SettingsRepository
 import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
+import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
 import com.appttude.h_mal.atlas_weather.model.weather.FullWeather
 import com.appttude.h_mal.atlas_weather.model.widget.InnerWidgetData
 import com.appttude.h_mal.atlas_weather.model.widget.WidgetData
 import com.appttude.h_mal.atlas_weather.utils.toSmallDayName
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.Target
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.IOException
-import java.net.URL
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 
 class ServicesHelper(
         private val repository: Repository,
         private val settingsRepository: SettingsRepository,
         private val locationProvider: LocationProvider
-) {
+){
 
-    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    suspend fun getData(): FullWeather? {
-        return try {
-            val latLon = locationProvider.getLatLong()
-            val result =
-                    repository.getWeatherFromApi(
-                            latLon.first.toString(),
-                            latLon.second.toString()
-                    )
-            FullWeather(result)
-        } catch (e: Exception) {
-
-            null
-        }
-    }
-
-    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    @RequiresPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
     suspend fun fetchData(): Boolean {
-        if (!repository.isSearchValid(CURRENT_LOCATION)) return true
+        if (!repository.isSearchValid(CURRENT_LOCATION)) return false
 
         return try {
             // Get location
-            val latLong = locationProvider.getLatLong()
+            val latLong = locationProvider.getCurrentLatLong()
             // Get weather from api
             val weather = repository
                     .getWeatherFromApi(latLong.first.toString(), latLong.second.toString())
-
-            // Save data if not null
-            weather.let {
-                repository.saveLastSavedAt(CURRENT_LOCATION)
-                repository.saveCurrentWeatherToRoom(CURRENT_LOCATION, it)
+            val currentLocation = locationProvider.getLocationNameFromLatLong(weather.lat, weather.lon)
+            val fullWeather = FullWeather(weather).apply {
+                temperatureUnit = "°C"
+                locationString = currentLocation
             }
-            false
+            val entityItem = EntityItem(CURRENT_LOCATION, fullWeather)
+            // Save data if not null
+            repository.saveLastSavedAt(CURRENT_LOCATION)
+            repository.saveCurrentWeatherToRoom(entityItem)
+            true
         } catch (e: IOException) {
+            e.printStackTrace()
             false
         }
     }
@@ -66,50 +60,59 @@ class ServicesHelper(
             val result = repository.loadSingleCurrentWeatherFromRoom(CURRENT_LOCATION)
 
             result.weather.let {
-                WidgetData(
-                        locationProvider.getLocationName(it.lat, it.lon),
-                        getBitmapFromUrl(it.daily?.get(0)?.icon),
-                        it.current?.temp?.toInt().toString()
-                )
+                val bitmap = it.current?.icon
+                val location = locationProvider.getLocationNameFromLatLong(it.lat, it.lon)
+                val temp = it.current?.temp?.toInt().toString()
+
+                WidgetData(location, bitmap, temp)
             }
-        } catch (e: Exception) { null }
+        } catch (e: Exception) {
+            null
+        }
     }
 
     suspend fun getWidgetInnerWeather(): List<InnerWidgetData>? {
         return try {
             val result = repository.loadSingleCurrentWeatherFromRoom(CURRENT_LOCATION)
+            val list = mutableListOf<InnerWidgetData>()
 
-            result.weather.daily?.drop(1)?.dropLast(2)?.map{
-                InnerWidgetData(
-                        it.dt?.toSmallDayName(),
-                        getBitmapFromUrl(it.icon),
-                        it.max?.toInt().toString()
-                )
+            result.weather.daily?.drop(1)?.dropLast(2)?.forEach { dailyWeather ->
+                val day = dailyWeather.dt?.toSmallDayName()
+                val bitmap =  withContext(Dispatchers.Main) {
+                    getBitmapFromUrl(dailyWeather.icon)
+                }
+                val temp = dailyWeather.max?.toInt().toString()
+
+                val item = InnerWidgetData(day, bitmap, temp)
+                list.add(item)
             }
-        } catch (e: Exception) { null }
-    }
-
-
-    private fun getBitmapFromUrl(imageAddress: String?): Bitmap? {
-        return try {
-            val url = URL(imageAddress)
-            BitmapFactory.decodeStream(url.openConnection().getInputStream())
-        } catch (e: IOException) {
-            e.printStackTrace()
+            list.toList()
+        } catch (e: Exception) {
             null
         }
     }
 
-    fun isEnabled() = settingsRepository.isNotificationsEnabled()
+    private suspend fun getBitmapFromUrl(imageAddress: String?): Bitmap? {
+        return suspendCoroutine { cont ->
+                Picasso.get().load(imageAddress).into(object : Target {
+                    override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                        cont.resume(bitmap)
+                    }
 
-    fun getWidgetBackground(): Int {
-        return if (settingsRepository.isBlackBackground()){
-            Color.BLACK
-        }else{
-            Color.TRANSPARENT
+                    override fun onBitmapFailed(e: Exception?, d: Drawable?) {
+                        cont.resume(null)
+                    }
+
+                    override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+                })
         }
     }
 
-
-    fun setFirstTimer() = settingsRepository.setFirstTime()
+    fun getWidgetBackground(): Int {
+        return if (settingsRepository.isBlackBackground()) {
+            Color.BLACK
+        } else {
+            Color.TRANSPARENT
+        }
+    }
 }
