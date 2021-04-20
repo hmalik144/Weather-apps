@@ -46,7 +46,6 @@
 
 
         <LinearLayout
-            android:id="@+id/list_temp_holder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

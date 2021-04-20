@@ -21,7 +21,6 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="12dp">
             <TextClock
-                android:id="@+id/clock_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:format12Hour="EEE, d MMM"
@@ -100,7 +99,6 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/temp_holder_inside"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
