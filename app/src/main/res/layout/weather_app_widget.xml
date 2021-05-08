@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:background="@android:color/black"
-    tools:layout_height="160dp">
+    tools:layout_height="110dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -137,14 +137,14 @@
 
     <GridView
         android:id="@+id/widget_listview"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/central"
         android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:adjustViewBounds="true"
         android:numColumns="5"
-        tools:listitem="@layout/widget_item">
-
-    </GridView>
+        tools:listitem="@layout/widget_item"/>
 
 
 </RelativeLayout>

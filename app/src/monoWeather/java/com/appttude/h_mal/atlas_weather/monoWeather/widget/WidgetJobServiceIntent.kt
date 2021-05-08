@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.PowerManager
 import android.widget.RemoteViews
 import androidx.core.app.ActivityCompat
 import com.appttude.h_mal.atlas_weather.R
@@ -30,13 +31,24 @@ import java.time.format.DateTimeFormatter
 class WidgetJobServiceIntent : BaseWidgetServiceIntentClass() {
 
     override fun onHandleWork(intent: Intent) {
-        setKodein(this)
         // We have received work to do.  The system or framework is already
         // holding a wake lock for us at this point, so we can just go.
+
+        val pm = getSystemService(POWER_SERVICE) as PowerManager
+        val isScreenOn = pm.isInteractive
+
+        // If screen is on then update widget or do nothing
+        if (isScreenOn) executeWidgetUpdate()
+    }
+
+    private fun executeWidgetUpdate(){
+        setKodein(this)
+
         val appWidgetManager = AppWidgetManager.getInstance(this)
         val thisAppWidget = ComponentName(packageName, NewAppWidget::class.java.name)
         val appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget)
 
+        // Check if we have an active connection and permissions granted
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED || !isInternetAvailable(this.applicationContext)) {
             for (appWidgetId in appWidgetIds) {
