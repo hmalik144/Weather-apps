@@ -116,7 +116,7 @@ class NewAppWidget : BaseWidgetClass() {
             views.setTextViewText(R.id.widget_feel_temp, "°C")
             views.setTextViewText(R.id.widget_current_location, it.location)
             views.setImageViewResource(R.id.location_icon, R.drawable.location_flag)
-            views.setImageViewBitmap(R.id.widget_current_icon, it.icon)
+//            views.setImageViewBitmap(R.id.widget_current_icon, it.icon)
 
             val clickPendingIntentTemplate = createClickingPendingIntent(context, MainActivity::class.java)
             views.setPendingIntentTemplate(R.id.widget_listview, clickPendingIntentTemplate)

@@ -7,6 +7,9 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs'
 
 android {
+    lintOptions {
+        abortOnError false
+    }
     compileSdkVersion 30
     defaultConfig {
         applicationId "com.appttude.h_mal.atlas_weather"

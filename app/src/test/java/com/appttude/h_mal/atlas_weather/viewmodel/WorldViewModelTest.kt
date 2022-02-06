@@ -37,18 +37,16 @@ class WorldViewModelTest {
     }
 
     @Test
-    fun name() {
+    fun fetchDataForSingleLocation_invalidLocation_invalidReturn() {
         val location = CURRENT_LOCATION
 
         viewModel.fetchDataForSingleLocation(location)
 
-        assertEquals(viewModel.operationRefresh.getOrAwaitValue()?.getContentIfNotHandled(), true)
+        assertEquals(viewModel.operationRefresh.getOrAwaitValue()?.getContentIfNotHandled(), false)
     }
 }
 
 
-/* Copyright 2019 Google LLC.
-   SPDX-License-Identifier: Apache-2.0 */
 fun <T> LiveData<T>.getOrAwaitValue(
         time: Long = 2,
         timeUnit: TimeUnit = TimeUnit.SECONDS

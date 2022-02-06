@@ -28,10 +28,11 @@ import org.kodein.di.generic.instance
  * Updated by h_mal on 27/11/2020
  */
 const val NOTIFICATION_CHANNEL_ID = "my_notification_channel_1"
+
 class NotificationReceiver : BroadcastReceiver() {
 
     private val kodein = LateInitKodein()
-    private val helper : ServicesHelper by kodein.instance()
+    private val helper: ServicesHelper by kodein.instance()
 
     override fun onReceive(context: Context, intent: Intent) {
         kodein.baseKodein = (context.applicationContext as KodeinAware).kodein
@@ -41,14 +42,7 @@ class NotificationReceiver : BroadcastReceiver() {
             return
         }
 
-        if (helper.isEnabled()) {
-            CoroutineScope(Dispatchers.IO).launch {
-                helper.getData()?.let {
-                    pushNotif(context, it)
-                }
-            }
-        }
-        helper.setFirstTimer()
+        // notification validation
     }
 
     private fun pushNotif(context: Context?, weather: FullWeather) {
@@ -62,7 +56,7 @@ class NotificationReceiver : BroadcastReceiver() {
         val pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Notification.Builder(context, NOTIFICATION_CHANNEL_ID )
+            Notification.Builder(context, NOTIFICATION_CHANNEL_ID)
         } else {
             Notification.Builder(context)
         }
