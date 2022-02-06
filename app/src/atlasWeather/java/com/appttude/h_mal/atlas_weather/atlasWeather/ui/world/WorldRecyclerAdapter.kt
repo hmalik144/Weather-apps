@@ -77,14 +77,14 @@ class WorldRecyclerAdapter(
         var conditionTV: TextView = listItemView.findViewById(R.id.db_condition)
         var weatherIV: ImageView = listItemView.findViewById(R.id.db_icon)
         var avgTempTV: TextView = listItemView.findViewById(R.id.db_main_temp)
-        var tempUnit: TextView = listItemView.findViewById(R.id.db_minor_temp)
+//        var tempUnit: TextView = listItemView.findViewById(R.id.db_minor_temp)
 
         fun bindData(weather: WeatherDisplay?){
             locationTV.text = weather?.location
             conditionTV.text = weather?.description
             weatherIV.loadImage(weather?.iconURL)
             avgTempTV.text = weather?.forecast?.get(0)?.mainTemp
-            tempUnit.text = weather?.unit
+//            tempUnit.text = weather?.unit
         }
 
     }
