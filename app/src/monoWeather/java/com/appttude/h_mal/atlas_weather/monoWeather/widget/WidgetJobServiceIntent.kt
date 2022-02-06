@@ -35,15 +35,17 @@ class WidgetJobServiceIntent : BaseWidgetServiceIntentClass() {
         // We have received work to do.  The system or framework is already
         // holding a wake lock for us at this point, so we can just go.
 
-         executeWidgetUpdate()
+        executeWidgetUpdate()
     }
 
-    private fun executeWidgetUpdate(){
+    private fun executeWidgetUpdate() {
         setKodein(this)
 
         val appWidgetManager = AppWidgetManager.getInstance(this)
         val thisAppWidget = ComponentName(packageName, NewAppWidget::class.java.name)
         val appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget)
+
+        // if location isnt granted
 
         validateOperation()?.let {
             if (it) updateWidget(appWidgetIds, appWidgetManager)
@@ -51,7 +53,7 @@ class WidgetJobServiceIntent : BaseWidgetServiceIntentClass() {
         }
     }
 
-    private fun updateWidget(appWidgetIds: IntArray, appWidgetManager: AppWidgetManager){
+    private fun updateWidget(appWidgetIds: IntArray, appWidgetManager: AppWidgetManager) {
         CoroutineScope(Dispatchers.IO).launch {
             val result = getWidgetWeather()
 
@@ -61,7 +63,7 @@ class WidgetJobServiceIntent : BaseWidgetServiceIntentClass() {
         }
     }
 
-    private fun updateErrorWidget(appWidgetIds: IntArray, appWidgetManager: AppWidgetManager){
+    private fun updateErrorWidget(appWidgetIds: IntArray, appWidgetManager: AppWidgetManager) {
         for (appWidgetId in appWidgetIds) {
             setEmptyView(this, appWidgetManager, appWidgetId)
         }
@@ -76,22 +78,17 @@ class WidgetJobServiceIntent : BaseWidgetServiceIntentClass() {
 
         // no location return false
         if (!locationGranted) return false
-        // internet is available lets go
-        if (internetAvailable) return true
+
+        // internet is available and screen on lets go
+        if (isScreenOn && internetAvailable) return true
         // screen is off and no connection, do nothing
         if (!isScreenOn && !internetAvailable) return null
+        // screen is on but internet is off
+        if (isScreenOn && !internetAvailable) return false
+        // Screen is off but internet is available
+        if (!isScreenOn && internetAvailable) return true
 
-        return if (isScreenOn && !internetAvailable) false else null
-    }
-
-    private fun createForecastListIntent(
-            context: Context,
-            appWidgetId: Int
-    ): Intent {
-        return Intent(context, WidgetRemoteViewsService::class.java).apply {
-            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-            data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
-        }
+        return null
     }
 
     @SuppressLint("MissingPermission")
@@ -165,12 +162,10 @@ class WidgetJobServiceIntent : BaseWidgetServiceIntentClass() {
                 CoroutineScope(Dispatchers.Main).launch {
                     Picasso.get().load(weather.icon).into(views, R.id.widget_current_icon, intArrayOf(appWidgetId))
                 }
-                setPendingIntentTemplate(R.id.widget_listview, clickPendingIntentTemplate)
                 setOnClickPendingIntent(R.id.widget_current_icon, clickingUpdatePendingIntent)
                 setOnClickPendingIntent(R.id.widget_current_location, clickingUpdatePendingIntent)
 
-                loadCells(appWidgetId, views, collection.forecast)
-//                setRemoteAdapter(R.id.widget_listview, forecastListIntent)
+                loadCells(appWidgetId, views, collection.forecast, clickPendingIntentTemplate)
             }
 
             // Instruct the widget manager to update the widget
@@ -182,8 +177,14 @@ class WidgetJobServiceIntent : BaseWidgetServiceIntentClass() {
 
     }
 
-    private fun loadCells(appWidgetId: Int, remoteViews: RemoteViews, weather: List<InnerWidgetCellData>){
+    private fun loadCells(
+            appWidgetId: Int,
+            remoteViews: RemoteViews,
+            weather: List<InnerWidgetCellData>,
+            clickIntent: PendingIntent
+    ) {
         (0..4).forEach { i ->
+            val containerId: Int = resources.getIdentifier("widget_item_$i", "id", packageName)
             val dayId: Int = resources.getIdentifier("widget_item_day_$i", "id", packageName)
             val imageId: Int = resources.getIdentifier("widget_item_image_$i", "id", packageName)
             val tempId: Int = resources.getIdentifier("widget_item_temp_high_$i", "id", packageName)
@@ -195,10 +196,12 @@ class WidgetJobServiceIntent : BaseWidgetServiceIntentClass() {
             CoroutineScope(Dispatchers.Main).launch {
                 Picasso.get().load(it.icon).into(remoteViews, imageId, intArrayOf(appWidgetId))
             }
+
+            remoteViews.setOnClickPendingIntent(containerId, clickIntent)
         }
     }
 
-    private fun setLastUpdated(views: RemoteViews){
+    private fun setLastUpdated(views: RemoteViews) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             val current = LocalDateTime.now()
             val formatter = DateTimeFormatter.ofPattern("HH:mm")

@@ -22,15 +22,15 @@
             android:layout_marginStart="12dp"
             android:orientation="vertical">
 
-            <TextClock
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:format12Hour="EEE, d MMM"
-                android:format24Hour="EEE, d MMM"
-                android:includeFontPadding="false"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                tools:text="Wed, 3 Dec" />
+<!--            <TextClock-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:format12Hour="EEE, d MMM"-->
+<!--                android:format24Hour="EEE, d MMM"-->
+<!--                android:includeFontPadding="false"-->
+<!--                android:textColor="#ffffff"-->
+<!--                android:textSize="16sp"-->
+<!--                tools:text="Wed, 3 Dec" />-->
 
             <TextView
                 android:id="@+id/widget_current_status"
@@ -133,6 +133,7 @@
         android:rowCount="1">
 
         <LinearLayout
+            android:id="@+id/widget_item_0"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
@@ -165,6 +166,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/widget_item_1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
@@ -197,6 +199,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/widget_item_2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
@@ -229,6 +232,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/widget_item_3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
@@ -260,6 +264,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/widget_item_4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
