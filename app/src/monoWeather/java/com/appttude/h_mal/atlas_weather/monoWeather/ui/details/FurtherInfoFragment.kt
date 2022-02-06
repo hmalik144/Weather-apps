@@ -7,11 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.model.forecast.Forecast
-import com.appttude.h_mal.atlas_weather.monoWeather.ui.details.FurtherInfoFragmentArgs
 import kotlinx.android.synthetic.main.activity_further_info.*
 
 
-private const val WEATHER = "param1"
 /**
  * A simple [Fragment] subclass.
  * Use the [FurtherInfoFragment.newInstance] factory method to

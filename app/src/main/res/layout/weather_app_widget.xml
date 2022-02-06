@@ -1,25 +1,27 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/whole_widget_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:background="@android:color/black"
     tools:layout_height="110dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/central"
+        android:layout_height="0dp"
         android:layout_alignParentTop="true"
+        android:layout_weight="1"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginStart="12dp">
+            android:layout_marginStart="12dp"
+            android:orientation="vertical">
+
             <TextClock
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -34,8 +36,8 @@
                 android:id="@+id/widget_current_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxWidth="180dp"
                 android:includeFontPadding="false"
+                android:maxWidth="180dp"
                 android:maxLines="1"
                 android:textColor="#ffffff"
                 android:textSize="12sp"
@@ -46,11 +48,11 @@
             android:id="@+id/widget_current_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@id/location_container"
             android:layout_alignParentTop="true"
             android:layout_centerInParent="true"
-            android:layout_above="@id/location_container"
-            android:adjustViewBounds="true"
             android:layout_marginLeft="32dp"
+            android:adjustViewBounds="true"
             tools:src="@drawable/ic_baseline_cloud_off_24" />
 
         <LinearLayout
@@ -59,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
-            android:layout_marginBottom="6dp"
+            android:layout_marginBottom="1dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -77,16 +79,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:maxWidth="180dp"
-                android:autoSizeMaxTextSize="100sp"
-                android:autoSizeMinTextSize="12sp"
-                android:autoSizeStepGranularity="2sp"
-                android:autoSizeTextType="uniform"
-                android:gravity=""
-                android:includeFontPadding="false"
                 android:maxLines="1"
-                android:textColor="#ffffff"
-                android:textSize="12sp"
-                tools:text="Roehampton" />
+                style="@style/widget_light_home_text"
+                tools:text="Hammersmith Bridge" />
         </LinearLayout>
 
 
@@ -128,23 +123,172 @@
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/central"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_centerInParent="true"
-        android:orientation="vertical" />
-
-    <GridView
+    <GridLayout
         android:id="@+id/widget_listview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/central"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:adjustViewBounds="true"
-        android:numColumns="5"
-        tools:listitem="@layout/widget_item"/>
+        android:layout_weight="1"
+        android:columnCount="5"
+        android:rowCount="1">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/widget_item_day_0"
+                style="@style/widget_light_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Wed" />
+
+            <ImageView
+                android:id="@+id/widget_item_image_0"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                tools:src="@drawable/ic_baseline_cloud_off_24" />
+
+            <TextView
+                android:id="@+id/widget_item_temp_high_0"
+                style="@style/widget_light_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="20" />
 
 
-</RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/widget_item_day_1"
+                style="@style/widget_light_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Wed" />
+
+            <ImageView
+                android:id="@+id/widget_item_image_1"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                tools:src="@drawable/ic_baseline_cloud_off_24" />
+
+            <TextView
+                android:id="@+id/widget_item_temp_high_1"
+                style="@style/widget_light_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="20" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/widget_item_day_2"
+                style="@style/widget_light_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Wed" />
+
+            <ImageView
+                android:id="@+id/widget_item_image_2"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                tools:src="@drawable/ic_baseline_cloud_off_24" />
+
+            <TextView
+                android:id="@+id/widget_item_temp_high_2"
+                style="@style/widget_light_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="20" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/widget_item_day_3"
+                style="@style/widget_light_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Wed" />
+
+            <ImageView
+                android:id="@+id/widget_item_image_3"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                tools:src="@drawable/ic_baseline_cloud_off_24" />
+
+            <TextView
+                android:id="@+id/widget_item_temp_high_3"
+                style="@style/widget_light_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="20" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/widget_item_day_4"
+                style="@style/widget_light_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Wed" />
+
+            <ImageView
+                android:id="@+id/widget_item_image_4"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                tools:src="@drawable/ic_baseline_cloud_off_24" />
+
+            <TextView
+                android:id="@+id/widget_item_temp_high_4"
+                style="@style/widget_light_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="20" />
+
+        </LinearLayout>
+    </GridLayout>
+
+</LinearLayout>

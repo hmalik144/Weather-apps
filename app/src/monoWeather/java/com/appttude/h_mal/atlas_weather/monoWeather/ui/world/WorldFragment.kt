@@ -9,7 +9,6 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.monoWeather.ui.BaseFragment
-import com.appttude.h_mal.atlas_weather.monoWeather.ui.WorldItemFragmentDirections
 import com.appttude.h_mal.atlas_weather.monoWeather.ui.world.WorldFragmentDirections.actionWorldFragmentToWorldItemFragment
 import com.appttude.h_mal.atlas_weather.utils.navigateTo
 import com.appttude.h_mal.atlas_weather.viewmodel.WorldViewModel

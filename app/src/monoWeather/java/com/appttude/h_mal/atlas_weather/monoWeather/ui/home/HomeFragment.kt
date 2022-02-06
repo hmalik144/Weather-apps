@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
  * A simple [Fragment] subclass.
  * create an instance of this fragment.
  */
-class HomeFragment : BaseFragment(){
+class HomeFragment : BaseFragment() {
 
     private val viewModel by getFragmentViewModel<MainViewModel>()
 
@@ -48,6 +48,7 @@ class HomeFragment : BaseFragment(){
             layoutManager = LinearLayoutManager(context)
             adapter = recyclerAdapter
         }
+
 
         getPermissionResult(Manifest.permission.ACCESS_COARSE_LOCATION, LOCATION_PERMISSION_REQUEST){
             viewModel.fetchData()

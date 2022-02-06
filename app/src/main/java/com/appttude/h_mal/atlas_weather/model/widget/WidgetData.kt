@@ -13,3 +13,15 @@ data class InnerWidgetData(
         val icon: Bitmap?,
         val highTemp: String?
 )
+
+
+data class InnerWidgetCellData(
+        val date: String?,
+        val icon: String?,
+        val highTemp: String?
+)
+
+data class WidgetWeatherCollection(
+        val widgetData: WidgetData,
+        val forecast: List<InnerWidgetCellData>
+)

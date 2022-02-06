@@ -8,4 +8,23 @@
         <item name="android:layout_marginBottom">12dp</item>
         <item name="android:layout_weight">2</item>
     </style>
+
+    <style name="widget_light_text" parent="widget_light_base">
+        <item name="android:autoSizeMinTextSize">8sp</item>
+    </style>
+
+    <style name="widget_light_home_text" parent="widget_light_base">
+        <item name="android:autoSizeMinTextSize">12sp</item>
+    </style>
+
+    <style name="widget_light_base">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:autoSizeMaxTextSize">100sp</item>
+        <item name="android:autoSizeStepGranularity">2sp</item>
+        <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:gravity">center</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">12sp</item>
+    </style>
 </resources>

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
@@ -14,8 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:node="merge">
-
-        <activity android:name="com.appttude.h_mal.atlas_weather.monoWeather.ui.MainActivity"
+        <activity
+            android:name="com.appttude.h_mal.atlas_weather.monoWeather.ui.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
@@ -26,10 +26,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.appttude.h_mal.atlas_weather.monoWeather.ui.settings.UnitSettingsActivity"
             android:label="Settings" />
+
+        <activity android:name="com.appttude.h_mal.atlas_weather.monoWeather.ui.widget.WidgetLocationPermissionActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
 
         <receiver android:name="com.appttude.h_mal.atlas_weather.monoWeather.widget.NewAppWidget">
             <intent-filter>
@@ -43,11 +48,9 @@
                 android:resource="@xml/new_app_widget_info" />
         </receiver>
 
-
         <service
             android:name="com.appttude.h_mal.atlas_weather.monoWeather.widget.WidgetRemoteViewsService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
-
         <service
             android:name="com.appttude.h_mal.atlas_weather.monoWeather.widget.WidgetJobServiceIntent"
             android:exported="true"
@@ -55,5 +58,3 @@
     </application>
 
 </manifest>
-
-

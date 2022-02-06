@@ -24,7 +24,7 @@ import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 import kotlin.properties.Delegates
 
-abstract class BaseFragment : Fragment(), KodeinAware {
+abstract class BaseFragment() : Fragment(), KodeinAware {
 
     override val kodein by kodein()
     val factory by instance<ApplicationViewModelFactory>()

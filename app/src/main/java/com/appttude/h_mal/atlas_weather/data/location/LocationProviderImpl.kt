@@ -68,7 +68,7 @@ class LocationProviderImpl(
 
     @SuppressLint("MissingPermission")
     private suspend fun getAFreshLocation(): Location? {
-        return client.getCurrentLocation(PRIORITY_HIGH_ACCURACY, object : CancellationToken() {
+        return client.getCurrentLocation(PRIORITY_LOW_POWER, object : CancellationToken() {
             override fun isCancellationRequested(): Boolean = false
             override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken = this
         }).await()

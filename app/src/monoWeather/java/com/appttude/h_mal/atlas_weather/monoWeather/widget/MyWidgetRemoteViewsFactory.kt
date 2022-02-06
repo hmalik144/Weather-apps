@@ -35,7 +35,6 @@ class MyWidgetRemoteViewsFactory(
 
     override fun getViewAt(i: Int): RemoteViews {
         val rv = RemoteViews(context.packageName, R.layout.widget_item)
-
         if (list.isNullOrEmpty()) return rv
 
         list?.get(i)?.let {
@@ -57,4 +56,5 @@ class MyWidgetRemoteViewsFactory(
     override fun getItemId(i: Int): Long = i.toLong()
 
     override fun hasStableIds(): Boolean = true
+
 }

@@ -57,13 +57,13 @@ class HomeFragment : BaseFragment(), KodeinAware {
             adapter = recyclerAdapter
         }
 
-        getPermissionResult(Manifest.permission.ACCESS_COARSE_LOCATION, LOCATION_PERMISSION_REQUEST){
+        getPermissionResult(Manifest.permission.ACCESS_FINE_LOCATION, LOCATION_PERMISSION_REQUEST){
             viewModel.fetchData()
         }
 
         swipe_refresh.apply {
             setOnRefreshListener {
-                getPermissionResult(Manifest.permission.ACCESS_COARSE_LOCATION, LOCATION_PERMISSION_REQUEST){
+                getPermissionResult(Manifest.permission.ACCESS_FINE_LOCATION, LOCATION_PERMISSION_REQUEST){
                     viewModel.fetchData()
                 }
                 isRefreshing = true

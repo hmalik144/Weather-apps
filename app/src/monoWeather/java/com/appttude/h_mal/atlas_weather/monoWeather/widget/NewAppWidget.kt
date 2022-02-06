@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import com.appttude.h_mal.atlas_weather.monoWeather.widget.WidgetJobServiceIntent.Companion.enqueueWork
 
 /**
