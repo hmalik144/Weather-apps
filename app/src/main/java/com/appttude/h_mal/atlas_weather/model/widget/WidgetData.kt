@@ -5,7 +5,8 @@ import android.graphics.Bitmap
 data class WidgetData(
         val location: String?,
         val icon: String?,
-        val currentTemp: String?
+        val currentTemp: String?,
+        val timeStamp: Long
 )
 
 data class InnerWidgetData(

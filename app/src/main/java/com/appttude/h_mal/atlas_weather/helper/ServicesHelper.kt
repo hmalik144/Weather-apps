@@ -29,7 +29,7 @@ class ServicesHelper(
         private val repository: Repository,
         private val settingsRepository: SettingsRepository,
         private val locationProvider: LocationProvider
-){
+) {
 
     @RequiresPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
     suspend fun fetchData(): Boolean {
@@ -57,22 +57,6 @@ class ServicesHelper(
         }
     }
 
-    suspend fun getWidgetWeather(): WidgetData? {
-        return try {
-            val result = repository.loadSingleCurrentWeatherFromRoom(CURRENT_LOCATION)
-
-            result.weather.let {
-                val bitmap = it.current?.icon
-                val location = locationProvider.getLocationNameFromLatLong(it.lat, it.lon)
-                val temp = it.current?.temp?.toInt().toString()
-
-                WidgetData(location, bitmap, temp)
-            }
-        } catch (e: Exception) {
-            null
-        }
-    }
-
     suspend fun getWidgetInnerWeather(): List<InnerWidgetData>? {
         return try {
             val result = repository.loadSingleCurrentWeatherFromRoom(CURRENT_LOCATION)
@@ -80,7 +64,7 @@ class ServicesHelper(
 
             result.weather.daily?.drop(1)?.dropLast(2)?.forEach { dailyWeather ->
                 val day = dailyWeather.dt?.toSmallDayName()
-                val bitmap =  withContext(Dispatchers.Main) {
+                val bitmap = withContext(Dispatchers.Main) {
                     getBitmapFromUrl(dailyWeather.icon)
                 }
                 val temp = dailyWeather.max?.toInt().toString()
@@ -102,15 +86,16 @@ class ServicesHelper(
                 val bitmap = it.current?.icon
                 val location = locationProvider.getLocationNameFromLatLong(it.lat, it.lon)
                 val temp = it.current?.temp?.toInt().toString()
+                val epoc = System.currentTimeMillis()
 
-                WidgetData(location, bitmap, temp)
+                WidgetData(location, bitmap, temp, epoc)
             }
 
             val list = mutableListOf<InnerWidgetCellData>()
 
             result.weather.daily?.drop(1)?.dropLast(2)?.forEach { dailyWeather ->
                 val day = dailyWeather.dt?.toSmallDayName()
-                val icon =  dailyWeather.icon
+                val icon = dailyWeather.icon
                 val temp = dailyWeather.max?.toInt().toString()
 
                 val item = InnerWidgetCellData(day, icon, temp)
@@ -126,25 +111,24 @@ class ServicesHelper(
 
     private suspend fun getBitmapFromUrl(imageAddress: String?): Bitmap? {
         return suspendCoroutine { cont ->
-                Picasso.get().load(imageAddress).into(object : Target {
-                    override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-                        cont.resume(bitmap)
-                    }
+            Picasso.get().load(imageAddress).into(object : Target {
+                override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                    cont.resume(bitmap)
+                }
 
-                    override fun onBitmapFailed(e: Exception?, d: Drawable?) {
-                        cont.resume(null)
-                    }
+                override fun onBitmapFailed(e: Exception?, d: Drawable?) {
+                    cont.resume(null)
+                }
 
-                    override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
-                })
+                override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+            })
         }
     }
 
     fun getWidgetBackground(): Int {
-        return if (settingsRepository.isBlackBackground()) {
+        return if (settingsRepository.isBlackBackground())
             Color.BLACK
-        } else {
+        else
             Color.TRANSPARENT
-        }
     }
 }
