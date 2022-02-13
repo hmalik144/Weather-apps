@@ -57,6 +57,23 @@ class ServicesHelper(
         }
     }
 
+    suspend fun getWidgetWeather(): WidgetData? {
+        return try {
+            val result = repository.loadSingleCurrentWeatherFromRoom(CURRENT_LOCATION)
+            val epoc = System.currentTimeMillis()
+            
+            result.weather.let {
+                val bitmap = it.current?.icon
+                val location = locationProvider.getLocationNameFromLatLong(it.lat, it.lon)
+                val temp = it.current?.temp?.toInt().toString()
+
+                WidgetData(location, bitmap, temp, epoc)
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
     suspend fun getWidgetInnerWeather(): List<InnerWidgetData>? {
         return try {
             val result = repository.loadSingleCurrentWeatherFromRoom(CURRENT_LOCATION)
