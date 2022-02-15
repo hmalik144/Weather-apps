@@ -3,187 +3,178 @@ package com.appttude.h_mal.atlas_weather.monoWeather.widget
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.annotation.SuppressLint
 import android.app.PendingIntent
-import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.net.Uri
+import android.icu.text.SimpleDateFormat
 import android.os.PowerManager
 import android.widget.RemoteViews
+import android.os.Build
 import androidx.core.app.ActivityCompat.checkSelfPermission
 import com.appttude.h_mal.atlas_weather.R
+import com.appttude.h_mal.atlas_weather.helper.ServicesHelper
 import com.appttude.h_mal.atlas_weather.model.widget.InnerWidgetCellData
 import com.appttude.h_mal.atlas_weather.model.widget.WidgetWeatherCollection
 import com.appttude.h_mal.atlas_weather.monoWeather.ui.MainActivity
+import com.appttude.h_mal.atlas_weather.monoWeather.widget.WidgetState.*
+import com.appttude.h_mal.atlas_weather.monoWeather.widget.WidgetState.Companion.getWidgetState
 import com.appttude.h_mal.atlas_weather.utils.isInternetAvailable
 import com.appttude.h_mal.atlas_weather.utils.tryOrNullSuspended
-import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import org.kodein.di.KodeinAware
+import org.kodein.di.LateInitKodein
+import org.kodein.di.generic.instance
+import java.util.*
 
 
 /**
- * Example implementation of a JobIntentService.
+ * Implementation of a JobIntentService used for home screen widget
  */
-class WidgetJobServiceIntent : BaseWidgetServiceIntentClass() {
+const val HALF_DAY = 43200000L
+class WidgetJobServiceIntent : BaseWidgetServiceIntentClass<NewAppWidget>() {
+
+    private val kodein = LateInitKodein()
+    private val helper: ServicesHelper by kodein.instance()
 
     override fun onHandleWork(intent: Intent) {
         // We have received work to do.  The system or framework is already
         // holding a wake lock for us at this point, so we can just go.
-
-         executeWidgetUpdate()
+        kodein.baseKodein = (applicationContext as KodeinAware).kodein
+        executeWidgetUpdate()
     }
 
-    private fun executeWidgetUpdate(){
-        setKodein(this)
+    private fun executeWidgetUpdate() {
+        val componentName = ComponentName(this, NewAppWidget::class.java)
+        initBaseWidget(componentName)
 
-        val appWidgetManager = AppWidgetManager.getInstance(this)
-        val thisAppWidget = ComponentName(packageName, NewAppWidget::class.java.name)
-        val appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget)
+        initiateWidgetUpdate(getCurrentWidgetState())
+    }
 
-        validateOperation()?.let {
-            if (it) updateWidget(appWidgetIds, appWidgetManager)
-            else updateErrorWidget(appWidgetIds, appWidgetManager)
+    private fun initiateWidgetUpdate(state: WidgetState) {
+        when (state) {
+            NO_LOCATION, SCREEN_ON_CONNECTION_UNAVAILABLE -> updateErrorWidget(state)
+            SCREEN_ON_CONNECTION_AVAILABLE -> updateWidget(false)
+            SCREEN_OFF_CONNECTION_AVAILABLE -> updateWidget(true)
+            SCREEN_OFF_CONNECTION_UNAVAILABLE -> return
         }
     }
 
-    private fun updateWidget(appWidgetIds: IntArray, appWidgetManager: AppWidgetManager){
+    private fun updateWidget(fromStorage: Boolean) {
         CoroutineScope(Dispatchers.IO).launch {
-            val result = getWidgetWeather()
-
-            for (appWidgetId in appWidgetIds) {
-                bindView(this@WidgetJobServiceIntent, appWidgetManager, appWidgetId, result)
-            }
+            val result = getWidgetWeather(fromStorage)
+            appWidgetIds.forEach { id -> setupView(id, result) }
         }
     }
 
-    private fun updateErrorWidget(appWidgetIds: IntArray, appWidgetManager: AppWidgetManager){
-        for (appWidgetId in appWidgetIds) {
-            setEmptyView(this, appWidgetManager, appWidgetId)
-        }
+    private fun updateErrorWidget(state: WidgetState) {
+        appWidgetIds.forEach { id -> setEmptyView(id, state) }
     }
 
-    private fun validateOperation(): Boolean? {
+    private fun getCurrentWidgetState(): WidgetState {
         val pm = getSystemService(POWER_SERVICE) as PowerManager
         val isScreenOn = pm.isInteractive
         val locationGranted =
                 checkSelfPermission(this, ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED
         val internetAvailable = isInternetAvailable(this.applicationContext)
 
-        // no location return false
-        if (!locationGranted) return false
-        // internet is available lets go
-        if (internetAvailable) return true
-        // screen is off and no connection, do nothing
-        if (!isScreenOn && !internetAvailable) return null
-
-        return if (isScreenOn && !internetAvailable) false else null
-    }
-
-    private fun createForecastListIntent(
-            context: Context,
-            appWidgetId: Int
-    ): Intent {
-        return Intent(context, WidgetRemoteViewsService::class.java).apply {
-            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-            data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
-        }
+        return getWidgetState(locationGranted, isScreenOn, internetAvailable)
     }
 
     @SuppressLint("MissingPermission")
-    suspend fun getWidgetWeather(): WidgetWeatherCollection? {
+    suspend fun getWidgetWeather(storageOnly: Boolean): WidgetWeatherCollection? {
         return tryOrNullSuspended {
-            helper.fetchData()
+            if (!storageOnly) helper.fetchData()
             helper.getWidgetWeatherCollection()
         }
     }
 
-    private fun setEmptyView(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
-        try {
-            val error = if (checkSelfPermission(context, ACCESS_COARSE_LOCATION)
-                    != PERMISSION_GRANTED) {
-                "No Permission"
-            } else if (!isInternetAvailable(context.applicationContext)) {
-                "No Connection"
-            } else {
-                "No Data"
-            }
-            val updatePendingIntent = createUpdatePendingIntent(NewAppWidget::class.java, context, appWidgetId)
-            val views = createRemoteView(context, R.layout.weather_app_widget)
-            bindEmptyView(appWidgetManager, appWidgetId, views, updatePendingIntent, error)
-        } catch (e: Exception) {
-            e.printStackTrace()
+    private fun setEmptyView(appWidgetId: Int, state: WidgetState) {
+        val error = when (state) {
+            NO_LOCATION -> "No Location Permission"
+            SCREEN_ON_CONNECTION_UNAVAILABLE -> "No network available"
+            else -> "No data"
         }
+
+        val views = createRemoteView(R.layout.weather_app_widget)
+        bindErrorView(appWidgetId, views, error)
     }
 
-    private fun bindEmptyView(
-            appWidgetManager: AppWidgetManager,
+    private fun setupView(
             appWidgetId: Int,
-            views: RemoteViews,
-            clickingUpdateIntent: PendingIntent?,
-            warning: String
+            collection: WidgetWeatherCollection?
     ) {
-        setLastUpdated(views)
-        views.setTextViewText(R.id.widget_current_location, warning)
-        views.setImageViewResource(R.id.widget_current_icon, R.drawable.ic_baseline_cloud_off_24)
-        views.setImageViewResource(R.id.location_icon, 0)
-
-        views.setTextViewText(R.id.widget_main_temp, "")
-        views.setTextViewText(R.id.widget_feel_temp, "")
-
-        views.setOnClickPendingIntent(R.id.widget_current_icon, clickingUpdateIntent)
-        views.setOnClickPendingIntent(R.id.widget_current_location, clickingUpdateIntent)
-        appWidgetManager.updateAppWidget(appWidgetId, views)
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_listview)
-    }
-
-    private fun bindView(
-            context: Context,
-            appWidgetManager: AppWidgetManager,
-            appWidgetId: Int,
-            collection: WidgetWeatherCollection?) {
-        val views = createRemoteView(context, R.layout.weather_app_widget)
-        setLastUpdated(views)
+        val views = createRemoteView(R.layout.weather_app_widget)
+        setLastUpdated(views, collection?.widgetData?.timeStamp)
         views.setInt(R.id.whole_widget_view, "setBackgroundColor", helper.getWidgetBackground())
-        val clickingUpdatePendingIntent = createUpdatePendingIntent(NewAppWidget::class.java, context, appWidgetId)
 
         if (collection != null) {
-            val clickPendingIntentTemplate =
-                    createClickingPendingIntent(context, MainActivity::class.java)
-
-            views.apply {
-                val weather = collection.widgetData
-
-                setTextViewText(R.id.widget_main_temp, weather.currentTemp)
-                setTextViewText(R.id.widget_feel_temp, "°C")
-                setTextViewText(R.id.widget_current_location, weather.location)
-                setImageViewResource(R.id.location_icon, R.drawable.location_flag)
-                CoroutineScope(Dispatchers.Main).launch {
-                    Picasso.get().load(weather.icon).into(views, R.id.widget_current_icon, intArrayOf(appWidgetId))
-                }
-                setPendingIntentTemplate(R.id.widget_listview, clickPendingIntentTemplate)
-                setOnClickPendingIntent(R.id.widget_current_icon, clickingUpdatePendingIntent)
-                setOnClickPendingIntent(R.id.widget_current_location, clickingUpdatePendingIntent)
-
-                loadCells(appWidgetId, views, collection.forecast)
-//                setRemoteAdapter(R.id.widget_listview, forecastListIntent)
-            }
-
-            // Instruct the widget manager to update the widget
-            appWidgetManager.updateAppWidget(appWidgetId, views)
-            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_listview)
+            bindView(appWidgetId, views, collection)
         } else {
-            bindEmptyView(appWidgetManager, appWidgetId, views, clickingUpdatePendingIntent, "No Connection")
+            bindEmptyView(appWidgetId, views, "No weather available")
         }
-
     }
 
-    private fun loadCells(appWidgetId: Int, remoteViews: RemoteViews, weather: List<InnerWidgetCellData>){
+    override fun bindErrorView(
+            widgetId: Int,
+            views: RemoteViews,
+            data: Any?
+    ) {
+        bindEmptyView(widgetId, views, data)
+    }
+
+    override fun bindEmptyView(
+            widgetId: Int,
+            views: RemoteViews,
+            data: Any?
+    ) {
+        val clickUpdate = createUpdatePendingIntent(NewAppWidget::class.java, widgetId)
+
+        views.apply {
+            setTextViewText(R.id.widget_current_location, data as String)
+            setImageViewResource(R.id.widget_current_icon, R.drawable.ic_baseline_cloud_off_24)
+            setImageViewResource(R.id.location_icon, 0)
+
+            setTextViewText(R.id.widget_main_temp, "")
+            setTextViewText(R.id.widget_feel_temp, "")
+
+            setOnClickPendingIntent(R.id.widget_current_icon, clickUpdate)
+            setOnClickPendingIntent(R.id.widget_current_location, clickUpdate)
+            appWidgetManager.updateAppWidget(widgetId, this)
+        }
+    }
+
+    override fun bindView(widgetId: Int, views: RemoteViews, data: Any?) {
+        val clickUpdate = createUpdatePendingIntent(NewAppWidget::class.java, widgetId)
+        val clickToMain = createClickingPendingIntent(MainActivity::class.java)
+
+        val collection = data as WidgetWeatherCollection
+        val weather = collection.widgetData
+        views.apply {
+            setTextViewText(R.id.widget_main_temp, weather.currentTemp)
+            setTextViewText(R.id.widget_feel_temp, "°C")
+            setTextViewText(R.id.widget_current_location, weather.location)
+            setImageViewResource(R.id.location_icon, R.drawable.location_flag)
+            setImageView(weather.icon, this, R.id.widget_current_icon, widgetId)
+            setOnClickPendingIntent(R.id.widget_current_icon, clickUpdate)
+            setOnClickPendingIntent(R.id.widget_current_location, clickUpdate)
+
+            loadCells(widgetId, this, collection.forecast, clickToMain)
+            // Instruct the widget manager to update the widget
+            appWidgetManager.updateAppWidget(widgetId, views)
+        }
+    }
+
+    private fun loadCells(
+            appWidgetId: Int,
+            remoteViews: RemoteViews,
+            weather: List<InnerWidgetCellData>,
+            clickIntent: PendingIntent
+    ) {
         (0..4).forEach { i ->
+            val containerId: Int = resources.getIdentifier("widget_item_$i", "id", packageName)
             val dayId: Int = resources.getIdentifier("widget_item_day_$i", "id", packageName)
             val imageId: Int = resources.getIdentifier("widget_item_image_$i", "id", packageName)
             val tempId: Int = resources.getIdentifier("widget_item_temp_high_$i", "id", packageName)
@@ -192,18 +183,24 @@ class WidgetJobServiceIntent : BaseWidgetServiceIntentClass() {
 
             remoteViews.setTextViewText(dayId, it.date)
             remoteViews.setTextViewText(tempId, it.highTemp)
-            CoroutineScope(Dispatchers.Main).launch {
-                Picasso.get().load(it.icon).into(remoteViews, imageId, intArrayOf(appWidgetId))
-            }
+            setImageView(it.icon, remoteViews, imageId, appWidgetId)
+            remoteViews.setOnClickPendingIntent(containerId, clickIntent)
         }
     }
 
-    private fun setLastUpdated(views: RemoteViews){
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            val current = LocalDateTime.now()
-            val formatter = DateTimeFormatter.ofPattern("HH:mm")
-            val formatted = current.format(formatter)
-            views.setTextViewText(R.id.widget_current_status, "last updated: $formatted")
+    private fun setLastUpdated(views: RemoteViews, timeStamp: Long?) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && timeStamp != null) {
+            val difference = System.currentTimeMillis().minus(timeStamp)
+
+            val status = if (difference > HALF_DAY) {
+                "12hrs ago"
+            } else {
+                val date = Date(timeStamp)
+                val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
+                sdf.format(date)
+            }
+
+            views.setTextViewText(R.id.widget_current_status, "last updated: $status")
         }
     }
 

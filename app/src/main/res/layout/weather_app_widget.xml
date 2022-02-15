@@ -133,6 +133,7 @@
         android:rowCount="1">
 
         <LinearLayout
+            android:id="@+id/widget_item_0"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
@@ -165,6 +166,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/widget_item_1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
@@ -197,6 +199,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/widget_item_2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
@@ -229,6 +232,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/widget_item_3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
@@ -260,6 +264,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/widget_item_4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
