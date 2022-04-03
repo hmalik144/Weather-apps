@@ -1,6 +1,7 @@
 package com.appttude.h_mal.atlas_weather.data.network.networkUtils
 
 import com.appttude.h_mal.atlas_weather.data.network.interceptors.NetworkConnectionInterceptor
+import com.appttude.h_mal.atlas_weather.data.network.interceptors.NetworkInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -13,7 +14,6 @@ val loggingInterceptor = HttpLoggingInterceptor().apply {
     }
 
 fun buildOkHttpClient(
-        networkConnectionInterceptor: NetworkConnectionInterceptor,
         vararg interceptor: Interceptor,
         timeoutSeconds: Long = 30L
 ): OkHttpClient {
@@ -21,11 +21,14 @@ fun buildOkHttpClient(
     val builder = OkHttpClient.Builder()
 
     interceptor.forEach {
-        builder.addInterceptor(it)
+        if (it is NetworkInterceptor) {
+            builder.addNetworkInterceptor(it)
+        } else {
+            builder.addInterceptor(it)
+        }
     }
 
-    builder.addNetworkInterceptor(networkConnectionInterceptor)
-            .connectTimeout(timeoutSeconds, TimeUnit.SECONDS)
+    builder.connectTimeout(timeoutSeconds, TimeUnit.SECONDS)
             .writeTimeout(timeoutSeconds, TimeUnit.SECONDS)
             .readTimeout(timeoutSeconds, TimeUnit.SECONDS)
 

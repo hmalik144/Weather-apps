@@ -14,14 +14,13 @@ class QueryParamsInterceptor : Interceptor{
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
-        val originalHttpUrl = original.url
 
-        val url = originalHttpUrl.newBuilder()
+        val url = original.url.newBuilder()
                 .addQueryParameter("appid", id)
                 .build()
 
         // Request customization: add request headers
-        val requestBuilder= original.newBuilder().url(url)
+        val requestBuilder = original.newBuilder().url(url)
 
         val request: Request = requestBuilder.build()
         return chain.proceed(request)

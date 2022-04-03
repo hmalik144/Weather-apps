@@ -17,7 +17,7 @@ android {
         targetSdkVersion 30
         versionCode 5
         versionName "3.0"
-        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        testInstrumentationRunner "com.appttude.h_mal.atlas_weather.application.TestRunner"
         vectorDrawables.useSupportLibrary = true
 
         buildConfigField "String", "ParamOne", "${paramOneEndPoint}"
@@ -98,6 +98,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     // Unit testing
     testImplementation 'junit:junit:4.13'

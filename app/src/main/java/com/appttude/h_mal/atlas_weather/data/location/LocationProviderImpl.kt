@@ -80,8 +80,6 @@ class LocationProviderImpl(
         handlerThread.start()
         // Now get the Looper from the HandlerThread
         // NOTE: This call will block until the HandlerThread gets control and initializes its Looper
-        // Now get the Looper from the HandlerThread
-        // NOTE: This call will block until the HandlerThread gets control and initializes its Looper
         val looper = handlerThread.looper
 
         return suspendCoroutine { cont ->

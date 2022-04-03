@@ -7,9 +7,9 @@ import com.appttude.h_mal.atlas_weather.data.prefs.LOCATION_CONST
 import com.appttude.h_mal.atlas_weather.data.prefs.PreferenceProvider
 import com.appttude.h_mal.atlas_weather.data.room.AppDatabase
 import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
+import com.appttude.h_mal.atlas_weather.utils.FALLBACK_TIME
 
 
-private const val FIVE_MINS = 300000L
 class RepositoryImpl(
     private val api: WeatherApi,
     private val db: AppDatabase,
@@ -53,7 +53,7 @@ class RepositoryImpl(
                 ?: return true
         val difference = System.currentTimeMillis() - lastSaved
 
-        return difference > FIVE_MINS
+        return difference > FALLBACK_TIME
     }
 
     override fun saveLastSavedAt(locationName: String) {
