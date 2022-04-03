@@ -7,7 +7,7 @@ import java.io.IOException
 
 class NetworkConnectionInterceptor(
     context: Context
-) : Interceptor {
+) : NetworkInterceptor {
 
     private val applicationContext = context.applicationContext
 
