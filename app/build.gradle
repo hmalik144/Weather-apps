@@ -10,11 +10,11 @@ android {
     lintOptions {
         abortOnError false
     }
-    compileSdkVersion 30
+    compileSdkVersion 32
     defaultConfig {
         applicationId "com.appttude.h_mal.atlas_weather"
-        minSdkVersion 23
-        targetSdkVersion 30
+        minSdkVersion 26
+        targetSdkVersion 32
         versionCode 5
         versionName "3.0"
         testInstrumentationRunner "com.appttude.h_mal.atlas_weather.application.TestRunner"
