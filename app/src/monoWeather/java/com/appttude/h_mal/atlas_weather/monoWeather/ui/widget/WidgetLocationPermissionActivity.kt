@@ -6,15 +6,17 @@ import android.appwidget.AppWidgetManager.*
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat.checkSelfPermission
 import com.appttude.h_mal.atlas_weather.R
+import com.appttude.h_mal.atlas_weather.monoWeather.dialog.DeclarationBuilder
 import com.appttude.h_mal.atlas_weather.utils.displayToast
 import kotlinx.android.synthetic.monoWeather.permissions_declaration_dialog.*
 
 const val PERMISSION_CODE = 401
 
-class WidgetLocationPermissionActivity : AppCompatActivity() {
+class WidgetLocationPermissionActivity : AppCompatActivity(), DeclarationBuilder {
     private var mAppWidgetId = INVALID_APPWIDGET_ID
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +38,7 @@ class WidgetLocationPermissionActivity : AppCompatActivity() {
         }
 
         setContentView(R.layout.permissions_declaration_dialog)
+        findViewById<TextView>(R.id.declaration_text).setText(buildMessage())
 
         submit.setOnClickListener {
             if (checkSelfPermission(this, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
@@ -44,6 +47,8 @@ class WidgetLocationPermissionActivity : AppCompatActivity() {
                 submitWidget()
             }
         }
+
+        cancel.setOnClickListener { finish() }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -83,4 +88,7 @@ class WidgetLocationPermissionActivity : AppCompatActivity() {
             sendBroadcast(this)
         }
     }
+
+    override val link: String = "https://sites.google.com/view/hmaldev/home/monochrome"
+    override val message: String = readFromResources(R.string.widget_declaration)
 }

@@ -8,5 +8,6 @@
 
     <string name="title_home">Home</string>
     <string name="title_world">World</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="widget_declaration">When using the app widget with app will require the use of background location services. Just to confirm the location data is used just to provide the end user with widget data. The use of background location permission is to update the widget at 30 minute intervals. </string>
 </resources>

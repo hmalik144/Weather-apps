@@ -12,6 +12,7 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.application.LOCATION_PERMISSION_REQUEST
+import com.appttude.h_mal.atlas_weather.monoWeather.dialog.PermissionsDeclarationDialog
 import com.appttude.h_mal.atlas_weather.monoWeather.ui.BaseFragment
 import com.appttude.h_mal.atlas_weather.monoWeather.ui.home.adapter.WeatherRecyclerAdapter
 import com.appttude.h_mal.atlas_weather.utils.displayToast
@@ -49,9 +50,12 @@ class HomeFragment : BaseFragment() {
             adapter = recyclerAdapter
         }
 
-
-        getPermissionResult(Manifest.permission.ACCESS_COARSE_LOCATION, LOCATION_PERMISSION_REQUEST){
-            viewModel.fetchData()
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            PermissionsDeclarationDialog(requireContext()).showDialog(agreeCallback = {
+                getPermissionResult(Manifest.permission.ACCESS_COARSE_LOCATION, LOCATION_PERMISSION_REQUEST){
+                    viewModel.fetchData()
+                }
+            })
         }
 
         swipe_refresh.apply {
