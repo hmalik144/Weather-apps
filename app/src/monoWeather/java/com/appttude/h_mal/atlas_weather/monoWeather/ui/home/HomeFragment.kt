@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.application.LOCATION_PERMISSION_REQUEST
 import com.appttude.h_mal.atlas_weather.monoWeather.dialog.PermissionsDeclarationDialog
@@ -34,7 +33,6 @@ class HomeFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
-
     @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,22 +43,17 @@ class HomeFragment : BaseFragment() {
             navigateTo(directions)
         }
 
-        forecast_listview.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = recyclerAdapter
-        }
+        forecast_listview.adapter = recyclerAdapter
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            PermissionsDeclarationDialog(requireContext()).showDialog(agreeCallback = {
-                getPermissionResult(Manifest.permission.ACCESS_COARSE_LOCATION, LOCATION_PERMISSION_REQUEST){
-                    viewModel.fetchData()
-                }
-            })
-        }
+        PermissionsDeclarationDialog(requireContext()).showDialog(agreeCallback = {
+            getPermissionResult(Manifest.permission.ACCESS_COARSE_LOCATION, LOCATION_PERMISSION_REQUEST) {
+                viewModel.fetchData()
+            }
+        })
 
         swipe_refresh.apply {
             setOnRefreshListener {
-                getPermissionResult(Manifest.permission.ACCESS_COARSE_LOCATION, LOCATION_PERMISSION_REQUEST){
+                getPermissionResult(Manifest.permission.ACCESS_COARSE_LOCATION, LOCATION_PERMISSION_REQUEST) {
                     viewModel.fetchData()
                     isRefreshing = true
                 }

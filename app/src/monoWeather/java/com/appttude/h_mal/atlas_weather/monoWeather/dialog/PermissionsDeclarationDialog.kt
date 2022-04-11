@@ -20,7 +20,6 @@ abstract class BaseDeclarationDialog(val context: Context): DeclarationBuilder {
     abstract override val link: String
     abstract override val message: String
 
-    @RequiresApi(Build.VERSION_CODES.N)
     fun showDialog(agreeCallback: () -> Unit = { Unit }, disagreeCallback: () -> Unit = { Unit }) {
         val myMessage = buildMessage()
 
@@ -38,8 +37,8 @@ abstract class BaseDeclarationDialog(val context: Context): DeclarationBuilder {
         alertDialog.show()
 
         // Make the textview clickable. Must be called after show()
-        val msgTxt = alertDialog.findViewById<View>(R.id.message) as TextView?
-        msgTxt!!.movementMethod = LinkMovementMethod.getInstance()
+        val msgTxt = alertDialog.findViewById<View>(android.R.id.message) as TextView?
+        msgTxt?.movementMethod = LinkMovementMethod.getInstance()
     }
 }
 

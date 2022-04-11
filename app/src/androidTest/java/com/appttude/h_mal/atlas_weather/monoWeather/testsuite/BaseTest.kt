@@ -8,7 +8,7 @@ import com.appttude.h_mal.atlas_weather.utils.Stubs
 import org.junit.After
 import org.junit.Rule
 
-open class BaseTest() {
+open class BaseTest {
 
     lateinit var testApp: TestAppClass
 
