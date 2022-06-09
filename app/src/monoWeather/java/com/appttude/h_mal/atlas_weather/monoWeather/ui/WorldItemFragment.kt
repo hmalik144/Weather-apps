@@ -14,7 +14,7 @@ import com.appttude.h_mal.atlas_weather.viewmodel.WorldViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
-class WorldItemFragment : BaseFragment() {
+class WorldItemFragment : BaseFragment(R.layout.fragment_home) {
 
     private val viewModel by getFragmentViewModel<WorldViewModel>()
     private var param1: String? = null
@@ -22,12 +22,6 @@ class WorldItemFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         param1 = WorldItemFragmentArgs.fromBundle(requireArguments()).locationName
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

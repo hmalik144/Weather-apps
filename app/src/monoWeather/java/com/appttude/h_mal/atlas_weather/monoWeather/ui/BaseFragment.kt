@@ -2,15 +2,18 @@ package com.appttude.h_mal.atlas_weather.monoWeather.ui
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.LayoutRes
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.appttude.h_mal.atlas_weather.application.LOCATION_PERMISSION_REQUEST
 import com.appttude.h_mal.atlas_weather.utils.Event
 import com.appttude.h_mal.atlas_weather.utils.displayToast
 import com.appttude.h_mal.atlas_weather.utils.hide
@@ -24,7 +27,7 @@ import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 import kotlin.properties.Delegates
 
-abstract class BaseFragment() : Fragment(), KodeinAware {
+abstract class BaseFragment(@LayoutRes contentLayoutId: Int) : Fragment(contentLayoutId), KodeinAware {
 
     override val kodein by kodein()
     val factory by instance<ApplicationViewModelFactory>()
@@ -119,4 +122,21 @@ abstract class BaseFragment() : Fragment(), KodeinAware {
         }
     }
 
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == LOCATION_PERMISSION_REQUEST) {
+            if (grantResults.isNotEmpty() &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                permissionsGranted()
+                displayToast("Permission granted")
+            } else {
+                permissionsRefused()
+                displayToast("Permission denied")
+            }
+        }
+    }
+
+    open fun permissionsGranted() {}
+    open fun permissionsRefused() {}
 }

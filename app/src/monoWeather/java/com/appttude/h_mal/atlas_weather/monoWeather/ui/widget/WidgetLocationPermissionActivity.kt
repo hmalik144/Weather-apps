@@ -6,19 +6,27 @@ import android.appwidget.AppWidgetManager.*
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat.checkSelfPermission
 import com.appttude.h_mal.atlas_weather.R
+import com.appttude.h_mal.atlas_weather.monoWeather.dialog.DeclarationBuilder
 import com.appttude.h_mal.atlas_weather.utils.displayToast
 import kotlinx.android.synthetic.monoWeather.permissions_declaration_dialog.*
 
 const val PERMISSION_CODE = 401
 
-class WidgetLocationPermissionActivity : AppCompatActivity() {
+class WidgetLocationPermissionActivity : AppCompatActivity(), DeclarationBuilder {
+    override val link: String = "https://sites.google.com/view/hmaldev/home/monochrome"
+    override var message: String = ""
+
     private var mAppWidgetId = INVALID_APPWIDGET_ID
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        message = readFromResources(R.string.widget_declaration)
 
         // Set the result to CANCELED.  This will cause the widget host to cancel
         // out of the widget placement if the user presses the back button.
@@ -36,6 +44,10 @@ class WidgetLocationPermissionActivity : AppCompatActivity() {
         }
 
         setContentView(R.layout.permissions_declaration_dialog)
+        findViewById<TextView>(R.id.declaration_text).apply {
+            text = buildMessage()
+            movementMethod = LinkMovementMethod.getInstance()
+        }
 
         submit.setOnClickListener {
             if (checkSelfPermission(this, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
@@ -44,6 +56,8 @@ class WidgetLocationPermissionActivity : AppCompatActivity() {
                 submitWidget()
             }
         }
+
+        cancel.setOnClickListener { finish() }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

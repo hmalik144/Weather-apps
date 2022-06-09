@@ -14,4 +14,6 @@
     <string name="min">Min:</string>
     <string name="max">Max:</string>
     <string name="average">Average:</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
 </resources>

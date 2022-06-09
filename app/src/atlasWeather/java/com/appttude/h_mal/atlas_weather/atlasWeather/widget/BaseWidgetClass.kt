@@ -22,6 +22,7 @@ abstract class BaseWidgetClass : AppWidgetProvider(){
         intentUpdate.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
         val idArray = intArrayOf(appWidgetId)
         intentUpdate.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, idArray)
+
         return PendingIntent.getBroadcast(
                 context, seconds, intentUpdate,
                 PendingIntent.FLAG_UPDATE_CURRENT)

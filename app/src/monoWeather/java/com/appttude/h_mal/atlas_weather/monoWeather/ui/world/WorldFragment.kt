@@ -22,19 +22,13 @@ import kotlinx.android.synthetic.main.fragment_add_location.world_recycler
  * A simple [Fragment] subclass.
  * create an instance of this fragment.
  */
-class WorldFragment : BaseFragment() {
+class WorldFragment : BaseFragment(R.layout.fragment__two) {
     private val viewModel by getFragmentViewModel<WorldViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel.fetchAllLocations()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment__two, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
