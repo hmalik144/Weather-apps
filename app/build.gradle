@@ -21,7 +21,9 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         Properties properties = new Properties()
-        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        if (project.rootProject.file('local.properties').canRead()) {
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        }
 
         String weather_key = properties.getProperty('WEATHER_API') ?: ${WEATHER_API}
         String search_key = properties.getProperty('WEATHER_API') ?: ${SEARCH_API}
