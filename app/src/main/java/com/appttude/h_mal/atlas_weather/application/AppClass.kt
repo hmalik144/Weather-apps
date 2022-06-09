@@ -1,5 +1,6 @@
 package com.appttude.h_mal.atlas_weather.application
 
+import androidx.room.RoomDatabase
 import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
 import com.appttude.h_mal.atlas_weather.data.location.LocationProviderImpl
 import com.appttude.h_mal.atlas_weather.data.network.Api
@@ -26,14 +27,16 @@ const val LOCATION_PERMISSION_REQUEST = 505
 
 class AppClass : BaseAppClass() {
 
-    override fun createNetworkModule(): Api {
+    override fun createNetworkModule(): WeatherApi {
         return NetworkModule().invoke<WeatherApi>(
                 NetworkConnectionInterceptor(this),
                 QueryParamsInterceptor(),
                 loggingInterceptor
-        )
+        ) as WeatherApi
     }
 
     override fun createLocationModule() = LocationProviderImpl(this)
+
+    override fun createRoomDatabase(): AppDatabase = AppDatabase(this)
 
 }

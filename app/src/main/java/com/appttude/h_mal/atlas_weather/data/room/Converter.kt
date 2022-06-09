@@ -10,19 +10,18 @@ import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
 @ProvidedTypeConverter
-class Converter(context: Context): KodeinAware{
+class Converter(context: Context) : KodeinAware {
     override val kodein by kodein(context)
     private val gson by instance<Gson>()
 
     @TypeConverter
-    fun fullWeatherToString(fullWeather: FullWeather): String{
+    fun fullWeatherToString(fullWeather: FullWeather): String {
         return gson.toJson(fullWeather)
     }
 
     @TypeConverter
-    fun stringToFullWeather(string: String): FullWeather{
+    fun stringToFullWeather(string: String): FullWeather {
         return gson.fromJson(string, FullWeather::class.java)
     }
-
 
 }

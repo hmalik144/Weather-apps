@@ -1,15 +1,8 @@
 package com.appttude.h_mal.atlas_weather.application
 
 import android.app.Application
-import androidx.test.espresso.idling.CountingIdlingResource
 import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
-import com.appttude.h_mal.atlas_weather.data.location.LocationProviderImpl
-import com.appttude.h_mal.atlas_weather.data.network.Api
-import com.appttude.h_mal.atlas_weather.data.network.NetworkModule
 import com.appttude.h_mal.atlas_weather.data.network.WeatherApi
-import com.appttude.h_mal.atlas_weather.data.network.interceptors.NetworkConnectionInterceptor
-import com.appttude.h_mal.atlas_weather.data.network.interceptors.QueryParamsInterceptor
-import com.appttude.h_mal.atlas_weather.data.network.networkUtils.loggingInterceptor
 import com.appttude.h_mal.atlas_weather.data.prefs.PreferenceProvider
 import com.appttude.h_mal.atlas_weather.data.repository.RepositoryImpl
 import com.appttude.h_mal.atlas_weather.data.repository.SettingsRepositoryImpl
@@ -31,11 +24,11 @@ abstract class BaseAppClass : Application(), KodeinAware {
     override val kodein = Kodein.lazy {
         import(androidXModule(this@BaseAppClass))
 
-        bind() from singleton { createNetworkModule() as WeatherApi}
+        bind() from singleton { createNetworkModule() }
         bind() from singleton { createLocationModule() }
 
         bind() from singleton { Gson() }
-        bind() from singleton { AppDatabase(instance()) }
+        bind() from singleton { createRoomDatabase() }
         bind() from singleton { PreferenceProvider(instance()) }
         bind() from singleton { RepositoryImpl(instance(), instance(), instance()) }
         bind() from singleton { SettingsRepositoryImpl(instance()) }
@@ -43,7 +36,8 @@ abstract class BaseAppClass : Application(), KodeinAware {
         bind() from provider { ApplicationViewModelFactory(instance(), instance()) }
     }
 
-    abstract fun createNetworkModule() : Api
-    abstract fun createLocationModule() : LocationProvider
+    abstract fun createNetworkModule(): WeatherApi
+    abstract fun createLocationModule(): LocationProvider
+    abstract fun createRoomDatabase(): AppDatabase
 
 }

@@ -20,7 +20,7 @@ abstract class BaseDeclarationDialog(val context: Context): DeclarationBuilder {
     abstract override val link: String
     abstract override val message: String
 
-    fun showDialog(agreeCallback: () -> Unit = { Unit }, disagreeCallback: () -> Unit = { Unit }) {
+    fun showDialog(agreeCallback: () -> Unit = { }, disagreeCallback: () -> Unit = { Unit }) {
         val myMessage = buildMessage()
 
         val builder = AlertDialog.Builder(context)

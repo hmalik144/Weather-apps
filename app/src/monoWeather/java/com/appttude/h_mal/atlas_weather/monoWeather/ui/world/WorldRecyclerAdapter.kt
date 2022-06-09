@@ -12,8 +12,8 @@ import com.appttude.h_mal.atlas_weather.utils.generateView
 import com.appttude.h_mal.atlas_weather.utils.loadImage
 
 class WorldRecyclerAdapter(
-        val itemClick: (WeatherDisplay) -> Unit,
-        val itemLongClick: (String) -> Unit
+        private val itemClick: (WeatherDisplay) -> Unit,
+        private val itemLongClick: (String) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var weather: MutableList<WeatherDisplay> = mutableListOf()
 
@@ -78,22 +78,27 @@ class WorldRecyclerAdapter(
         return if (weather.size == 0) 1 else weather.size
     }
 
-    internal class WorldHolderCurrent(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
+    internal class WorldHolderCurrent(cellView: View) : BaseViewHolder<WeatherDisplay>(cellView) {
 
-        var locationTV: TextView = listItemView.findViewById(R.id.db_location)
-        var conditionTV: TextView = listItemView.findViewById(R.id.db_condition)
-        var weatherIV: ImageView = listItemView.findViewById(R.id.db_icon)
-        var avgTempTV: TextView = listItemView.findViewById(R.id.db_main_temp)
-        var tempUnit: TextView = listItemView.findViewById(R.id.db_temp_unit)
+        private val locationTV: TextView = cellView.findViewById(R.id.db_location)
+        private val conditionTV: TextView = cellView.findViewById(R.id.db_condition)
+        private val weatherIV: ImageView = cellView.findViewById(R.id.db_icon)
+        private val avgTempTV: TextView = cellView.findViewById(R.id.db_main_temp)
+        private val tempUnit: TextView = cellView.findViewById(R.id.db_temp_unit)
 
-        fun bindData(weather: WeatherDisplay?){
-            locationTV.text = weather?.displayName
-            conditionTV.text = weather?.description
-            weatherIV.loadImage(weather?.iconURL)
-            avgTempTV.text = weather?.forecast?.get(0)?.mainTemp
+        override fun bindData(data: WeatherDisplay?){
+            locationTV.text = data?.displayName
+            conditionTV.text = data?.description
+            weatherIV.loadImage(data?.iconURL)
+            avgTempTV.text = data?.forecast?.get(0)?.mainTemp
             tempUnit.text = itemView.context.getString(R.string.degrees)
         }
 
+    }
+
+    abstract class BaseViewHolder<T : Any>(cellView: View) : RecyclerView.ViewHolder(cellView)  {
+
+        abstract fun bindData(data : T?)
     }
 
 

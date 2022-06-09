@@ -97,6 +97,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
+    implementation 'androidx.test.espresso:espresso-idling-resource:3.4.0'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     // Unit testing
@@ -108,8 +109,8 @@ dependencies {
 
     // android unit testing and espresso
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    implementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test:rules:1.4.1-alpha06'
     //mock websever for testing retrofit responses
     testImplementation "com.squareup.okhttp3:mockwebserver:4.6.0"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
@@ -117,7 +118,6 @@ dependencies {
     //mockito and livedata testing
     testImplementation 'org.mockito:mockito-inline:2.13.0'
     implementation 'android.arch.core:core-testing'
-    androidTestImplementation 'androidx.test:rules:1.3.0-rc01'
 
     // Mockk
     def mockk_ver = "1.10.5"

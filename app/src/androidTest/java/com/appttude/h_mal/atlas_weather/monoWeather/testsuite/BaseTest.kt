@@ -1,5 +1,12 @@
 package com.appttude.h_mal.atlas_weather.monoWeather.testsuite
 
+import android.content.Intent
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.ViewActions.pressBack
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.RootMatchers.isDialog
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import com.appttude.h_mal.atlas_weather.application.TestAppClass
@@ -21,6 +28,12 @@ open class BaseTest {
             testApp = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestAppClass
             setupFeed()
         }
+
+        override fun afterActivityLaunched() {
+
+            // Dismiss dialog
+            onView(withText("AGREE")).inRoot(isDialog()).check(matches(isDisplayed())).perform(ViewActions.click())
+        }
     }
 
     fun stubEndpoint(url: String, stub: Stubs) {
@@ -32,8 +45,7 @@ open class BaseTest {
     }
 
     @After
-    fun tearDown() {
-    }
+    fun tearDown() {}
 
     open fun setupFeed() {}
 }

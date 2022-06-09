@@ -14,15 +14,9 @@ import com.appttude.h_mal.atlas_weather.viewmodel.WorldViewModel
 import kotlinx.android.synthetic.main.activity_add_forecast.*
 
 
-class AddLocationFragment : BaseFragment() {
+class AddLocationFragment : BaseFragment(R.layout.activity_add_forecast) {
 
     private val viewModel by getFragmentViewModel<WorldViewModel>()
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_add_forecast, container, false)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
