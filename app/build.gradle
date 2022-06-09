@@ -26,8 +26,8 @@ android {
             buildConfigField "String", "ParamOne", properties.getProperty('WEATHER_API')
             buildConfigField "String", "ParamTwo", properties.getProperty('SEARCH_API')
         } else {
-            buildConfigField "String", "ParamOne", properties.getProperty('WEATHER_API')
-            buildConfigField "String", "ParamTwo", properties.getProperty('SEARCH_API')
+            buildConfigField "String", "ParamOne", System.getEnv('WEATHER_API')
+            buildConfigField "String", "ParamTwo", System.getEnv('SEARCH_API')
         }
     }
     android {
