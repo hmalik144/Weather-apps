@@ -23,13 +23,12 @@ android {
         Properties properties = new Properties()
         if (project.rootProject.file('local.properties').canRead()) {
             properties.load(project.rootProject.file('local.properties').newDataInputStream())
+            buildConfigField "String", "ParamOne", properties.getProperty('WEATHER_API')
+            buildConfigField "String", "ParamTwo", properties.getProperty('SEARCH_API')
+        } else {
+            buildConfigField "String", "ParamOne", "${WEATHER_API}"
+            buildConfigField "String", "ParamTwo", "${SEARCH_API}"
         }
-
-        String weather_key = properties.getProperty('WEATHER_API') ?: ${WEATHER_API}
-        String search_key = properties.getProperty('WEATHER_API') ?: ${SEARCH_API}
-
-        buildConfigField "String", "ParamOne", weather_key
-        buildConfigField "String", "ParamTwo", search_key
     }
     android {
         sourceSets{
