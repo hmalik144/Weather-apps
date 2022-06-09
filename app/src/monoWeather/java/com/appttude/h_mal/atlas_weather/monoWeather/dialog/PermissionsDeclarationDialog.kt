@@ -20,7 +20,9 @@ abstract class BaseDeclarationDialog(val context: Context): DeclarationBuilder {
     abstract override val link: String
     abstract override val message: String
 
-    fun showDialog(agreeCallback: () -> Unit = { }, disagreeCallback: () -> Unit = { Unit }) {
+    lateinit var dialog: AlertDialog
+
+    fun showDialog(agreeCallback: () -> Unit = { }, disagreeCallback: () -> Unit = { }) {
         val myMessage = buildMessage()
 
         val builder = AlertDialog.Builder(context)
@@ -40,5 +42,7 @@ abstract class BaseDeclarationDialog(val context: Context): DeclarationBuilder {
         val msgTxt = alertDialog.findViewById<View>(android.R.id.message) as TextView?
         msgTxt?.movementMethod = LinkMovementMethod.getInstance()
     }
+
+    fun dismiss() = dialog.dismiss()
 }
 

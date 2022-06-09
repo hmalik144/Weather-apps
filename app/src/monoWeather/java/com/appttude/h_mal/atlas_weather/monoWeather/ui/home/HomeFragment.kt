@@ -30,6 +30,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private val viewModel by getFragmentViewModel<MainViewModel>()
 
+    lateinit var dialog: PermissionsDeclarationDialog
+
     @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,7 +42,9 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
         forecast_listview.adapter = recyclerAdapter
 
-        PermissionsDeclarationDialog(requireContext()).showDialog(agreeCallback = {
+
+        dialog = PermissionsDeclarationDialog(requireContext())
+        dialog.showDialog(agreeCallback = {
             getPermissionResult(ACCESS_COARSE_LOCATION, LOCATION_PERMISSION_REQUEST) {
                 viewModel.fetchData()
             }
@@ -62,6 +66,11 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         viewModel.operationState.observe(viewLifecycleOwner, progressBarStateObserver(progressBar))
         viewModel.operationError.observe(viewLifecycleOwner, errorObserver())
         viewModel.operationRefresh.observe(viewLifecycleOwner, refreshObserver(swipe_refresh))
+    }
+
+    override fun onStop() {
+        super.onStop()
+        dialog.dismiss()
     }
 
     @SuppressLint("MissingPermission")
