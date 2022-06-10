@@ -41,14 +41,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         })
 
         forecast_listview.adapter = recyclerAdapter
-
-
         dialog = PermissionsDeclarationDialog(requireContext())
-        dialog.showDialog(agreeCallback = {
-            getPermissionResult(ACCESS_COARSE_LOCATION, LOCATION_PERMISSION_REQUEST) {
-                viewModel.fetchData()
-            }
-        })
 
         swipe_refresh.apply {
             setOnRefreshListener {
@@ -66,6 +59,16 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         viewModel.operationState.observe(viewLifecycleOwner, progressBarStateObserver(progressBar))
         viewModel.operationError.observe(viewLifecycleOwner, errorObserver())
         viewModel.operationRefresh.observe(viewLifecycleOwner, refreshObserver(swipe_refresh))
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun onStart() {
+        super.onStart()
+        dialog.showDialog(agreeCallback = {
+            getPermissionResult(ACCESS_COARSE_LOCATION, LOCATION_PERMISSION_REQUEST) {
+                viewModel.fetchData()
+            }
+        })
     }
 
     override fun onStop() {

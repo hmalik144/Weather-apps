@@ -35,11 +35,11 @@ abstract class BaseDeclarationDialog(val context: Context): DeclarationBuilder {
                 .setMessage(myMessage)
                 .setCancelable(false)
 
-        val alertDialog = builder.create()
-        alertDialog.show()
+        dialog = builder.create()
+        dialog.show()
 
         // Make the textview clickable. Must be called after show()
-        val msgTxt = alertDialog.findViewById<View>(android.R.id.message) as TextView?
+        val msgTxt = dialog.findViewById<View>(android.R.id.message) as TextView?
         msgTxt?.movementMethod = LinkMovementMethod.getInstance()
     }
 
