@@ -20,8 +20,15 @@ android {
         testInstrumentationRunner "com.appttude.h_mal.atlas_weather.application.TestRunner"
         vectorDrawables.useSupportLibrary = true
 
-        buildConfigField "String", "ParamOne", "${paramOneEndPoint}"
-        buildConfigField "String", "ParamTwo", "${paramTwoEndPoint}"
+        Properties properties = new Properties()
+        if (project.rootProject.file('local.properties').canRead()) {
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+            buildConfigField "String", "ParamOne", properties.getProperty('WEATHER_API')
+            buildConfigField "String", "ParamTwo", properties.getProperty('SEARCH_API')
+        } else {
+            buildConfigField "String", "ParamOne", System.getenv('WEATHER_API')
+            buildConfigField "String", "ParamTwo", System.getenv('SEARCH_API')
+        }
     }
     android {
         sourceSets{
