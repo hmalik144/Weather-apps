@@ -6,8 +6,7 @@ import androidx.test.filters.SmallTest
 import androidx.test.platform.app.InstrumentationRegistry
 import com.appttude.h_mal.atlas_weather.model.types.LocationType
 import kotlinx.coroutines.runBlocking
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.*
+import org.hamcrest.Matcher.*
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -27,7 +26,8 @@ class LocationProviderImplTest {
 
     @Before
     fun setUp() {
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
+        val appContext =
+            InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
         locationProvider = LocationProviderImpl(appContext)
     }
 
@@ -51,7 +51,7 @@ class LocationProviderImplTest {
         try {
             // Act
             locationProvider.getLatLongFromLocationName(randomString)
-        }catch (e: IOException){
+        } catch (e: IOException) {
             // Assert
             assertEquals(e.message, "No location found")
         }
@@ -70,16 +70,14 @@ class LocationProviderImplTest {
     @Test
     fun getLocationNameFromLatLong_locationTypeIsCity_correctLocationReturned() = runBlocking {
         // Act
-        val retrievedLocation = locationProvider.getLocationNameFromLatLong(lat, long, LocationType.City)
+        val retrievedLocation =
+            locationProvider.getLocationNameFromLatLong(lat, long, LocationType.City)
 
         // Assert
         assertEquals(retrievedLocation, city)
     }
 
     private fun assertRangeOfDouble(input: Double, expected: Double, range: Double) {
-        assertThat(expected, allOf(
-                greaterThanOrEqualTo(input - range),
-                lessThanOrEqualTo(input + range))
-        )
+        assertEquals(expected, input, range)
     }
 }

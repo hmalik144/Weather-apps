@@ -1,5 +1,6 @@
 package com.appttude.h_mal.atlas_weather.atlasWeather.ui.home.adapter
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,7 @@ class WeatherRecyclerAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var weather: WeatherDisplay? = null
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addCurrent(current: WeatherDisplay){
         weather = current
         notifyDataSetChanged()
@@ -71,7 +73,6 @@ class WeatherRecyclerAdapter(
         when (getDataType(getItemViewType(position))){
             is ViewType.Empty -> {
                 holder as EmptyViewHolder
-
             }
             is ViewType.Current -> {
                 val viewHolderCurrent = holder as ViewHolderCurrent

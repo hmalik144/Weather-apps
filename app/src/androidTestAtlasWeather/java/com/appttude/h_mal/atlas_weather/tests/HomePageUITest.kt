@@ -1,18 +1,15 @@
-package com.appttude.h_mal.atlas_weather.monoWeather.testsuite
+package com.appttude.h_mal.atlas_weather.tests
 
 
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.RootMatchers
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.rule.GrantPermissionRule
-import com.appttude.h_mal.atlas_weather.monoWeather.robot.homeScreen
+import com.appttude.h_mal.atlas_weather.atlasWeather.ui.MainActivity
+import com.appttude.h_mal.atlas_weather.robot.homeScreen
+import com.appttude.h_mal.atlas_weather.monoWeather.testsuite.BaseTest
 import com.appttude.h_mal.atlas_weather.utils.Stubs
 import org.junit.Rule
 import org.junit.Test
 
-class HomePageUITest : BaseTest() {
+class HomePageUITest : BaseTest<MainActivity>() {
 
     @Rule
     @JvmField

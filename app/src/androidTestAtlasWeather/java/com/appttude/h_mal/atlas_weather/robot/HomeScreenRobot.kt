@@ -1,4 +1,4 @@
-package com.appttude.h_mal.atlas_weather.monoWeather.robot
+package com.appttude.h_mal.atlas_weather.robot
 
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.utils.BaseTestRobot
