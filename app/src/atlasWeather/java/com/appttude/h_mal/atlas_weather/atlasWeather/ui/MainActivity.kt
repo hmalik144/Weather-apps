@@ -17,6 +17,8 @@ import kotlinx.android.synthetic.atlasWeather.activity_main.*
 
 class MainActivity : BaseActivity(){
 
+    lateinit var navHost: NavHostFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -24,7 +26,7 @@ class MainActivity : BaseActivity(){
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         setSupportActionBar(toolbar)
 
-        val navHost = supportFragmentManager
+        navHost = supportFragmentManager
                 .findFragmentById(R.id.container) as NavHostFragment
         val navController = navHost.navController
         navController.setGraph(R.navigation.main_navigation)

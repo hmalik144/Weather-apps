@@ -16,13 +16,14 @@ class WidgetLocationPermissionActivityTest {
     @Rule
     @JvmField
     var mActivityTestRule : ActivityTestRule<WidgetLocationPermissionActivity> =
-            ActivityTestRule<WidgetLocationPermissionActivity>(WidgetLocationPermissionActivity::class.java, false, false)
+            ActivityTestRule(WidgetLocationPermissionActivity::class.java, false, false)
 
     @Test
     fun demo_test() {
-        val i = Intent()
-        i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 112)
-        mActivityTestRule.launchActivity(i)
+        val startIntent = Intent().apply {
+            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 112)
+        }
+        mActivityTestRule.launchActivity(startIntent)
 
         Espresso.onView((ViewMatchers.withId(R.id.declaration_text))).check(matches(isDisplayed()));
     }

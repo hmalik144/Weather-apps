@@ -7,20 +7,11 @@ version: 2.1
 # Orbs are reusable packages of CircleCI configuration that you may share across projects, enabling you to create encapsulated, parameterized commands, jobs, and executors that can be used across multiple projects.
 # See: https://circleci.com/docs/2.0/orb-intro/
 orbs:
-  android: circleci/android@1.0.3
+  android: circleci/android@2.3.0
 
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
-jobs:
-  # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
-  build-and-test:
-    # These next lines define the Android machine image executor.
-    # See: https://circleci.com/docs/2.0/executor-types/
-    executor:
-      name: android/android-machine
-
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+commands:
+  setup_repo:
+    description: checkout repo and android dependencies
     steps:
       - checkout
       - restore_cache:
@@ -35,19 +26,118 @@ jobs:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+  run_tests:
+    description: run tests for flavour specified
+    parameters:
+      flavour:
+        type: string
+        default: "AtlasWeather"
+    steps:
+    # The next step will run the unit tests
+    - android/run-tests:
+        test-command: ./gradlew test<< parameters.flavour >>DebugUnitTest --continue
+    - store_artifacts:
+        path: app/build/reports
+        destination: reports
+    - store_test_results:
+        path: app/build/test-results
+  run_ui_tests:
+    description: run tests for flavour specified
+    parameters:
+      flavour:
+        type: string
+        default: "AtlasWeather"
+    steps:
+    - android/start-emulator-and-run-tests:
+        post-emulator-launch-assemble-command: ./gradlew assemble<< parameters.flavour >>DebugAndroidTest
+        test-command: ./gradlew connected<< parameters.flavour >>DebugAndroidTest
+        system-image: system-images;android-25;google_apis;x86
+        max-tries: 1
+        kill-emulators: false
+    - run:
+        name: Pull screenshots from device
+        command: |
+          mkdir ~/screenshots
+          adb pull /storage/emulated/0/Android/data/com.appttude.h_mal.atlas_weather/files/screengrab/en-US/images/screenshots ~/screenshots
+        when: on_fail
+    # store test reports
+    - store_artifacts:
+        path: app/build/reports/androidTests/connected
+        destination: reports
+    # store screenshots for failed ui tests
+    - store_artifacts:
+        path: ~/screenshots
+        destination: screenshots
+
+# Define a job to be invoked later in a workflow.
+# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+jobs:
+  # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
+  build-and-test:
+    # Parameters used for determining
+    parameters:
+      flavour:
+        type: string
+        default: "AtlasWeather"
+    # These next lines define the Android machine image executor.
+    # See: https://circleci.com/docs/2.0/executor-types/
+    executor:
+      name: android/android-machine
+      tag: 2023.05.1
+    # Add steps to the job
+    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    steps:
+      - setup_repo
+      - run_tests:
+          flavour: << parameters.flavour >>
+  ui-test-and-release:
+    # Parameters used for determining
+    parameters:
+      flavour:
+        type: string
+        default: "AtlasWeather"
+    executor:
+      name: android/android-machine
+      tag: 2023.05.1
+    steps:
+      - setup_repo
+      - run_ui_tests
       - run:
-          name: Run Tests
-          command: ./gradlew lint test
-      - store_artifacts:
-          path: app/build/reports
-          destination: reports
-      - store_test_results:
-          path: app/build/test-results
+          name: Setup variables for release
+          command: |
+            echo "$RELEASE_KEYSTORE_BASE64" | base64 --decode > "android/app/release_keystore.jks"
+            echo "$GOOGLE_PLAY_KEY" > "android/playstore.json"
+      # And finally run the release build
+      - run:
+          name: Assemble and Upload to PlayStore
+          command: |
+            pwd
+            bundle exec fastlane deploy<< parameters.flavour >>
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  sample: # This is the name of the workflow, feel free to change it to better match your workflow.
-    # Inside the workflow, you define the jobs you want to run.
+  version: 2
+  build-release-atlas:
     jobs:
-      - build-and-test
+      - build-and-test:
+          flavour: "AtlasWeather"
+      - ui-test-and-release:
+          flavour: "AtlasWeather"
+          filters:
+            branches:
+              only:
+                - main_atlas
+          requires:
+            - build-and-test
+  build-release-mono:
+    jobs:
+      - build-and-test:
+          flavour: "MonoWeather"
+      - ui-test-and-release:
+          flavour: "MonoWeather"
+          filters:
+            branches:
+              only: main_admin
+          requires:
+            - build-and-test
