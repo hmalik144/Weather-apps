@@ -90,14 +90,6 @@ jobs:
       - setup_repo
       - run_tests:
           flavour: << parameters.flavour >>
-      - run:
-          name: Run Tests
-          command: ./gradlew lint test
-      - store_artifacts:
-          path: app/build/reports
-          destination: reports
-      - store_test_results:
-          path: app/build/test-results
   ui-test-and-release:
     # Parameters used for determining
     parameters:
@@ -109,6 +101,7 @@ jobs:
       tag: 2023.05.1
     steps:
       - setup_repo
+      - run_ui_tests
       - run:
           name: Setup variables for release
           command: |
