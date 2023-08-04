@@ -1,4 +1,4 @@
-package com.appttude.h_mal.atlas_weather.monoWeather.ui.widget
+package com.appttude.h_mal.atlas_weather.ui.widget
 
 import android.appwidget.AppWidgetManager
 import android.content.Intent

@@ -1,4 +1,4 @@
-package com.appttude.h_mal.atlas_weather.monoWeather.testsuite
+package com.appttude.h_mal.atlas_weather.testsuite
 
 import android.Manifest
 import android.app.Activity

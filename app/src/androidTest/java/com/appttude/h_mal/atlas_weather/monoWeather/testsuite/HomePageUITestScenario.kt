@@ -1,8 +1,7 @@
-package com.appttude.h_mal.atlas_weather.monoWeather.testsuite
+package com.appttude.h_mal.atlas_weather.testsuite
 
 
 import android.Manifest
-import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.espresso.Espresso
@@ -10,13 +9,11 @@ import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.rule.GrantPermissionRule
 import com.appttude.h_mal.atlas_weather.application.TestAppClass
 import com.appttude.h_mal.atlas_weather.robot.homeScreen
-import com.appttude.h_mal.atlas_weather.monoWeather.ui.MainActivity
+import com.appttude.h_mal.atlas_weather.ui.MainActivity
 import com.appttude.h_mal.atlas_weather.utils.Stubs
 import kotlinx.coroutines.runBlocking
 import org.junit.After

@@ -18,5 +18,5 @@ dependencyResolutionManagement {
         }
     }
 }
-rootProject.name = "Driver"
+rootProject.name = "Atlas Weather"
 include ':app'

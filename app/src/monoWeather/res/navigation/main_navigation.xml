@@ -7,68 +7,57 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.appttude.h_mal.atlas_weather.monoWeather.ui.home.HomeFragment"
+        android:name="com.appttude.h_mal.monoWeather.ui.home.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_furtherDetailsFragment"
-            app:destination="@id/furtherDetailsFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/furtherDetailsFragment"/>
     </fragment>
 
     <fragment
         android:id="@+id/furtherDetailsFragment"
-        android:name="com.appttude.h_mal.atlas_weather.monoWeather.ui.details.FurtherInfoFragment"
+        android:name="com.appttude.h_mal.monoWeather.ui.details.FurtherInfoFragment"
         android:label="Further Details">
         <argument
             android:name="forecast"
-            app:argType="com.appttude.h_mal.atlas_weather.model.forecast.Forecast" />
+            app:argType="com.appttude.h_mal.model.forecast.Forecast"
+            app:nullable="true"/>
     </fragment>
 
     <fragment
         android:id="@+id/nav_world"
-        android:name="com.appttude.h_mal.atlas_weather.monoWeather.ui.world.WorldFragment"
+        android:name="com.appttude.h_mal.monoWeather.ui.world.WorldFragment"
         android:label="World"
         tools:layout="@layout/fragment__two">
         <action
             android:id="@+id/action_worldFragment_to_addLocationFragment"
-            app:destination="@id/addLocationFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/addLocationFragment"/>
         <action
             android:id="@+id/action_worldFragment_to_worldItemFragment"
-            app:destination="@id/worldItemFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/worldItemFragment"/>
     </fragment>
     <fragment
         android:id="@+id/addLocationFragment"
-        android:name="com.appttude.h_mal.atlas_weather.monoWeather.ui.world.AddLocationFragment"
+        android:name="com.appttude.h_mal.monoWeather.ui.world.AddLocationFragment"
         android:label="Add Weather Location"
         tools:layout="@layout/activity_add_forecast" />
     <fragment
         android:id="@+id/worldItemFragment"
-        android:name="com.appttude.h_mal.atlas_weather.monoWeather.ui.WorldItemFragment"
+        android:name="com.appttude.h_mal.monoWeather.ui.WorldItemFragment"
         android:label="Overview"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_worldItemFragment_to_furtherDetailsFragment"
-            app:destination="@id/furtherDetailsFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            app:destination="@id/furtherDetailsFragment" />
         <argument
             android:name="locationName"
             app:argType="string"
             app:nullable="true" />
     </fragment>
+    <fragment
+        android:id="@+id/settings_fragment"
+        android:name="com.appttude.h_mal.monoWeather.ui.settings.SettingsFragment"
+        android:label="SettingsFragment" />
 
 </navigation>

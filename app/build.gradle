@@ -1,9 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs'
+    id 'kotlin-parcelize'
 }
 android {
     lintOptions {
@@ -11,12 +11,12 @@ android {
     }
     compileSdkVersion 33
     defaultConfig {
-        applicationId "com.appttude.h_mal.atlas_weather"
+        applicationId "com.appttude.h_mal"
         minSdkVersion 26
         targetSdkVersion 33
         versionCode 5
         versionName "3.0"
-        testInstrumentationRunner "com.appttude.h_mal.atlas_weather.application.TestRunner"
+        testInstrumentationRunner "com.appttude.h_mal.application.TestRunner"
         vectorDrawables.useSupportLibrary = true
 
         Properties properties = new Properties()
@@ -61,6 +61,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+        freeCompilerArgs += [
+                '-Xjvm-default=enable'
+        ]
     }
 
     flavorDimensions "default"
@@ -71,7 +74,7 @@ android {
             versionName "3.0.0"
         }
         monoWeather {
-            applicationId "com.appttude.h_mal.atlas_weather.monoWeather"
+            applicationId "com.appttude.h_mal.monoWeather"
             versionCode 5
             versionName "3.0.0"
         }
@@ -106,6 +109,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
     implementation 'androidx.test.espresso:espresso-idling-resource:3.4.0'
+    implementation 'androidx.preference:preference:1.2.1'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     // Unit testing
@@ -181,9 +185,9 @@ dependencies {
     def coroutines_google_ver = "1.1.1"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_google_ver"
 
-    / * Glide */
-    implementation 'com.github.bumptech.glide:glide:4.12.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+    / * Picasso */
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
     / * screenshot library */
     androidTestImplementation 'tools.fastlane:screengrab:2.1.1'
 }
