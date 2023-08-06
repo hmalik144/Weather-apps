@@ -21,7 +21,7 @@
         android:label="Further Details">
         <argument
             android:name="forecast"
-            app:argType="com.appttude.h_mal.model.forecast.Forecast"
+            app:argType="com.appttude.h_mal.atlas_weather.model.forecast.Forecast"
             app:nullable="true"/>
     </fragment>
 

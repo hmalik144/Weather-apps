@@ -10,9 +10,9 @@ import android.text.method.LinkMovementMethod
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat.checkSelfPermission
-import com.appttude.h_mal.R
+import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.monoWeather.dialog.DeclarationBuilder
-import com.appttude.h_mal.utils.displayToast
+import com.appttude.h_mal.atlas_weather.utils.displayToast
 import kotlinx.android.synthetic.monoWeather.permissions_declaration_dialog.*
 
 const val PERMISSION_CODE = 401

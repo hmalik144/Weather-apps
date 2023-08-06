@@ -2,9 +2,9 @@ package com.appttude.h_mal.monoWeather.ui.home.adapter.forecast
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.appttude.h_mal.R
-import com.appttude.h_mal.model.weather.Hour
-import com.appttude.h_mal.utils.generateView
+import com.appttude.h_mal.atlas_weather.R
+import com.appttude.h_mal.atlas_weather.model.weather.Hour
+import com.appttude.h_mal.atlas_weather.utils.generateView
 
 class GridForecastAdapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     var weather: MutableList<Hour> = mutableListOf()

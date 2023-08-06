@@ -1,4 +1,4 @@
-package com.appttude.h_mal.atlas_weather.atlasWeather.ui
+package com.appttude.h_mal.atlas_weather.ui
 
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager

@@ -5,7 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.recyclerview.widget.RecyclerView
-import com.appttude.h_mal.R
+import com.appttude.h_mal.atlas_weather.R
 
 class EmptyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
     val icon: ImageView = itemView.findViewById(R.id.icon)

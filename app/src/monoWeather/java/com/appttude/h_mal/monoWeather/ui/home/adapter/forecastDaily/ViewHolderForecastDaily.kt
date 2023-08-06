@@ -4,9 +4,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.appttude.h_mal.R
-import com.appttude.h_mal.model.forecast.Forecast
-import com.appttude.h_mal.utils.loadImage
+import com.appttude.h_mal.atlas_weather.R
+import com.appttude.h_mal.atlas_weather.model.forecast.Forecast
+import com.appttude.h_mal.atlas_weather.utils.loadImage
 
 class ViewHolderForecastDaily(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

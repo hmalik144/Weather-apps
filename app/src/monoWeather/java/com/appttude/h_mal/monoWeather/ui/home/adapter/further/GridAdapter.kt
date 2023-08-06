@@ -4,8 +4,8 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import com.appttude.h_mal.R
-import com.appttude.h_mal.utils.generateView
+import com.appttude.h_mal.atlas_weather.R
+import com.appttude.h_mal.atlas_weather.utils.generateView
 import kotlinx.android.synthetic.monoWeather.mono_item_two_cell.view.*
 
 

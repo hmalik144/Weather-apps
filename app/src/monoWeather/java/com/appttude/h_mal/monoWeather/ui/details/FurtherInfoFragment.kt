@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.appttude.h_mal.R
-import com.appttude.h_mal.model.forecast.Forecast
+import com.appttude.h_mal.atlas_weather.R
+import com.appttude.h_mal.atlas_weather.model.forecast.Forecast
 import kotlinx.android.synthetic.main.activity_further_info.*
 
 

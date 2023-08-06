@@ -4,6 +4,7 @@ package com.appttude.h_mal.atlas_weather.data.location
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import androidx.test.platform.app.InstrumentationRegistry
+import com.appttude.h_mal.atlas_weather.data.location.LocationProviderImpl
 import com.appttude.h_mal.atlas_weather.model.types.LocationType
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.Matcher.*

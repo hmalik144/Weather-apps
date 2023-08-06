@@ -1,4 +1,4 @@
-package com.appttude.h_mal.atlas_weather.atlasWeather.ui.world
+package com.appttude.h_mal.atlas_weather.ui.world
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import com.appttude.h_mal.atlas_weather.R
-import com.appttude.h_mal.atlas_weather.atlasWeather.ui.BaseFragment
+import com.appttude.h_mal.atlas_weather.ui.BaseFragment
 import com.appttude.h_mal.atlas_weather.utils.displayToast
 import com.appttude.h_mal.atlas_weather.utils.goBack
 import com.appttude.h_mal.atlas_weather.viewmodel.ApplicationViewModelFactory

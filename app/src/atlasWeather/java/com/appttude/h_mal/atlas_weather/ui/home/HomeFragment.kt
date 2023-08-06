@@ -1,4 +1,4 @@
-package com.appttude.h_mal.atlas_weather.atlasWeather.ui.home
+package com.appttude.h_mal.atlas_weather.ui.home
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -13,8 +13,8 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.application.LOCATION_PERMISSION_REQUEST
-import com.appttude.h_mal.atlas_weather.atlasWeather.ui.BaseFragment
-import com.appttude.h_mal.atlas_weather.atlasWeather.ui.home.adapter.WeatherRecyclerAdapter
+import com.appttude.h_mal.atlas_weather.ui.BaseFragment
+import com.appttude.h_mal.atlas_weather.ui.home.adapter.WeatherRecyclerAdapter
 import com.appttude.h_mal.atlas_weather.utils.displayToast
 import com.appttude.h_mal.atlas_weather.utils.navigateTo
 import com.appttude.h_mal.atlas_weather.viewmodel.ApplicationViewModelFactory

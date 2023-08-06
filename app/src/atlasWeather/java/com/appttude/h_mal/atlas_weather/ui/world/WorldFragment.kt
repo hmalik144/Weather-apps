@@ -1,4 +1,4 @@
-package com.appttude.h_mal.atlas_weather.atlasWeather.ui.world
+package com.appttude.h_mal.atlas_weather.ui.world
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,9 +9,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.appttude.h_mal.atlas_weather.R
-import com.appttude.h_mal.atlas_weather.atlasWeather.ui.world.WorldRecyclerAdapter
-import com.appttude.h_mal.atlas_weather.atlasWeather.ui.BaseFragment
-import com.appttude.h_mal.atlas_weather.atlasWeather.ui.world.WorldFragmentDirections
+import com.appttude.h_mal.atlas_weather.ui.world.WorldRecyclerAdapter
+import com.appttude.h_mal.atlas_weather.ui.BaseFragment
+import com.appttude.h_mal.atlas_weather.ui.world.WorldFragmentDirections
 import com.appttude.h_mal.atlas_weather.utils.navigateTo
 import com.appttude.h_mal.atlas_weather.viewmodel.ApplicationViewModelFactory
 import com.appttude.h_mal.atlas_weather.viewmodel.WorldViewModel

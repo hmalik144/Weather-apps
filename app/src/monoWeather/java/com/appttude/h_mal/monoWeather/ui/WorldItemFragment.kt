@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.appttude.h_mal.R
+import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.monoWeather.ui.home.adapter.WeatherRecyclerAdapter
-import com.appttude.h_mal.utils.navigateTo
-import com.appttude.h_mal.viewmodel.WorldViewModel
+import com.appttude.h_mal.atlas_weather.utils.navigateTo
+import com.appttude.h_mal.atlas_weather.viewmodel.WorldViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
 

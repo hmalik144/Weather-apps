@@ -1,4 +1,4 @@
-package com.appttude.h_mal.atlas_weather.atlasWeather.ui
+package com.appttude.h_mal.atlas_weather.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
-import com.appttude.h_mal.atlas_weather.atlasWeather.ui.home.adapter.WeatherRecyclerAdapter
+import com.appttude.h_mal.atlas_weather.ui.home.adapter.WeatherRecyclerAdapter
 import com.appttude.h_mal.atlas_weather.utils.navigateTo
 import kotlinx.android.synthetic.main.fragment_home.*
 
