@@ -55,4 +55,8 @@
             app:argType="com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay" />
     </fragment>
 
+    <fragment
+        android:id="@+id/settings_fragment"
+        android:name="com.appttude.h_mal.atlas_weather.ui.settings.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>

@@ -9,12 +9,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.appttude.h_mal.atlas_weather.R
-import com.appttude.h_mal.atlas_weather.ui.world.WorldRecyclerAdapter
-import com.appttude.h_mal.atlas_weather.ui.BaseFragment
-import com.appttude.h_mal.atlas_weather.ui.world.WorldFragmentDirections
 import com.appttude.h_mal.atlas_weather.utils.navigateTo
 import com.appttude.h_mal.atlas_weather.viewmodel.ApplicationViewModelFactory
 import com.appttude.h_mal.atlas_weather.viewmodel.WorldViewModel
+import com.appttude.h_mal.monoWeather.ui.BaseFragment
 import kotlinx.android.synthetic.main.fragment_add_location.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
@@ -25,17 +23,8 @@ import org.kodein.di.generic.instance
  * A simple [Fragment] subclass.
  * create an instance of this fragment.
  */
-class WorldFragment : BaseFragment(), KodeinAware {
-    override val kodein by kodein()
-    private val factory by instance<ApplicationViewModelFactory>()
-
-    val viewModel by viewModels<WorldViewModel> { factory }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_location, container, false)
-    }
+class WorldFragment : BaseFragment(R.layout.fragment_add_location) {
+    val viewModel by getFragmentViewModel<WorldViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

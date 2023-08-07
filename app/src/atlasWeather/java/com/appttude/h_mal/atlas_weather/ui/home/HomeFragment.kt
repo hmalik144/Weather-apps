@@ -1,24 +1,27 @@
 package com.appttude.h_mal.atlas_weather.ui.home
 
 import android.Manifest
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.observe
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.ui.onNavDestinationSelected
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.application.LOCATION_PERMISSION_REQUEST
-import com.appttude.h_mal.atlas_weather.ui.BaseFragment
+import com.appttude.h_mal.atlas_weather.model.forecast.Forecast
+import com.appttude.h_mal.atlas_weather.ui.dialog.PermissionsDeclarationDialog
 import com.appttude.h_mal.atlas_weather.ui.home.adapter.WeatherRecyclerAdapter
-import com.appttude.h_mal.atlas_weather.utils.displayToast
 import com.appttude.h_mal.atlas_weather.utils.navigateTo
 import com.appttude.h_mal.atlas_weather.viewmodel.ApplicationViewModelFactory
 import com.appttude.h_mal.atlas_weather.viewmodel.MainViewModel
+import com.appttude.h_mal.monoWeather.ui.BaseFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
@@ -30,43 +33,29 @@ import org.kodein.di.generic.instance
  * A simple [Fragment] subclass.
  * create an instance of this fragment.
  */
-class HomeFragment : BaseFragment(), KodeinAware {
-    override val kodein by kodein()
-    private val factory by instance<ApplicationViewModelFactory>()
-
-    private val viewModel by activityViewModels<MainViewModel> { factory }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
-    }
+class HomeFragment : BaseFragment(R.layout.fragment_home) {
+    private val viewModel by getFragmentViewModel<MainViewModel>()
 
     @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
 
-        val recyclerAdapter = WeatherRecyclerAdapter {
-            val directions =
-                    HomeFragmentDirections.actionHomeFragmentToFurtherDetailsFragment(it)
-            navigateTo(directions)
-        }
+        val recyclerAdapter = WeatherRecyclerAdapter(itemClick = {
+            navigateToFurtherDetails(it)
+        })
 
         forecast_listview.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = recyclerAdapter
         }
 
-        getPermissionResult(Manifest.permission.ACCESS_FINE_LOCATION, LOCATION_PERMISSION_REQUEST){
-            viewModel.fetchData()
-        }
-
         swipe_refresh.apply {
             setOnRefreshListener {
-                getPermissionResult(Manifest.permission.ACCESS_FINE_LOCATION, LOCATION_PERMISSION_REQUEST){
+                getPermissionResult(ACCESS_COARSE_LOCATION, LOCATION_PERMISSION_REQUEST) {
                     viewModel.fetchData()
+                    isRefreshing = true
                 }
-                isRefreshing = true
             }
         }
 
@@ -76,24 +65,45 @@ class HomeFragment : BaseFragment(), KodeinAware {
 
         viewModel.operationState.observe(viewLifecycleOwner, progressBarStateObserver(progressBar))
         viewModel.operationError.observe(viewLifecycleOwner, errorObserver())
+        viewModel.operationRefresh.observe(viewLifecycleOwner) { it ->
+            it.getContentIfNotHandled()?.let {
+                swipe_refresh.isRefreshing = false
+            }
+        }
 
-        viewModel.operationState.observe(viewLifecycleOwner){
+        viewModel.operationState.observe(viewLifecycleOwner) {
             swipe_refresh.isRefreshing = false
         }
 
     }
 
     @SuppressLint("MissingPermission")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == LOCATION_PERMISSION_REQUEST) {
-            if (grantResults.isNotEmpty()
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                viewModel.fetchData()
-                displayToast("Permission granted")
-            } else {
-                displayToast("Permission denied")
-            }
+    override fun onStart() {
+        super.onStart()
+
+        getPermissionResult(ACCESS_COARSE_LOCATION, LOCATION_PERMISSION_REQUEST) {
+            viewModel.fetchData()
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun permissionsGranted() {
+        viewModel.fetchData()
+    }
+
+    private fun navigateToFurtherDetails(forecast: Forecast) {
+        val directions = HomeFragmentDirections
+            .actionHomeFragmentToFurtherDetailsFragment(forecast)
+        navigateTo(directions)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.menu_main, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val navController = findNavController(requireActivity(), R.id.container)
+        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 }

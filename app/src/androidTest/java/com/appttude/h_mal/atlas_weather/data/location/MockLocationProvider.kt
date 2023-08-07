@@ -1,6 +1,5 @@
 package com.appttude.h_mal.atlas_weather.data.location
 
-import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
 import com.appttude.h_mal.atlas_weather.model.types.LocationType
 
 class MockLocationProvider : LocationProvider {

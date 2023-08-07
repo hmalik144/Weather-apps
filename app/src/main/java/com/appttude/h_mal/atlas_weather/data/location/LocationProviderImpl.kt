@@ -26,7 +26,7 @@ import kotlin.coroutines.suspendCoroutine
 
 class LocationProviderImpl(
     private val applicationContext: Context
-) : com.appttude.h_mal.atlas_weather.data.location.LocationProvider, com.appttude.h_mal.atlas_weather.data.location.LocationHelper(applicationContext) {
+) : LocationProvider, LocationHelper(applicationContext) {
     private var locationManager =
             applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
     private val client = FusedLocationProviderClient(applicationContext)

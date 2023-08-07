@@ -7,7 +7,7 @@ import com.appttude.h_mal.atlas_weather.ui.MainActivity
 import com.appttude.h_mal.atlas_weather.utils.Stubs
 import org.junit.Test
 
-class HomePageUITest : BaseTest<MainActivity>(activity = MainActivity::class.java) {
+class HomePageUITest : BaseTest<MainActivity>(MainActivity::class.java) {
 
     override fun beforeLaunch() {
         stubEndpoint("https://api.openweathermap.org/data/2.5/onecall", Stubs.Valid)
@@ -16,6 +16,7 @@ class HomePageUITest : BaseTest<MainActivity>(activity = MainActivity::class.jav
     @Test
     fun loadApp_validWeatherResponse_returnsValidPage() {
         homeScreen {
+            waitFor(2000)
             verifyCurrentTemperature(2)
             verifyCurrentLocation("Mock Location")
         }

@@ -7,28 +7,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import com.appttude.h_mal.atlas_weather.R
-import com.appttude.h_mal.atlas_weather.ui.BaseFragment
 import com.appttude.h_mal.atlas_weather.utils.displayToast
 import com.appttude.h_mal.atlas_weather.utils.goBack
 import com.appttude.h_mal.atlas_weather.viewmodel.ApplicationViewModelFactory
 import com.appttude.h_mal.atlas_weather.viewmodel.WorldViewModel
+import com.appttude.h_mal.monoWeather.ui.BaseFragment
 import kotlinx.android.synthetic.main.activity_add_forecast.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 
 
-class AddLocationFragment : BaseFragment(), KodeinAware {
-    override val kodein by kodein()
-    private val factory by instance<ApplicationViewModelFactory>()
+class AddLocationFragment : BaseFragment(R.layout.activity_add_forecast) {
 
-    private val viewModel by viewModels<WorldViewModel> { factory }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_add_forecast, container, false)
-    }
+    private val viewModel by getFragmentViewModel<WorldViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

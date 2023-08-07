@@ -26,7 +26,7 @@
         android:layout_height="match_parent"
         android:background="@android:color/black"
         android:visibility="gone"
-        tools:visibility="visible">
+        tools:visibility="gone">
         <ProgressBar
             android:layout_gravity="center"
             style="?android:attr/progressBarStyle"

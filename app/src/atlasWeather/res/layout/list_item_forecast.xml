@@ -48,7 +48,9 @@
                 android:id="@+id/list_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                tools:src="@drawable/day_305" />
+                android:adjustViewBounds="true"
+                tools:layout_width="32dp"
+                tools:srcCompat="@drawable/water_drop" />
 
             <LinearLayout
                 android:layout_width="0dp"
