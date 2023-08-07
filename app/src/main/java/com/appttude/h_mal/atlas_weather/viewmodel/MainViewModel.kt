@@ -15,8 +15,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-        private val locationProvider: LocationProvider,
-        private val repository: Repository
+    private val locationProvider: LocationProvider,
+    private val repository: Repository
 ): WeatherViewModel(){
 
     val weatherLiveData = MutableLiveData<WeatherDisplay>()

@@ -1,6 +1,5 @@
 package com.appttude.h_mal.atlas_weather.data.network.networkUtils
 
-import com.appttude.h_mal.atlas_weather.data.network.interceptors.NetworkConnectionInterceptor
 import com.appttude.h_mal.atlas_weather.data.network.interceptors.NetworkInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

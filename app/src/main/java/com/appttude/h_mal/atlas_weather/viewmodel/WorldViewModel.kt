@@ -16,8 +16,8 @@ import java.io.IOException
 
 const val ALL_LOADED = "all_loaded"
 class WorldViewModel(
-        private val locationProvider: LocationProvider,
-        private val repository: Repository
+    private val locationProvider: LocationProvider,
+    private val repository: Repository
 ) : WeatherViewModel() {
 
     val weatherLiveData = MutableLiveData<List<WeatherDisplay>>()

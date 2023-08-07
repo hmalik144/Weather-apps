@@ -2,6 +2,7 @@ package com.appttude.h_mal.atlas_weather.utils
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.appttude.h_mal.atlas_weather.R
-import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
 
 fun View.show() {
     this.visibility = View.VISIBLE
@@ -33,16 +34,10 @@ fun ViewGroup.generateView(layoutId: Int): View = LayoutInflater
         .inflate(layoutId, this, false)
 
 fun ImageView.loadImage(url: String?){
-    val c = Glide.with(this)
-            .load(url)
-    viewTreeObserver.addOnPreDrawListener {
-        c.override(width, height)
-        true
-    }
-    c.placeholder(R.drawable.ic_baseline_cloud_queue_24)
-            .error(R.drawable.ic_baseline_cloud_off_24)
-            .fitCenter()
-            .into(this)
+    Picasso.get().load(url)
+        .placeholder(R.drawable.ic_baseline_cloud_queue_24)
+        .error(R.drawable.ic_baseline_cloud_off_24)
+        .into(this)
 }
 
 fun Fragment.hideKeyboard() {

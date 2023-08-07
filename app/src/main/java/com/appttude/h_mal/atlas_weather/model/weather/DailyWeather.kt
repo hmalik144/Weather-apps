@@ -1,6 +1,7 @@
 package com.appttude.h_mal.atlas_weather.model.weather
 
 import com.appttude.h_mal.atlas_weather.data.network.response.forecast.DailyItem
+import com.appttude.h_mal.atlas_weather.utils.generateIconUrlString
 
 
 data class DailyWeather(
@@ -39,7 +40,7 @@ data class DailyWeather(
             dailyItem.dewPoint,
             dailyItem.windSpeed,
             dailyItem.windDeg,
-            dailyItem.weather?.get(0)?.icon?.let { "https://openweathermap.org/img/wn/${it}@4x.png" },
+            generateIconUrlString(dailyItem.weather?.getOrNull(0)?.icon),
             dailyItem.weather?.get(0)?.description,
             dailyItem.weather?.get(0)?.main,
             dailyItem.weather?.get(0)?.id,

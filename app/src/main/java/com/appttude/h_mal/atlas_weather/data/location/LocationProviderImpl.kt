@@ -25,7 +25,7 @@ import kotlin.coroutines.suspendCoroutine
 
 
 class LocationProviderImpl(
-        val applicationContext: Context
+    private val applicationContext: Context
 ) : LocationProvider, LocationHelper(applicationContext) {
     private var locationManager =
             applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
