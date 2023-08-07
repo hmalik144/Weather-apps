@@ -33,7 +33,7 @@ commands:
         default: "AtlasWeather"
     steps:
       # The next step will run the unit tests
-#      - build_gradle
+      - build_gradle
       - run:
           name: Run non-instrumentation unit tests
           command: |
@@ -50,7 +50,7 @@ commands:
         type: string
         default: "AtlasWeather"
     steps:
-#      - build_gradle
+      - build_gradle
       - android/start-emulator-and-run-tests:
           post-emulator-launch-assemble-command: ./gradlew assemble<< parameters.flavour >>DebugAndroidTest
           test-command: ./gradlew connected<< parameters.flavour >>DebugAndroidTest
@@ -58,6 +58,7 @@ commands:
           pull-data: true
           pull-data-path: /storage/emulated/0/Android/data/
           pull-data-target: ~/app-data
+          restore-gradle-cache-prefix: v1a
       # store test reports
       - store_artifacts:
           path: app/build/reports/androidTests/connected
@@ -66,6 +67,8 @@ commands:
       - store_artifacts:
           path: ~/app-data
           destination: screenshots
+      - store_test_results:
+          path: app/build/outputs/androidTest-results/connected
   deploy_to_play_store:
     description: deploy to playstore based on flavour
     parameters:
@@ -80,7 +83,7 @@ commands:
           name: Setup playstore key
           command: |
             echo "$GOOGLE_PLAY_KEY" > "google-play-key.json"
-#      - build_gradle
+      - build_gradle
       - run:
           name: Run fastlane command to deploy to playstore
           command: |
