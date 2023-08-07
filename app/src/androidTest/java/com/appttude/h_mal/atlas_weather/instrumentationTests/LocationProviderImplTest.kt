@@ -1,4 +1,4 @@
-package com.appttude.h_mal.atlas_weather.data.location
+package com.appttude.h_mal.atlas_weather.instrumentationTests
 
 
 import androidx.test.ext.junit.runners.AndroidJUnit4

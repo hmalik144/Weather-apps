@@ -55,8 +55,8 @@ open class BaseTest<A : Activity>(
         scenario = ActivityScenario.launch(startIntent)
         scenario.onActivity {
             testActivity = it
-            afterLaunch()
         }
+        afterLaunch()
     }
 
     fun stubEndpoint(url: String, stub: Stubs) {
