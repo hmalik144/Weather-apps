@@ -1,4 +1,4 @@
-package com.appttude.h_mal.atlas_weather.atlasWeather.notification
+package com.appttude.h_mal.atlas_weather.notification
 
 import android.graphics.Bitmap
 

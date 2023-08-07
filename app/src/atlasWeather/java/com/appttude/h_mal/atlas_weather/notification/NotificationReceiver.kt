@@ -1,4 +1,4 @@
-package com.appttude.h_mal.atlas_weather.atlasWeather.notification
+package com.appttude.h_mal.atlas_weather.notification
 
 import android.Manifest
 import android.app.Notification
@@ -12,13 +12,10 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import com.appttude.h_mal.atlas_weather.R
-import com.appttude.h_mal.atlas_weather.atlasWeather.ui.MainActivity
+import com.appttude.h_mal.atlas_weather.ui.MainActivity
 import com.appttude.h_mal.atlas_weather.helper.ServicesHelper
 import com.appttude.h_mal.atlas_weather.model.weather.FullWeather
 import com.appttude.h_mal.atlas_weather.utils.displayToast
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.LateInitKodein
 import org.kodein.di.generic.instance

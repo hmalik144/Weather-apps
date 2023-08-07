@@ -2,8 +2,8 @@ package com.appttude.h_mal.monoWeather.ui.home.adapter.forecast
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.appttude.h_mal.R
-import com.appttude.h_mal.model.weather.Hour
+import com.appttude.h_mal.atlas_weather.R
+import com.appttude.h_mal.atlas_weather.model.weather.Hour
 
 class ViewHolderForecast(
         itemView: View

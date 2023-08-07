@@ -1,9 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs'
-    id 'kotlin-parcelize'
 }
 android {
     lintOptions {
@@ -11,12 +11,12 @@ android {
     }
     compileSdkVersion 33
     defaultConfig {
-        applicationId "com.appttude.h_mal"
+        applicationId "com.appttude.h_mal.atlas_weather"
         minSdkVersion 26
         targetSdkVersion 33
         versionCode 5
         versionName "3.0"
-        testInstrumentationRunner "com.appttude.h_mal.application.TestRunner"
+        testInstrumentationRunner "com.appttude.h_mal.atlas_weather.application.TestRunner"
         vectorDrawables.useSupportLibrary = true
 
         Properties properties = new Properties()

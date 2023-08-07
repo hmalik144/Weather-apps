@@ -1,4 +1,4 @@
-package com.appttude.h_mal.atlas_weather.atlasWeather.ui.home.adapter
+package com.appttude.h_mal.atlas_weather.ui.home.adapter
 
 import android.view.View
 import android.widget.ImageView

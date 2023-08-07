@@ -1,4 +1,4 @@
-package com.appttude.h_mal.atlas_weather.atlasWeather.ui.world
+package com.appttude.h_mal.atlas_weather.ui.world
 
 import android.view.View
 import android.view.ViewGroup

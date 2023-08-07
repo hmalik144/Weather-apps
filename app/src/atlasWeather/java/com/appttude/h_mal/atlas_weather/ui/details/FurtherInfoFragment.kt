@@ -1,4 +1,4 @@
-package com.appttude.h_mal.atlas_weather.atlasWeather.ui.details
+package com.appttude.h_mal.atlas_weather.ui.details
 
 import android.os.Bundle
 import android.view.LayoutInflater

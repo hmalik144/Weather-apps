@@ -4,10 +4,10 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.appttude.h_mal.R
-import com.appttude.h_mal.model.weather.Hour
-import com.appttude.h_mal.utils.loadImage
-import com.appttude.h_mal.utils.toTime
+import com.appttude.h_mal.atlas_weather.R
+import com.appttude.h_mal.atlas_weather.model.weather.Hour
+import com.appttude.h_mal.atlas_weather.utils.loadImage
+import com.appttude.h_mal.atlas_weather.utils.toTime
 
 class GridCellHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

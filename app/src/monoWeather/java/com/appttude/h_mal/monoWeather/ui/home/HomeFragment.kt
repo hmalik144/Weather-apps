@@ -10,14 +10,14 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
-import com.appttude.h_mal.R
-import com.appttude.h_mal.application.LOCATION_PERMISSION_REQUEST
-import com.appttude.h_mal.model.forecast.Forecast
+import com.appttude.h_mal.atlas_weather.R
+import com.appttude.h_mal.atlas_weather.application.LOCATION_PERMISSION_REQUEST
+import com.appttude.h_mal.atlas_weather.model.forecast.Forecast
 import com.appttude.h_mal.monoWeather.dialog.PermissionsDeclarationDialog
 import com.appttude.h_mal.monoWeather.ui.BaseFragment
 import com.appttude.h_mal.monoWeather.ui.home.adapter.WeatherRecyclerAdapter
-import com.appttude.h_mal.utils.navigateTo
-import com.appttude.h_mal.viewmodel.MainViewModel
+import com.appttude.h_mal.atlas_weather.utils.navigateTo
+import com.appttude.h_mal.atlas_weather.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
 

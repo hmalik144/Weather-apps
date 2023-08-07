@@ -6,8 +6,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
-import com.appttude.h_mal.R
-import com.appttude.h_mal.widget.NewAppWidget
+import com.appttude.h_mal.atlas_weather.R
+import com.appttude.h_mal.atlas_weather.widget.NewAppWidget
 
 class SettingsFragment : PreferenceFragmentCompat() {
 

@@ -2,14 +2,14 @@ package com.appttude.h_mal.monoWeather.ui.home.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.appttude.h_mal.R
-import com.appttude.h_mal.model.forecast.Forecast
-import com.appttude.h_mal.model.forecast.WeatherDisplay
+import com.appttude.h_mal.atlas_weather.R
+import com.appttude.h_mal.atlas_weather.model.forecast.Forecast
+import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
 import com.appttude.h_mal.monoWeather.ui.EmptyViewHolder
 import com.appttude.h_mal.monoWeather.ui.home.adapter.forecast.ViewHolderForecast
 import com.appttude.h_mal.monoWeather.ui.home.adapter.forecastDaily.ViewHolderForecastDaily
 import com.appttude.h_mal.monoWeather.ui.home.adapter.further.ViewHolderFurtherDetails
-import com.appttude.h_mal.utils.generateView
+import com.appttude.h_mal.atlas_weather.utils.generateView
 
 class WeatherRecyclerAdapter(
         private val itemClick: (Forecast) -> Unit

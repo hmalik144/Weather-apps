@@ -1,23 +1,15 @@
 package com.appttude.h_mal.atlas_weather.tests
 
 
-import androidx.test.rule.GrantPermissionRule
-import com.appttude.h_mal.atlas_weather.atlasWeather.ui.MainActivity
+import com.appttude.h_mal.atlas_weather.BaseTest
 import com.appttude.h_mal.atlas_weather.robot.homeScreen
-import com.appttude.h_mal.atlas_weather.testsuite.BaseTest
+import com.appttude.h_mal.atlas_weather.ui.MainActivity
 import com.appttude.h_mal.atlas_weather.utils.Stubs
-import org.junit.Rule
 import org.junit.Test
 
-class HomePageUITest : BaseTest<MainActivity>() {
+class HomePageUITest : BaseTest<MainActivity>(activity = MainActivity::class.java) {
 
-    @Rule
-    @JvmField
-    var mGrantPermissionRule: GrantPermissionRule =
-            GrantPermissionRule.grant(
-                    "android.permission.ACCESS_COARSE_LOCATION")
-
-    override fun setupFeed() {
+    override fun beforeLaunch() {
         stubEndpoint("https://api.openweathermap.org/data/2.5/onecall", Stubs.Valid)
     }
 

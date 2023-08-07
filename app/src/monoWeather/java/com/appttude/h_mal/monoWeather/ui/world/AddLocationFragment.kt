@@ -3,12 +3,12 @@ package com.appttude.h_mal.monoWeather.ui.world
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.observe
-import com.appttude.h_mal.R
+import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.monoWeather.ui.BaseFragment
-import com.appttude.h_mal.utils.displayToast
-import com.appttude.h_mal.utils.goBack
-import com.appttude.h_mal.utils.hideKeyboard
-import com.appttude.h_mal.viewmodel.WorldViewModel
+import com.appttude.h_mal.atlas_weather.utils.displayToast
+import com.appttude.h_mal.atlas_weather.utils.goBack
+import com.appttude.h_mal.atlas_weather.utils.hideKeyboard
+import com.appttude.h_mal.atlas_weather.viewmodel.WorldViewModel
 import kotlinx.android.synthetic.main.activity_add_forecast.*
 
 
