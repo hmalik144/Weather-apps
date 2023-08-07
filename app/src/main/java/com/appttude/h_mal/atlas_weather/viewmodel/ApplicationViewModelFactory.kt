@@ -5,9 +5,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
 import com.appttude.h_mal.atlas_weather.data.repository.RepositoryImpl
 
+
 class ApplicationViewModelFactory(
-        private val locationProvider: LocationProvider,
-        private val repository: RepositoryImpl
+    private val locationProvider: LocationProvider,
+    private val repository: RepositoryImpl
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")

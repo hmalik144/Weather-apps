@@ -88,3 +88,11 @@ gen-external-apklibs
 .idea/assetWizardSettings.xml
 .idea/gradle.xml
 .idea/jarRepositorie
+
+# Gem/fastlane
+/Gemfile.lock
+/fastlane/report.xml
+# Google play files
+/google-play-key.json
+
+/.idea/androidTestResultsUserPreferences.xml

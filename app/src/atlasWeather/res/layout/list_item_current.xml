@@ -76,7 +76,7 @@
             android:id="@+id/icon_main_4"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            tools:src="@drawable/day_305" />
+            tools:srcCompat="@drawable/water_drop" />
 
         <LinearLayout
             android:layout_width="0dp"
