@@ -18,13 +18,13 @@ commands:
   build_gradle:
     description: Build the gradle
     steps:
-#      - android/restore-gradle-cache
+      - android/restore-gradle-cache
       - run:
           name: Download Dependencies
           command: |
             sudo chmod +x ./gradlew
-#            ./gradlew androidDependencies
-#      - android/save-gradle-cache
+            ./gradlew androidDependencies
+      - android/save-gradle-cache
   run_tests:
     description: run tests for flavour specified
     parameters:
