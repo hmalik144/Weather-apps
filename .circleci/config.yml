@@ -58,7 +58,6 @@ commands:
           pull-data: true
           pull-data-path: /storage/emulated/0/Android/data/
           pull-data-target: ~/app-data
-          restore-gradle-cache-prefix: v1a
       # store test reports
       - store_artifacts:
           path: app/build/reports/androidTests/connected
