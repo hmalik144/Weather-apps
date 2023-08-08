@@ -8,7 +8,7 @@ import androidx.test.espresso.matcher.ViewMatchers
 import com.appttude.h_mal.atlas_weather.BaseTest
 import com.appttude.h_mal.atlas_weather.ui.MainActivity
 
-open class MonoBaseTest: BaseTest<MainActivity>(MainActivity::class.java) {
+open class MonoBaseTest : BaseTest<MainActivity>(MainActivity::class.java) {
 
     override fun afterLaunch() {
         // Dismiss dialog on start up

@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_furtherDetailsFragment"
-            app:destination="@id/furtherDetailsFragment"/>
+            app:destination="@id/furtherDetailsFragment" />
     </fragment>
 
     <fragment
@@ -22,7 +22,7 @@
         <argument
             android:name="forecast"
             app:argType="com.appttude.h_mal.atlas_weather.model.forecast.Forecast"
-            app:nullable="true"/>
+            app:nullable="true" />
     </fragment>
 
     <fragment
@@ -32,10 +32,10 @@
         tools:layout="@layout/fragment__two">
         <action
             android:id="@+id/action_worldFragment_to_addLocationFragment"
-            app:destination="@id/addLocationFragment"/>
+            app:destination="@id/addLocationFragment" />
         <action
             android:id="@+id/action_worldFragment_to_worldItemFragment"
-            app:destination="@id/worldItemFragment"/>
+            app:destination="@id/worldItemFragment" />
     </fragment>
     <fragment
         android:id="@+id/addLocationFragment"

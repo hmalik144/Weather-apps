@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 class MainViewModel(
     private val locationProvider: LocationProvider,
     private val repository: Repository
-): WeatherViewModel(){
+) : WeatherViewModel() {
 
     val weatherLiveData = MutableLiveData<WeatherDisplay>()
 
@@ -35,8 +35,8 @@ class MainViewModel(
     }
 
     @RequiresPermission(value = Manifest.permission.ACCESS_COARSE_LOCATION)
-    fun fetchData(){
-        if (!repository.isSearchValid(CURRENT_LOCATION)){
+    fun fetchData() {
+        if (!repository.isSearchValid(CURRENT_LOCATION)) {
             operationRefresh.postValue(Event(false))
             return
         }
@@ -48,16 +48,17 @@ class MainViewModel(
                 val latLong = locationProvider.getCurrentLatLong()
                 // Get weather from api
                 val weather = repository
-                        .getWeatherFromApi(latLong.first.toString(), latLong.second.toString())
-                val currentLocation = locationProvider.getLocationNameFromLatLong(weather.lat, weather.lon)
+                    .getWeatherFromApi(latLong.first.toString(), latLong.second.toString())
+                val currentLocation =
+                    locationProvider.getLocationNameFromLatLong(weather.lat, weather.lon)
                 val fullWeather = createFullWeather(weather, currentLocation)
                 val entityItem = EntityItem(CURRENT_LOCATION, fullWeather)
                 // Save data if not null
                 repository.saveLastSavedAt(CURRENT_LOCATION)
                 repository.saveCurrentWeatherToRoom(entityItem)
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 operationError.postValue(Event(e.message!!))
-            }finally {
+            } finally {
                 operationState.postValue(Event(false))
                 operationRefresh.postValue(Event(false))
             }

@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -15,13 +18,16 @@
             <FrameLayout style="@style/icon_frame_style">
 
                 <ImageView
-                    android:src="@drawable/somethingnew"
-                    style="@style/icon_style__further_deatils" />
+                    style="@style/icon_style__further_details"
+                    android:contentDescription="@string/temperature"
+                    android:src="@drawable/somethingnew" />
             </FrameLayout>
+
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -41,16 +47,16 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
-                                android:text="Max: " />
+                                android:text="@string/max_header" />
 
                             <TextView
                                 android:id="@+id/maxtemp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="3"
-                                android:text="85%"
-                                 />
+                                tools:text="85%" />
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
@@ -59,16 +65,17 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
-                                android:text="Average: " />
+                                android:text="@string/average_header" />
 
                             <TextView
                                 android:id="@+id/averagetemp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="3"
-                                android:text="11mm"
-                                 />
+                                tools:ignore="InOrMmUsage"
+                                tools:text="11mm" />
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
@@ -77,15 +84,15 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
-                                android:text="Min: " />
+                                android:text="@string/min_header" />
 
                             <TextView
                                 android:id="@+id/minimumtemp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="3"
-                                android:text="11mm"
-                                 />
+                                tools:ignore="InOrMmUsage"
+                                tools:text="11mm" />
                         </LinearLayout>
 
 
@@ -94,21 +101,23 @@
 
             </RelativeLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <FrameLayout
-                style="@style/icon_frame_style">
+            <FrameLayout style="@style/icon_frame_style">
 
                 <ImageView
-                    android:src="@drawable/breeze"
-                    style="@style/icon_style__further_deatils" />
+                    style="@style/icon_style__further_details"
+                    android:contentDescription="@string/image_string"
+                    android:src="@drawable/breeze" />
             </FrameLayout>
+
             <RelativeLayout
-                android:layout_weight="2"
                 android:layout_width="0dp"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="2">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -118,41 +127,42 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
                         android:layout_weight="3">
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="Wind: " />
+                            android:text="@string/wind_header" />
 
                         <TextView
                             android:id="@+id/windtext"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:text="7mph"
-                             />
+                            tools:text="7mph" />
                     </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <FrameLayout
-                style="@style/icon_frame_style">
+            <FrameLayout style="@style/icon_frame_style">
 
                 <ImageView
-                    android:src="@drawable/water_drop"
-                    style="@style/icon_style__further_deatils" />
+                    style="@style/icon_style__further_details"
+                    android:contentDescription="@string/image_string"
+                    android:src="@drawable/water_drop" />
             </FrameLayout>
+
             <RelativeLayout
-                android:layout_weight="2"
                 android:layout_width="0dp"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -172,34 +182,34 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
-                                android:text="Humidity: " />
+                                android:text="@string/humidity_header" />
 
                             <TextView
                                 android:id="@+id/humiditytext"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="3"
-                                android:text="85%"
-                                 />
+                                tools:text="85%" />
                         </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
 
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="2"
-                                    android:text="Precip: " />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                                <TextView
-                                    android:id="@+id/preciptext"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="3"
-                                    android:text="11mm"
-                                     />
-                            </LinearLayout>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="@string/precip_header" />
+
+                            <TextView
+                                android:id="@+id/preciptext"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="3"
+                                tools:ignore="InOrMmUsage"
+                                tools:text="11mm" />
+                        </LinearLayout>
 
 
                     </LinearLayout>
@@ -207,21 +217,24 @@
 
             </RelativeLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <FrameLayout
-                style="@style/icon_frame_style">
+            <FrameLayout style="@style/icon_frame_style">
 
                 <ImageView
-                    android:src="@drawable/cloud_symbol"
-                    style="@style/icon_style__further_deatils" />
+                    style="@style/icon_style__further_details"
+                    android:contentDescription="@string/image_string"
+                    android:src="@drawable/cloud_symbol" />
             </FrameLayout>
+
             <RelativeLayout
-                android:layout_weight="2"
                 android:layout_width="0dp"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -241,14 +254,14 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
-                                android:text="Cloud:" />
+                                android:text="@string/cloud_header" />
 
                             <TextView
                                 android:id="@+id/cloudtext"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="3"
-                                android:text="06:12pm" />
+                                tools:text="06:12pm" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -256,21 +269,24 @@
             </RelativeLayout>
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <FrameLayout
-                style="@style/icon_frame_style">
+            <FrameLayout style="@style/icon_frame_style">
 
                 <ImageView
-                    android:src="@drawable/sunrise"
-                    style="@style/icon_style__further_deatils" />
+                    style="@style/icon_style__further_details"
+                    android:contentDescription="@string/image_string"
+                    android:src="@drawable/sunrise" />
             </FrameLayout>
+
             <RelativeLayout
-                android:layout_weight="2"
                 android:layout_width="0dp"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -283,22 +299,21 @@
                         android:orientation="vertical">
 
                         <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
                             <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:text="UV: " />
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="@string/uv_header" />
 
                             <TextView
-                            android:id="@+id/uvtext"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="3"
-                            android:text="7"
-                             />
+                                android:id="@+id/uvtext"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="3"
+                                tools:text="7" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -309,15 +324,16 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
-                                android:text="Sunrise:" />
+                                android:text="@string/sunrise_header" />
 
                             <TextView
                                 android:id="@+id/sunrisetext"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="3"
-                                android:text="05:30am" />
+                                tools:text="05:30am" />
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
@@ -326,15 +342,14 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
-                                android:text="Sunset:" />
+                                android:text="@string/sunset_header" />
 
                             <TextView
                                 android:id="@+id/sunsettext"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="3"
-                                android:text="06:12pm"
-                                 />
+                                tools:text="06:12pm" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

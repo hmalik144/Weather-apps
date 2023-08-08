@@ -14,9 +14,9 @@ class AppClass : BaseAppClass() {
 
     override fun createNetworkModule(): WeatherApi {
         return NetworkModule().invoke<WeatherApi>(
-                NetworkConnectionInterceptor(this),
-                QueryParamsInterceptor(),
-                loggingInterceptor
+            NetworkConnectionInterceptor(this),
+            QueryParamsInterceptor(),
+            loggingInterceptor
         ) as WeatherApi
     }
 

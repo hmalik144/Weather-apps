@@ -3,11 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,13 +22,15 @@
                 android:layout_weight="2">
 
                 <ImageView
-                    android:src="@drawable/somethingnew"
-                    style="@style/icon_style__further_deatils" />
+                    style="@style/icon_style__further_details"
+                    android:src="@drawable/somethingnew" />
             </FrameLayout>
+
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -55,6 +59,7 @@
                                 android:layout_weight="3"
                                 tools:text="11" />
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
@@ -72,6 +77,7 @@
                                 android:layout_weight="3"
                                 tools:text="11" />
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
@@ -96,6 +102,7 @@
 
             </RelativeLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -107,13 +114,14 @@
                 android:layout_weight="2">
 
                 <ImageView
-                    android:src="@drawable/breeze"
-                    style="@style/icon_style__further_deatils" />
+                    style="@style/icon_style__further_details"
+                    android:src="@drawable/breeze" />
             </FrameLayout>
+
             <RelativeLayout
-                android:layout_weight="2"
                 android:layout_width="0dp"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="2">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -137,12 +145,12 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:text="7mph"
-                             />
+                            android:text="7mph" />
                     </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -154,13 +162,15 @@
                 android:layout_weight="2">
 
                 <ImageView
-                    android:src="@drawable/water_drop"
-                    style="@style/icon_style__further_deatils" />
+                    style="@style/icon_style__further_details"
+                    android:src="@drawable/water_drop" />
             </FrameLayout>
+
             <RelativeLayout
-                android:layout_weight="2"
                 android:layout_width="0dp"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -187,27 +197,26 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="3"
-                                android:text="85%"
-                                 />
+                                android:text="85%" />
                         </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
 
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="2"
-                                    android:text="Precip: " />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                                <TextView
-                                    android:id="@+id/preciptext"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="3"
-                                    android:text="11mm"
-                                     />
-                            </LinearLayout>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="Precip: " />
+
+                            <TextView
+                                android:id="@+id/preciptext"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="3"
+                                android:text="11mm" />
+                        </LinearLayout>
 
 
                     </LinearLayout>
@@ -215,6 +224,7 @@
 
             </RelativeLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -226,13 +236,15 @@
                 android:layout_weight="2">
 
                 <ImageView
-                    android:src="@drawable/sunrise"
-                    style="@style/icon_style__further_deatils" />
+                    style="@style/icon_style__further_details"
+                    android:src="@drawable/sunrise" />
             </FrameLayout>
+
             <RelativeLayout
-                android:layout_weight="2"
                 android:layout_width="0dp"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -245,22 +257,21 @@
                         android:orientation="vertical">
 
                         <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
                             <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:text="UV: " />
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="UV: " />
 
                             <TextView
-                            android:id="@+id/uvtext"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="3"
-                            android:text="7"
-                             />
+                                android:id="@+id/uvtext"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="3"
+                                android:text="7" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -278,9 +289,9 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="3"
-                                android:text="05:30am"
-                                 />
+                                android:text="05:30am" />
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
@@ -296,8 +307,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="3"
-                                android:text="06:12pm"
-                                 />
+                                android:text="06:12pm" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

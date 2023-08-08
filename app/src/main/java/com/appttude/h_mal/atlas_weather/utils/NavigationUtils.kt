@@ -6,10 +6,10 @@ import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.appttude.h_mal.atlas_weather.R
 
-fun Fragment.navigateToFragment(newFragment: Fragment){
+fun Fragment.navigateToFragment(newFragment: Fragment) {
     childFragmentManager.beginTransaction()
-            .add(R.id.container, newFragment)
-            .commit()
+        .add(R.id.container, newFragment)
+        .commit()
 }
 
 

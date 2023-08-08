@@ -7,9 +7,8 @@ import java.io.IOException
 
 abstract class ResponseUnwrap {
 
-    @Suppress("BlockingMethodInNonBlockingContext")
     suspend fun <T : Any> responseUnwrap(
-            call: suspend () -> Response<T>
+        call: suspend () -> Response<T>
     ): T {
 
         val response = call.invoke()

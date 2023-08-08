@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_further_info.*
 
 
 private const val WEATHER = "param1"
+
 /**
  * A simple [Fragment] subclass.
  * Use the [FurtherInfoFragment.newInstance] factory method to
@@ -24,7 +25,11 @@ class FurtherInfoFragment : Fragment() {
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.activity_further_info, container, false)
     }
 

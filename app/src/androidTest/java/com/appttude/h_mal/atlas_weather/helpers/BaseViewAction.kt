@@ -6,7 +6,8 @@ import androidx.test.espresso.ViewAction
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import org.hamcrest.Matcher
 
-open class BaseViewAction: ViewAction {
+@Suppress("EmptyMethod")
+open class BaseViewAction : ViewAction {
     override fun getDescription(): String? = setDescription()
 
     override fun getConstraints(): Matcher<View> = setConstraints()
@@ -15,13 +16,11 @@ open class BaseViewAction: ViewAction {
         setPerform(uiController, view)
     }
 
-    open fun setDescription(): String? {
-        return null
-    }
+    open fun setDescription(): String? = ""
 
     open fun setConstraints(): Matcher<View> {
         return isAssignableFrom(View::class.java)
     }
 
-    open fun setPerform(uiController: UiController?, view: View?) { }
+    open fun setPerform(uiController: UiController?, view: View?) {}
 }

@@ -6,10 +6,12 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.appttude.h_mal.atlas_weather.R
-import com.appttude.h_mal.monoWeather.ui.home.adapter.WeatherRecyclerAdapter
 import com.appttude.h_mal.atlas_weather.utils.navigateTo
 import com.appttude.h_mal.atlas_weather.viewmodel.WorldViewModel
-import kotlinx.android.synthetic.main.fragment_home.*
+import com.appttude.h_mal.monoWeather.ui.home.adapter.WeatherRecyclerAdapter
+import kotlinx.android.synthetic.main.fragment_home.forecast_listview
+import kotlinx.android.synthetic.main.fragment_home.progressBar
+import kotlinx.android.synthetic.main.fragment_home.swipe_refresh
 
 
 class WorldItemFragment : BaseFragment(R.layout.fragment_home) {
@@ -27,7 +29,7 @@ class WorldItemFragment : BaseFragment(R.layout.fragment_home) {
 
         val recyclerAdapter = WeatherRecyclerAdapter {
             val directions =
-                    WorldItemFragmentDirections.actionWorldItemFragmentToFurtherDetailsFragment(it)
+                WorldItemFragmentDirections.actionWorldItemFragmentToFurtherDetailsFragment(it)
             navigateTo(directions)
         }
 

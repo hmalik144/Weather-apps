@@ -2,7 +2,6 @@ package com.appttude.h_mal.atlas_weather.utils
 
 import android.app.Activity
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,10 +29,10 @@ fun Fragment.displayToast(message: String) {
 }
 
 fun ViewGroup.generateView(layoutId: Int): View = LayoutInflater
-        .from(context)
-        .inflate(layoutId, this, false)
+    .from(context)
+    .inflate(layoutId, this, false)
 
-fun ImageView.loadImage(url: String?){
+fun ImageView.loadImage(url: String?) {
     Picasso.get().load(url)
         .placeholder(R.drawable.ic_baseline_cloud_queue_24)
         .error(R.drawable.ic_baseline_cloud_off_24)

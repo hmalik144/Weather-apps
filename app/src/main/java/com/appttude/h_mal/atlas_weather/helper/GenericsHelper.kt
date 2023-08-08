@@ -1,7 +1,5 @@
 package com.appttude.h_mal.atlas_weather.helper
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import java.lang.reflect.ParameterizedType
 import kotlin.reflect.KClass
 

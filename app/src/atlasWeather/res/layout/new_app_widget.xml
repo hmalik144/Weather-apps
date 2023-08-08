@@ -76,11 +76,11 @@
 
             <TextView
                 android:id="@+id/widget_current_location"
+                style="@style/widget_light_home_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:maxWidth="180dp"
                 android:maxLines="1"
-                style="@style/widget_light_home_text"
                 tools:text="Hammersmith Bridge" />
         </LinearLayout>
 

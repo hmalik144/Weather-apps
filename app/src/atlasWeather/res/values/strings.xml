@@ -1,4 +1,7 @@
 <resources>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="min">Min:</string>
+    <string name="max">Max:</string>
+    <string name="average">Average:</string>
+    <string name="floating_action_button">Floating Action Button</string>
+    <string name="_11mm">11mm</string>
 </resources>

@@ -11,7 +11,11 @@ import com.appttude.h_mal.atlas_weather.widget.WidgetJobServiceIntent.Companion.
  */
 class NewAppWidget : AppWidgetProvider() {
 
-    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+    override fun onUpdate(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetIds: IntArray
+    ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
 
         loadWidget(context)
@@ -23,9 +27,9 @@ class NewAppWidget : AppWidgetProvider() {
         loadWidget(context)
     }
 
-    override fun onDisabled(context: Context) { }
+    override fun onDisabled(context: Context) {}
 
-    private fun loadWidget(context: Context){
+    private fun loadWidget(context: Context) {
         val mIntent = Intent(context, WidgetJobServiceIntent::class.java)
         enqueueWork(context, mIntent)
     }

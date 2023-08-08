@@ -23,7 +23,7 @@ data class Forecast(
     val sunrise: String?,
     val sunset: String?,
     val cloud: String?
-): Parcelable{
+) : Parcelable {
 
     constructor(parcel: Parcel) : this(
         parcel.readString(),

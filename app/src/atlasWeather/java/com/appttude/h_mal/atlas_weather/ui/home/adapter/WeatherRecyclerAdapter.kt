@@ -10,30 +10,33 @@ import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
 import com.appttude.h_mal.atlas_weather.utils.generateView
 
 class WeatherRecyclerAdapter(
-        val itemClick: (Forecast) -> Unit
+    val itemClick: (Forecast) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var weather: WeatherDisplay? = null
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addCurrent(current: WeatherDisplay){
+    fun addCurrent(current: WeatherDisplay) {
         weather = current
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (getDataType(viewType)){
+        return when (getDataType(viewType)) {
             is ViewType.Empty -> {
                 val emptyViewHolder = View(parent.context)
                 EmptyViewHolder(emptyViewHolder)
             }
+
             is ViewType.Current -> {
                 val viewCurrent = parent.generateView(R.layout.list_item_current)
                 ViewHolderCurrent(viewCurrent)
             }
+
             is ViewType.Forecast -> {
                 val viewForecast = parent.generateView(R.layout.list_item_forecast)
                 ViewHolderForecast(viewForecast)
             }
+
             is ViewType.Further -> {
                 val viewFurther = parent.generateView(R.layout.list_item_further)
                 ViewHolderFurtherDetails(viewFurther)
@@ -41,7 +44,7 @@ class WeatherRecyclerAdapter(
         }
     }
 
-    sealed class ViewType{
+    sealed class ViewType {
         object Empty : ViewType()
         object Current : ViewType()
         object Forecast : ViewType()
@@ -49,7 +52,7 @@ class WeatherRecyclerAdapter(
     }
 
     private fun getDataType(type: Int): ViewType {
-        return when (type){
+        return when (type) {
             0 -> ViewType.Empty
             1 -> ViewType.Current
             2 -> ViewType.Forecast
@@ -61,23 +64,25 @@ class WeatherRecyclerAdapter(
     override fun getItemViewType(position: Int): Int {
         if (weather == null) return 0
 
-        return when(position){
+        return when (position) {
             0 -> 1
-            in 1 until itemCount -2 -> 2
+            in 1 until itemCount - 2 -> 2
             itemCount - 1 -> 3
             else -> 0
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (getDataType(getItemViewType(position))){
+        when (getDataType(getItemViewType(position))) {
             is ViewType.Empty -> {
                 holder as EmptyViewHolder
             }
+
             is ViewType.Current -> {
                 val viewHolderCurrent = holder as ViewHolderCurrent
                 viewHolderCurrent.bindData(weather)
             }
+
             is ViewType.Forecast -> {
                 val viewHolderForecast = holder as ViewHolderForecast
 
@@ -88,6 +93,7 @@ class WeatherRecyclerAdapter(
                     }
                 }
             }
+
             is ViewType.Further -> {
                 val viewHolderCurrent = holder as ViewHolderFurtherDetails
                 viewHolderCurrent.bindData(weather)
@@ -98,7 +104,7 @@ class WeatherRecyclerAdapter(
 
     override fun getItemCount(): Int {
         if (weather == null) return 0
-        return 2 + (weather?.forecast?.size?: 0)
+        return 2 + (weather?.forecast?.size ?: 0)
     }
 
 }

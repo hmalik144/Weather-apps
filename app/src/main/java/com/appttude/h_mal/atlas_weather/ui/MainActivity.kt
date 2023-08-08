@@ -1,8 +1,6 @@
 package com.appttude.h_mal.atlas_weather.ui
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -12,7 +10,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.appttude.h_mal.atlas_weather.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_main_navigation.*
+import kotlinx.android.synthetic.main.activity_main_navigation.toolbar
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         navHost = supportFragmentManager
-                .findFragmentById(R.id.container) as NavHostFragment
+            .findFragmentById(R.id.container) as NavHostFragment
         val navController = navHost.navController
         navController.setGraph(R.navigation.main_navigation)
 

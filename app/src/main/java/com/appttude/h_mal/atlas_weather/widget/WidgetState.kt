@@ -9,9 +9,9 @@ enum class WidgetState {
 
     companion object {
         fun getWidgetState(
-                locationAvailable: Boolean,
-                screenOn: Boolean,
-                connectionAvailable: Boolean
+            locationAvailable: Boolean,
+            screenOn: Boolean,
+            connectionAvailable: Boolean
         ): WidgetState {
             return if (!locationAvailable)
                 NO_LOCATION

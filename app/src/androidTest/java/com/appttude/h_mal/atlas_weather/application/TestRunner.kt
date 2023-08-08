@@ -6,14 +6,14 @@ import androidx.test.runner.AndroidJUnitRunner
 
 class TestRunner : AndroidJUnitRunner() {
     @Throws(
-            InstantiationException::class,
-            IllegalAccessException::class,
-            ClassNotFoundException::class
+        InstantiationException::class,
+        IllegalAccessException::class,
+        ClassNotFoundException::class
     )
     override fun newApplication(
-            cl: ClassLoader?,
-            className: String?,
-            context: Context?
+        cl: ClassLoader?,
+        className: String?,
+        context: Context?
     ): Application {
         return super.newApplication(cl, TestAppClass::class.java.name, context)
     }

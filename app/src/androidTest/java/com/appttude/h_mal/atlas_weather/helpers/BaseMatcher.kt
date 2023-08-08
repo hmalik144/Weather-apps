@@ -4,7 +4,7 @@ import android.view.View
 import org.hamcrest.BaseMatcher
 import org.hamcrest.Description
 
-class BaseMatcher: BaseMatcher<View>() {
+class BaseMatcher : BaseMatcher<View>() {
     override fun describeTo(description: Description?) {
         TODO("Not yet implemented")
     }

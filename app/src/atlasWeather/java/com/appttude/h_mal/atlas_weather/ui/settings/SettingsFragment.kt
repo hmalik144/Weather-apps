@@ -34,11 +34,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 setupNotificationBroadcaster(requireContext())
             }
 
-            if (key == "widget_black_background"){
+            if (key == "widget_black_background") {
                 val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE)
                 val widgetManager = AppWidgetManager.getInstance(requireContext())
                 val ids =
-                    widgetManager.getAppWidgetIds(ComponentName(requireContext(), NewAppWidget::class.java))
+                    widgetManager.getAppWidgetIds(
+                        ComponentName(
+                            requireContext(),
+                            NewAppWidget::class.java
+                        )
+                    )
                 AppWidgetManager.getInstance(requireContext())
                     .notifyAppWidgetViewDataChanged(ids, R.id.whole_widget_view)
                 intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
@@ -50,12 +55,19 @@ class SettingsFragment : PreferenceFragmentCompat() {
     fun setupNotificationBroadcaster(context: Context) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val notificationIntent = Intent(context, NotificationReceiver::class.java)
-        val broadcast = PendingIntent.getBroadcast(context, 100, notificationIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT)
+        val broadcast = PendingIntent.getBroadcast(
+            context, 100, notificationIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
         val cal: Calendar = Calendar.getInstance()
         cal.set(Calendar.HOUR_OF_DAY, 6)
         cal.set(Calendar.MINUTE, 8)
         cal.set(Calendar.SECOND, 5)
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.timeInMillis, AlarmManager.INTERVAL_DAY, broadcast)
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            cal.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            broadcast
+        )
     }
 }

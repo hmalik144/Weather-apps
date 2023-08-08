@@ -11,22 +11,23 @@ import com.appttude.h_mal.atlas_weather.utils.generateView
 import com.appttude.h_mal.atlas_weather.utils.loadImage
 
 class WorldRecyclerAdapter(
-        val itemClick: (WeatherDisplay) -> Unit
+    val itemClick: (WeatherDisplay) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var weather: MutableList<WeatherDisplay> = mutableListOf()
 
-    fun addCurrent(current: List<WeatherDisplay>){
+    fun addCurrent(current: List<WeatherDisplay>) {
         weather.clear()
         weather.addAll(current)
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (getDataType(viewType)){
+        return when (getDataType(viewType)) {
             is ViewType.Empty -> {
                 val emptyViewHolder = View(parent.context)
                 EmptyViewHolder(emptyViewHolder)
             }
+
             is ViewType.Current -> {
                 val viewCurrent = parent.generateView(R.layout.db_list_item)
                 WorldHolderCurrent(viewCurrent)
@@ -34,13 +35,13 @@ class WorldRecyclerAdapter(
         }
     }
 
-    sealed class ViewType{
+    sealed class ViewType {
         object Empty : ViewType()
         object Current : ViewType()
     }
 
-    private fun getDataType(type: Int): ViewType{
-        return when (type){
+    private fun getDataType(type: Int): ViewType {
+        return when (type) {
             0 -> ViewType.Empty
             1 -> ViewType.Current
             else -> ViewType.Empty
@@ -52,11 +53,12 @@ class WorldRecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (getDataType(getItemViewType(position))){
+        when (getDataType(getItemViewType(position))) {
             is ViewType.Empty -> {
                 holder as EmptyViewHolder
 
             }
+
             is ViewType.Current -> {
                 val viewHolderCurrent = holder as WorldHolderCurrent
                 viewHolderCurrent.bindData(weather[position])
@@ -79,7 +81,7 @@ class WorldRecyclerAdapter(
         var avgTempTV: TextView = listItemView.findViewById(R.id.db_main_temp)
 //        var tempUnit: TextView = listItemView.findViewById(R.id.db_minor_temp)
 
-        fun bindData(weather: WeatherDisplay?){
+        fun bindData(weather: WeatherDisplay?) {
             locationTV.text = weather?.location
             conditionTV.text = weather?.description
             weatherIV.loadImage(weather?.iconURL)
@@ -90,7 +92,6 @@ class WorldRecyclerAdapter(
     }
 
 
-
-    internal class EmptyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+    internal class EmptyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 }

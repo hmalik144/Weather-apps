@@ -5,11 +5,11 @@ import com.appttude.h_mal.atlas_weather.data.network.response.forecast.WeatherRe
 import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
 import com.appttude.h_mal.atlas_weather.model.weather.FullWeather
 
-abstract class WeatherViewModel : ViewModel(){
+abstract class WeatherViewModel : ViewModel() {
 
     fun createFullWeather(
-            weather: WeatherResponse,
-            location: String
+        weather: WeatherResponse,
+        location: String
     ): FullWeather {
         return FullWeather(weather).apply {
             temperatureUnit = "°C"
@@ -18,9 +18,9 @@ abstract class WeatherViewModel : ViewModel(){
     }
 
     fun createWeatherEntity(
-            locationId: String,
-            weather: FullWeather
-    ): EntityItem{
+        locationId: String,
+        weather: FullWeather
+    ): EntityItem {
         weather.apply {
             locationString = locationId
         }

@@ -10,12 +10,14 @@ class ViewHolderFurtherDetails(itemView: View) : RecyclerView.ViewHolder(itemVie
 
     var grid: GridView = itemView.findViewById(R.id.grid_mono)
 
-    fun bindData(weather: WeatherDisplay?){
-        grid.adapter = GridAdapter(itemView.context, listOf<Pair<Int, String>>(
-                Pair(R.drawable.breeze,"${weather?.windSpeed ?: "0"} km"),
-                Pair(R.drawable.water_drop,"${weather?.precipitation ?: "0"} %" ),
-                Pair(R.drawable.cloud_symbol,"${weather?.clouds ?: "0"} %" )
-        ))
+    fun bindData(weather: WeatherDisplay?) {
+        grid.adapter = GridAdapter(
+            itemView.context, listOf<Pair<Int, String>>(
+                Pair(R.drawable.breeze, "${weather?.windSpeed ?: "0"} km"),
+                Pair(R.drawable.water_drop, "${weather?.precipitation ?: "0"} %"),
+                Pair(R.drawable.cloud_symbol, "${weather?.clouds ?: "0"} %")
+            )
+        )
 
     }
 }

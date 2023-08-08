@@ -1,3 +1,5 @@
+@file:Suppress("EmptyMethod")
+
 package com.appttude.h_mal.atlas_weather
 
 import android.Manifest
@@ -23,6 +25,7 @@ import org.junit.Rule
 import tools.fastlane.screengrab.Screengrab
 import tools.fastlane.screengrab.UiAutomatorScreenshotStrategy
 
+@Suppress("EmptyMethod")
 open class BaseTest<A : Activity>(
     private val activity: Class<A>,
     private val intentBundle: Bundle? = null,
@@ -47,7 +50,8 @@ open class BaseTest<A : Activity>(
             startIntent.replaceExtras(intentBundle)
         }
 
-        testApp = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestAppClass
+        testApp =
+            InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestAppClass
         runBlocking {
             beforeLaunch()
         }

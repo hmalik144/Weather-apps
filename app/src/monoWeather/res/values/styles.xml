@@ -14,9 +14,11 @@
         <item name="android:textColorHint">@color/colorAccent</item>
         <item name="android:editTextColor">@color/colorAccent</item>
         <item name="materialAlertDialogTheme">@style/YourAlertDialogTheme</item>
-        <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
+        <item name="bottomNavigationStyle">
+            @style/Widget.MaterialComponents.BottomNavigationView.Colored
+        </item>
         <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
-<!--        <item name="fontFamily">@font/font_family</item>-->
+        <!--        <item name="fontFamily">@font/font_family</item>-->
     </style>
 
     <style name="YourAlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
@@ -26,7 +28,7 @@
     <style name="TitleTextStyle" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="tint">@color/colorPrimaryDark</item>
-<!--        <item name="android:textSize">20sp</item>-->
+        <!--        <item name="android:textSize">20sp</item>-->
     </style>
 
     <style name="Widget.App.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
@@ -50,12 +52,6 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-    </style>
-
-
-    <style name="TextAppearance.AppCompat.Widget.ActionBar.Title" parent="@android:style/TextAppearance">
-<!--        <item name="android:fontFamily">@font/archeologicaps</item>-->
-        <!--<item name="android:textColor">@color/colour_five</item>-->
     </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

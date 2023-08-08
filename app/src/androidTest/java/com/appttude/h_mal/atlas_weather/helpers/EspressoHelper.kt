@@ -36,7 +36,7 @@ object EspressoHelper {
                 var tries = 0
                 val childViews: Iterable<View> = TreeIterables.breadthFirstViewTraversal(view)
 
-                // Look for the match in the tree of childviews
+                // Look for the match in the tree of child views
                 childViews.forEach {
                     tries++
                     if (viewMatcher.matches(it)) {

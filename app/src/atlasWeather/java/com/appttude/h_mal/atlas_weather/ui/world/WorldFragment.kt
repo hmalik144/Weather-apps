@@ -1,22 +1,17 @@
 package com.appttude.h_mal.atlas_weather.ui.world
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.utils.navigateTo
-import com.appttude.h_mal.atlas_weather.viewmodel.ApplicationViewModelFactory
 import com.appttude.h_mal.atlas_weather.viewmodel.WorldViewModel
 import com.appttude.h_mal.monoWeather.ui.BaseFragment
-import kotlinx.android.synthetic.main.fragment_add_location.*
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.kodein
-import org.kodein.di.generic.instance
+import kotlinx.android.synthetic.atlasWeather.fragment_add_location.floatingActionButton
+import kotlinx.android.synthetic.atlasWeather.fragment_add_location.progressBar2
+import kotlinx.android.synthetic.atlasWeather.fragment_add_location.world_recycler
 
 
 /**
@@ -29,9 +24,9 @@ class WorldFragment : BaseFragment(R.layout.fragment_add_location) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerAdapter = WorldRecyclerAdapter{
+        val recyclerAdapter = WorldRecyclerAdapter {
             val direction =
-                    WorldFragmentDirections.actionWorldFragmentToWorldItemFragment(it)
+                WorldFragmentDirections.actionWorldFragmentToWorldItemFragment(it)
             navigateTo(direction)
         }
 
@@ -44,7 +39,7 @@ class WorldFragment : BaseFragment(R.layout.fragment_add_location) {
             recyclerAdapter.addCurrent(it)
         }
 
-        floatingActionButton.setOnClickListener{
+        floatingActionButton.setOnClickListener {
             navigateTo(R.id.action_worldFragment_to_addLocationFragment)
         }
 

@@ -21,8 +21,10 @@ class WorldItemFragment : Fragment() {
         param1 = WorldItemFragmentArgs.fromBundle(requireArguments()).weatherDisplay
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
@@ -32,7 +34,7 @@ class WorldItemFragment : Fragment() {
 
         val recyclerAdapter = WeatherRecyclerAdapter {
             val directions =
-                    WorldItemFragmentDirections.actionWorldItemFragmentToFurtherDetailsFragment(it)
+                WorldItemFragmentDirections.actionWorldItemFragmentToFurtherDetailsFragment(it)
             navigateTo(directions)
         }
 

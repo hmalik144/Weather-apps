@@ -25,10 +25,10 @@ class TestAppClass : BaseAppClass() {
 
     override fun createNetworkModule(): WeatherApi {
         return NetworkModule().invoke<WeatherApi>(
-                mockingNetworkInterceptor,
-                NetworkConnectionInterceptor(this),
-                QueryParamsInterceptor(),
-                loggingInterceptor
+            mockingNetworkInterceptor,
+            NetworkConnectionInterceptor(this),
+            QueryParamsInterceptor(),
+            loggingInterceptor
         ) as WeatherApi
     }
 
@@ -36,8 +36,8 @@ class TestAppClass : BaseAppClass() {
 
     override fun createRoomDatabase(): AppDatabase {
         return Room.inMemoryDatabaseBuilder(this, AppDatabase::class.java)
-                .addTypeConverter(Converter(this))
-                .build()
+            .addTypeConverter(Converter(this))
+            .build()
     }
 
     fun stubUrl(url: String, rawPath: String) {

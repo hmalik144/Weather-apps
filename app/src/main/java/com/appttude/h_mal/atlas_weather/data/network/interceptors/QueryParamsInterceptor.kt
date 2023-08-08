@@ -8,7 +8,7 @@ import okhttp3.Response
 /**
  * Interceptor used to add default query parameters to api calls
  */
-class QueryParamsInterceptor : Interceptor{
+class QueryParamsInterceptor : Interceptor {
 
     val id = BuildConfig.ParamOne
 
@@ -16,8 +16,8 @@ class QueryParamsInterceptor : Interceptor{
         val original = chain.request()
 
         val url = original.url.newBuilder()
-                .addQueryParameter("appid", id)
-                .build()
+            .addQueryParameter("appid", id)
+            .build()
 
         // Request customization: add request headers
         val requestBuilder = original.newBuilder().url(url)

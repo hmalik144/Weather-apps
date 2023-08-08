@@ -20,8 +20,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginRight="6dp"
-            android:tint="@color/colorAccent"
-            android:src="@drawable/location_flag" />
+            android:src="@drawable/location_flag"
+            android:tint="@color/colorAccent" />
 
         <TextView
             android:id="@+id/location_main_4"
@@ -58,9 +58,9 @@
         android:textSize="30sp" />
 
     <LinearLayout
-        android:layout_below="@id/location_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/location_holder"
         android:orientation="horizontal">
 
         <View
@@ -84,8 +84,7 @@
             android:layout_gravity="center"
             android:layout_marginRight="15dp"
             android:layout_weight="6"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/condition_main_4"

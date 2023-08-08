@@ -8,9 +8,9 @@ import androidx.room.TypeConverters
 import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
 
 @Database(
-        entities = [EntityItem::class],
-        version = 1,
-        exportSchema = false
+    entities = [EntityItem::class],
+    version = 1,
+    exportSchema = false
 )
 @TypeConverters(Converter::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -31,12 +31,12 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         private fun buildDatabase(context: Context) =
-                Room.databaseBuilder(
-                        context.applicationContext,
-                        AppDatabase::class.java,
-                        "MyDatabase.db"
-                ).addTypeConverter(Converter(context))
-                        .build()
+            Room.databaseBuilder(
+                context.applicationContext,
+                AppDatabase::class.java,
+                "MyDatabase.db"
+            ).addTypeConverter(Converter(context))
+                .build()
     }
 }
 

@@ -6,31 +6,32 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 inline fun <reified T> parcelableCreator(
-        crossinline create: (Parcel) -> T) =
-        object : Parcelable.Creator<T> {
-            override fun createFromParcel(source: Parcel) = create(source)
-            override fun newArray(size: Int) = arrayOfNulls<T>(size)
-        }
+    crossinline create: (Parcel) -> T
+) =
+    object : Parcelable.Creator<T> {
+        override fun createFromParcel(source: Parcel) = create(source)
+        override fun newArray(size: Int) = arrayOfNulls<T>(size)
+    }
 
 suspend fun <T : Any?> tryOrNullSuspended(
-        call: suspend () -> T?
+    call: suspend () -> T?
 ): T? {
 
     return try {
         call.invoke()
-    }catch (e: Exception){
+    } catch (e: Exception) {
         e.printStackTrace()
         null
     }
 }
 
 fun <T : Any?> tryOrNull(
-        call: () -> T?
+    call: () -> T?
 ): T? {
 
     return try {
         call.invoke()
-    }catch (e: Exception){
+    } catch (e: Exception) {
         e.printStackTrace()
         null
     }
@@ -46,9 +47,9 @@ fun <T : Any?> tryOrNull(
  *
  *      Both equal 2.
  */
-suspend fun <T: Any> createSuspend(
-        call: () -> T?
-): T?{
+suspend fun <T : Any> createSuspend(
+    call: () -> T?
+): T? {
 
     return suspendCoroutine { cont ->
         cont.resume(call())

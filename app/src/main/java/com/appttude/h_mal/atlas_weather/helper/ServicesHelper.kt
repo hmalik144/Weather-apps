@@ -26,9 +26,9 @@ import kotlin.coroutines.suspendCoroutine
 
 
 class ServicesHelper(
-        private val repository: Repository,
-        private val settingsRepository: SettingsRepository,
-        private val locationProvider: LocationProvider
+    private val repository: Repository,
+    private val settingsRepository: SettingsRepository,
+    private val locationProvider: LocationProvider
 ) {
 
     @RequiresPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -40,8 +40,9 @@ class ServicesHelper(
             val latLong = locationProvider.getCurrentLatLong()
             // Get weather from api
             val weather = repository
-                    .getWeatherFromApi(latLong.first.toString(), latLong.second.toString())
-            val currentLocation = locationProvider.getLocationNameFromLatLong(weather.lat, weather.lon)
+                .getWeatherFromApi(latLong.first.toString(), latLong.second.toString())
+            val currentLocation =
+                locationProvider.getLocationNameFromLatLong(weather.lat, weather.lon)
             val fullWeather = FullWeather(weather).apply {
                 temperatureUnit = "°C"
                 locationString = currentLocation
@@ -61,7 +62,7 @@ class ServicesHelper(
         return try {
             val result = repository.loadSingleCurrentWeatherFromRoom(CURRENT_LOCATION)
             val epoc = System.currentTimeMillis()
-            
+
             result.weather.let {
                 val bitmap = it.current?.icon
                 val location = locationProvider.getLocationNameFromLatLong(it.lat, it.lon)
