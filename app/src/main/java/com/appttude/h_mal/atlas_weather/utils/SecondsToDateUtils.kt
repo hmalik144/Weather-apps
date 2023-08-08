@@ -1,13 +1,13 @@
 package com.appttude.h_mal.atlas_weather.utils
 
 
-import android.os.Build
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.OffsetTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 fun Int.toDayString(): String {
     return try {
@@ -46,13 +46,8 @@ fun Int.toSmallDayName(): String {
 
 fun Int?.toTime(): String? {
     return this?.makeMilliseconds()?.let {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            OffsetTime.ofInstant(Instant.ofEpochMilli(it), ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("HH:mm"))
-        } else {
-            val date = Date(it)
-            val format = SimpleDateFormat("HH:mm", Locale.getDefault())
-            format.format(date)
-        }
+        OffsetTime.ofInstant(Instant.ofEpochMilli(it), ZoneOffset.UTC)
+            .format(DateTimeFormatter.ofPattern("HH:mm"))
     }
 }
 

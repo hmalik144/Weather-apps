@@ -14,7 +14,7 @@ internal class ViewHolderFurtherDetails(itemView: View) : RecyclerView.ViewHolde
     var humidity: TextView = itemView.findViewById(R.id.humidity_)
     var clouds: TextView = itemView.findViewById(R.id.clouds_)
 
-    fun bindData(weather: WeatherDisplay?){
+    fun bindData(weather: WeatherDisplay?) {
         windSpeed.text = weather?.windSpeed
         windDirection.text = weather?.windDirection
         precipitation.text = weather?.precipitation

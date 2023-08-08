@@ -1,10 +1,11 @@
 package com.appttude.h_mal.monoWeather.tests
 
 
-import com.appttude.h_mal.monoWeather.robot.homeScreen
-import com.appttude.h_mal.atlas_weather.utils.Stubs
+00import com.appttude.h_mal.atlas_weather.utils.Stubs
 import com.appttude.h_mal.monoWeather.MonoBaseTest
+import com.appttude.h_mal.monoWeather.robot.homeScreen
 import org.junit.Test
+import java.io.IOException
 
 class HomePageUITest : MonoBaseTest() {
 
@@ -18,5 +19,6 @@ class HomePageUITest : MonoBaseTest() {
             verifyCurrentTemperature(2)
             verifyCurrentLocation("Mock Location")
         }
+        throw IOException("sdfsdfasdfasdfasdf")
     }
 }

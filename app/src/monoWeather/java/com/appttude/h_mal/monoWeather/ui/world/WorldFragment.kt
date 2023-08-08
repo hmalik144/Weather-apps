@@ -6,14 +6,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.appttude.h_mal.atlas_weather.R
-import com.appttude.h_mal.monoWeather.ui.BaseFragment
-import com.appttude.h_mal.monoWeather.ui.world.WorldFragmentDirections.actionWorldFragmentToWorldItemFragment
 import com.appttude.h_mal.atlas_weather.utils.navigateTo
 import com.appttude.h_mal.atlas_weather.viewmodel.WorldViewModel
+import com.appttude.h_mal.monoWeather.ui.BaseFragment
+import com.appttude.h_mal.monoWeather.ui.world.WorldFragmentDirections.actionWorldFragmentToWorldItemFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.fragment__two.*
-import kotlinx.android.synthetic.main.fragment_add_location.floatingActionButton
-import kotlinx.android.synthetic.main.fragment_add_location.world_recycler
+import kotlinx.android.synthetic.main.fragment__two.floatingActionButton
+import kotlinx.android.synthetic.main.fragment__two.progressBar
+import kotlinx.android.synthetic.main.fragment__two.world_recycler
 
 
 /**
@@ -34,18 +34,18 @@ class WorldFragment : BaseFragment(R.layout.fragment__two) {
 
         val recyclerAdapter = WorldRecyclerAdapter({
             val direction =
-                    actionWorldFragmentToWorldItemFragment(it.location)
+                actionWorldFragmentToWorldItemFragment(it.location)
             navigateTo(direction)
-        }){
+        }) {
             MaterialAlertDialogBuilder(requireContext())
-                    .setTitle("Delete weather?")
-                    .setMessage("Are you sure want to delete $it?")
-                    .setPositiveButton("Yes"){ _, _ ->
-                        viewModel.deleteLocation(it)
-                    }
-                    .setNegativeButton("No", null)
-                    .create()
-                    .show()
+                .setTitle("Delete weather?")
+                .setMessage("Are you sure want to delete $it?")
+                .setPositiveButton("Yes") { _, _ ->
+                    viewModel.deleteLocation(it)
+                }
+                .setNegativeButton("No", null)
+                .create()
+                .show()
         }
 
         world_recycler.apply {
@@ -57,7 +57,7 @@ class WorldFragment : BaseFragment(R.layout.fragment__two) {
             recyclerAdapter.addCurrent(it)
         }
 
-        floatingActionButton.setOnClickListener{
+        floatingActionButton.setOnClickListener {
             navigateTo(R.id.action_worldFragment_to_addLocationFragment)
         }
 

@@ -5,35 +5,37 @@
     android:layout_height="match_parent">
 
     <ImageView
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.45"
         android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/image_string"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45"
         app:srcCompat="@drawable/ic_baseline_cloud_off_24" />
 
     <TextView
         android:id="@+id/header_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/icon"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="@string/retrieve_warning"
         android:textSize="16sp"
-        android:text="Unable to retrieve weather"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/icon" />
+
     <TextView
         android:id="@+id/body_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/header_text"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:gravity="center"
-        app:layout_constraintWidth_percent="0.65"
         android:layout_marginTop="6dp"
+        android:gravity="center"
+        android:text="@string/empty_retrieve_warning"
         android:textSize="12sp"
-        android:text="Make sure you are connected to the internet and have location permissions granted"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_text"
+        app:layout_constraintWidth_percent="0.65" />
 </androidx.constraintlayout.widget.ConstraintLayout>

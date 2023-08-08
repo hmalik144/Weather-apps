@@ -34,7 +34,11 @@ class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         kodein.baseKodein = (context.applicationContext as KodeinAware).kodein
 
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             context.displayToast("Please enable location permissions")
             return
         }
@@ -52,22 +56,17 @@ class NotificationReceiver : BroadcastReceiver() {
 
         val pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Notification.Builder(context, NOTIFICATION_CHANNEL_ID)
-        } else {
-            Notification.Builder(context)
-        }
+        val builder = Notification.Builder(context, NOTIFICATION_CHANNEL_ID)
 
         val notification = builder.setContentTitle("Weather App")
-                .setContentText(weather.current?.main + "°C")
-                .setSmallIcon(R.mipmap.ic_notif) //change icon
+            .setContentText(weather.current?.main + "°C")
+            .setSmallIcon(R.mipmap.ic_notif) //change icon
 //                .setLargeIcon(Icon.createWithResource(context, getImageResource(forecastItem.getCurrentForecast().getIconURL(), context)))
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent).build()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            builder.setChannelId(NOTIFICATION_CHANNEL_ID)
-        }
-        val notificationManager = context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent).build()
+        builder.setChannelId(NOTIFICATION_CHANNEL_ID)
+        val notificationManager =
+            context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(0, notification)
     }
 }

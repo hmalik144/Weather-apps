@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 
 const val ALL_LOADED = "all_loaded"
+
 class WorldViewModel(
     private val locationProvider: LocationProvider,
     private val repository: Repository
@@ -40,7 +41,7 @@ class WorldViewModel(
         }
     }
 
-    fun getSingleLocation(locationName: String){
+    fun getSingleLocation(locationName: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val entity = repository.getSingleWeather(locationName)
             val item = WeatherDisplay(entity)
@@ -49,7 +50,7 @@ class WorldViewModel(
     }
 
     fun fetchDataForSingleLocation(locationName: String) {
-        if (!repository.isSearchValid(locationName)){
+        if (!repository.isSearchValid(locationName)) {
             operationRefresh.postValue(Event(false))
             return
         }
@@ -72,7 +73,7 @@ class WorldViewModel(
         CoroutineScope(Dispatchers.IO).launch {
             operationState.postValue(Event(true))
             // Check if location exists
-            if (repository.getSavedLocations().contains(locationName)){
+            if (repository.getSavedLocations().contains(locationName)) {
                 operationError.postValue(Event("$locationName already exists"))
                 return@launch
             }
@@ -82,8 +83,12 @@ class WorldViewModel(
                 val entityItem = createWeatherEntity(locationName)
 
                 // retrieved location name
-                val retrievedLocation = locationProvider.getLocationNameFromLatLong(entityItem.weather.lat, entityItem.weather.lon, LocationType.City)
-                if (repository.getSavedLocations().contains(retrievedLocation)){
+                val retrievedLocation = locationProvider.getLocationNameFromLatLong(
+                    entityItem.weather.lat,
+                    entityItem.weather.lon,
+                    LocationType.City
+                )
+                if (repository.getSavedLocations().contains(retrievedLocation)) {
                     operationError.postValue(Event("$retrievedLocation already exists"))
                     return@launch
                 }
@@ -101,7 +106,7 @@ class WorldViewModel(
     }
 
     fun fetchAllLocations() {
-        if (!repository.isSearchValid(ALL_LOADED)){
+        if (!repository.isSearchValid(ALL_LOADED)) {
             operationRefresh.postValue(Event(false))
             return
         }
@@ -117,7 +122,8 @@ class WorldViewModel(
                         val entity = createWeatherEntity(locationName)
                         list.add(entity)
                         repository.saveLastSavedAt(locationName)
-                    } catch (e: IOException) { }
+                    } catch (e: IOException) {
+                    }
                 }
                 repository.saveWeatherListToRoom(list)
                 repository.saveLastSavedAt(ALL_LOADED)
@@ -129,12 +135,12 @@ class WorldViewModel(
         }
     }
 
-    fun deleteLocation(locationName: String){
+    fun deleteLocation(locationName: String) {
         CoroutineScope(Dispatchers.IO).launch {
             operationState.postValue(Event(true))
             try {
                 val success = repository.deleteSavedWeatherEntry(locationName)
-                if (!success){
+                if (!success) {
                     operationError.postValue(Event("Failed to delete"))
                 }
             } catch (e: IOException) {
@@ -148,7 +154,7 @@ class WorldViewModel(
     private suspend fun getWeather(locationName: String): WeatherResponse {
         // Get location
         val latLong =
-                locationProvider.getLatLongFromLocationName(locationName)
+            locationProvider.getLatLongFromLocationName(locationName)
         val lat = latLong.first
         val lon = latLong.second
 
@@ -158,8 +164,9 @@ class WorldViewModel(
 
     private suspend fun createWeatherEntity(locationName: String): EntityItem {
         val weather = getWeather(locationName)
-        val location = locationProvider.getLocationNameFromLatLong(weather.lat, weather.lon, LocationType.City)
+        val location =
+            locationProvider.getLocationNameFromLatLong(weather.lat, weather.lon, LocationType.City)
         val fullWeather = createFullWeather(weather, location)
-        return createWeatherEntity(location,fullWeather)
+        return createWeatherEntity(location, fullWeather)
     }
 }

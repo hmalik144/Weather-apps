@@ -14,11 +14,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.appttude.h_mal.atlas_weather.application.LOCATION_PERMISSION_REQUEST
-import com.appttude.h_mal.atlas_weather.viewmodel.ApplicationViewModelFactory
 import com.appttude.h_mal.atlas_weather.utils.Event
 import com.appttude.h_mal.atlas_weather.utils.displayToast
 import com.appttude.h_mal.atlas_weather.utils.hide
 import com.appttude.h_mal.atlas_weather.utils.show
+import com.appttude.h_mal.atlas_weather.viewmodel.ApplicationViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,6 +27,7 @@ import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 import kotlin.properties.Delegates
 
+@Suppress("EmptyMethod", "EmptyMethod")
 abstract class BaseFragment(@LayoutRes contentLayoutId: Int) : Fragment(contentLayoutId),
     KodeinAware {
 

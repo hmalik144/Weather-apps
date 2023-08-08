@@ -6,14 +6,14 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 
-interface WeatherApi: Api {
+interface WeatherApi : Api {
 
     @GET("onecall?")
     suspend fun getFromApi(
-            @Query("lat") query: String,
-            @Query("lon") lon: String,
-            @Query("exclude") exclude: String = "minutely",
-            @Query("units") units: String = "metric"
+        @Query("lat") query: String,
+        @Query("lon") lon: String,
+        @Query("exclude") exclude: String = "minutely",
+        @Query("units") units: String = "metric"
     ): Response<WeatherResponse>
 
 }

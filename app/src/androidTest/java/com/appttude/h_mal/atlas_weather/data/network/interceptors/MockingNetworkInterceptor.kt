@@ -8,7 +8,7 @@ import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 
 class MockingNetworkInterceptor(
-        private val idlingResource: CountingIdlingResource
+    private val idlingResource: CountingIdlingResource
 ) : Interceptor {
 
     private var feedMap: MutableMap<String, String> = mutableMapOf()
@@ -27,11 +27,11 @@ class MockingNetworkInterceptor(
             val body = jsonPath.toResponseBody("application/json".toMediaType())
 
             val chainResponseBuilder = Response.Builder()
-                    .code(200)
-                    .protocol(Protocol.HTTP_1_1)
-                    .request(original)
-                    .message("OK")
-                    .body(body)
+                .code(200)
+                .protocol(Protocol.HTTP_1_1)
+                .request(original)
+                .message("OK")
+                .body(body)
             idlingResource.decrement()
             return chainResponseBuilder.build()
         }

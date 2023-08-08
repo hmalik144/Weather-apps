@@ -10,7 +10,7 @@ data class Hour(
     val dt: Int? = null,
     val temp: Double? = null,
     val icon: String? = null
-): Parcelable {
+) : Parcelable {
 
     constructor(parcel: Parcel) : this(
         parcel.readValue(Int::class.java.classLoader) as? Int,

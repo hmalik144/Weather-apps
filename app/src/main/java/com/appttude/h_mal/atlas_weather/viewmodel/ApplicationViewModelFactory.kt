@@ -13,10 +13,18 @@ class ApplicationViewModelFactory(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        with(modelClass){
-            return when{
-                isAssignableFrom(WorldViewModel::class.java) -> WorldViewModel(locationProvider, repository)
-                isAssignableFrom(MainViewModel::class.java) -> MainViewModel(locationProvider, repository)
+        with(modelClass) {
+            return when {
+                isAssignableFrom(WorldViewModel::class.java) -> WorldViewModel(
+                    locationProvider,
+                    repository
+                )
+
+                isAssignableFrom(MainViewModel::class.java) -> MainViewModel(
+                    locationProvider,
+                    repository
+                )
+
                 else -> throw IllegalArgumentException("Unknown ViewModel class")
             } as T
         }

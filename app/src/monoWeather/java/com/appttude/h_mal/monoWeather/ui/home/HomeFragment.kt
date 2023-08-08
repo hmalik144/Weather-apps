@@ -13,11 +13,11 @@ import androidx.navigation.ui.onNavDestinationSelected
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.application.LOCATION_PERMISSION_REQUEST
 import com.appttude.h_mal.atlas_weather.model.forecast.Forecast
+import com.appttude.h_mal.atlas_weather.utils.navigateTo
+import com.appttude.h_mal.atlas_weather.viewmodel.MainViewModel
 import com.appttude.h_mal.monoWeather.dialog.PermissionsDeclarationDialog
 import com.appttude.h_mal.monoWeather.ui.BaseFragment
 import com.appttude.h_mal.monoWeather.ui.home.adapter.WeatherRecyclerAdapter
-import com.appttude.h_mal.atlas_weather.utils.navigateTo
-import com.appttude.h_mal.atlas_weather.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
@@ -81,9 +81,9 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         viewModel.fetchData()
     }
 
-    private fun navigateToFurtherDetails(forecast: Forecast){
+    private fun navigateToFurtherDetails(forecast: Forecast) {
         val directions = HomeFragmentDirections
-                .actionHomeFragmentToFurtherDetailsFragment(forecast)
+            .actionHomeFragmentToFurtherDetailsFragment(forecast)
         navigateTo(directions)
     }
 

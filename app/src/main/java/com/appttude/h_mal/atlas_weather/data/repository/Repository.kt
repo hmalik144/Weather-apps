@@ -10,7 +10,7 @@ interface Repository {
     suspend fun saveCurrentWeatherToRoom(entityItem: EntityItem)
     suspend fun saveWeatherListToRoom(list: List<EntityItem>)
     fun loadRoomWeatherLiveData(): LiveData<List<EntityItem>>
-    suspend fun loadWeatherList() : List<String>
+    suspend fun loadWeatherList(): List<String>
     fun loadCurrentWeatherFromRoom(id: String): LiveData<EntityItem>
     suspend fun loadSingleCurrentWeatherFromRoom(id: String): EntityItem
     fun isSearchValid(locationName: String): Boolean

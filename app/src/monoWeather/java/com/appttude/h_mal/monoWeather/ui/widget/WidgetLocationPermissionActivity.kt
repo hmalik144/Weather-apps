@@ -2,7 +2,10 @@ package com.appttude.h_mal.monoWeather.ui.widget
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.app.Activity
-import android.appwidget.AppWidgetManager.*
+import android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
+import android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID
+import android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_IDS
+import android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
@@ -11,9 +14,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat.checkSelfPermission
 import com.appttude.h_mal.atlas_weather.R
-import com.appttude.h_mal.monoWeather.dialog.DeclarationBuilder
 import com.appttude.h_mal.atlas_weather.utils.displayToast
-import kotlinx.android.synthetic.monoWeather.permissions_declaration_dialog.*
+import com.appttude.h_mal.monoWeather.dialog.DeclarationBuilder
+import kotlinx.android.synthetic.monoWeather.permissions_declaration_dialog.cancel
+import kotlinx.android.synthetic.monoWeather.permissions_declaration_dialog.submit
 
 const val PERMISSION_CODE = 401
 
@@ -60,7 +64,11 @@ class WidgetLocationPermissionActivity : AppCompatActivity(), DeclarationBuilder
         cancel.setOnClickListener { finish() }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PERMISSION_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED) {
@@ -87,8 +95,9 @@ class WidgetLocationPermissionActivity : AppCompatActivity(), DeclarationBuilder
     private fun sendUpdateIntent() {
         // It is the responsibility of the configuration activity to update the app widget
         // Send update broadcast to widget app class
-        Intent(this@WidgetLocationPermissionActivity,
-                WidgetLocationPermissionActivity::class.java
+        Intent(
+            this@WidgetLocationPermissionActivity,
+            WidgetLocationPermissionActivity::class.java
         ).apply {
             action = ACTION_APPWIDGET_UPDATE
 

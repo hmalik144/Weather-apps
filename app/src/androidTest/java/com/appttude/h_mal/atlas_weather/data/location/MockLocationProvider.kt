@@ -8,7 +8,11 @@ class MockLocationProvider : LocationProvider {
     override suspend fun getCurrentLatLong() = latLong
     override fun getLatLongFromLocationName(location: String) = latLong
 
-    override suspend fun getLocationNameFromLatLong(lat: Double, long: Double, type: LocationType): String {
+    override suspend fun getLocationNameFromLatLong(
+        lat: Double,
+        long: Double,
+        type: LocationType
+    ): String {
         return "Mock Location"
     }
 

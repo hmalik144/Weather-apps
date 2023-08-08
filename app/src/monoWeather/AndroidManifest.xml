@@ -13,10 +13,9 @@
         tools:node="merge">
         <activity
             android:name="com.appttude.h_mal.atlas_weather.ui.MainActivity"
-            android:label="@string/app_name"
+            android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="true">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -25,14 +24,16 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.appttude.h_mal.monoWeather.ui.widget.WidgetLocationPermissionActivity"
+        <activity
+            android:name="com.appttude.h_mal.monoWeather.ui.widget.WidgetLocationPermissionActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
 
-        <receiver android:name="com.appttude.h_mal.atlas_weather.widget.NewAppWidget"
+        <receiver
+            android:name="com.appttude.h_mal.atlas_weather.widget.NewAppWidget"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

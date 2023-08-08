@@ -6,26 +6,26 @@
     tools:context="com.appttude.h_mal.atlas_weather.ui.world.WorldFragment">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/world_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:divider="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:id="@+id/world_recycler"
-        android:divider="@null"
-        tools:listitem="@layout/db_list_item">
-    </androidx.recyclerview.widget.RecyclerView>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/db_list_item" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="20dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginEnd="20dp"
-        app:srcCompat="@drawable/ic_baseline_add_24"/>
+        android:layout_marginBottom="20dp"
+        android:contentDescription="@string/image_string"
+        app:srcCompat="@drawable/ic_baseline_add_24" />
 
     <FrameLayout
         android:id="@+id/progressBar"
@@ -34,10 +34,11 @@
         android:background="@android:color/black"
         android:visibility="gone"
         tools:visibility="visible">
+
         <ProgressBar
-            android:layout_gravity="center"
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
     </FrameLayout>
 </RelativeLayout>

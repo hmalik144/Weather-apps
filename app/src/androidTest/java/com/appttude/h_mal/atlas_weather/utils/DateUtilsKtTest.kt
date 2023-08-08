@@ -3,7 +3,7 @@ package com.appttude.h_mal.atlas_weather.utils
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class DateUtilsKtTest{
+class DateUtilsKtTest {
 
     @Test
     fun toDayString_testStandardData_outputCorrect() {

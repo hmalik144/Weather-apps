@@ -13,6 +13,7 @@ import kotlin.test.assertEquals
 
 private const val MORE_THAN_FIVE_MINS = 330000L
 private const val LESS_THAN_FIVE_MINS = 270000L
+
 class RepositoryImplTest {
 
     lateinit var repository: RepositoryImpl

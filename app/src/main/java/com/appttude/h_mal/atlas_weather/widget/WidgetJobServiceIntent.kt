@@ -10,17 +10,16 @@ import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.icu.text.SimpleDateFormat
 import android.os.PowerManager
 import android.widget.RemoteViews
-import android.os.Build
 import androidx.core.app.ActivityCompat.checkSelfPermission
 import com.appttude.h_mal.atlas_weather.R
-import com.appttude.h_mal.atlas_weather.widget.WidgetState.*
-import com.appttude.h_mal.atlas_weather.widget.WidgetState.Companion.getWidgetState
 import com.appttude.h_mal.atlas_weather.helper.ServicesHelper
 import com.appttude.h_mal.atlas_weather.model.widget.InnerWidgetCellData
 import com.appttude.h_mal.atlas_weather.model.widget.WidgetWeatherCollection
 import com.appttude.h_mal.atlas_weather.ui.MainActivity
 import com.appttude.h_mal.atlas_weather.utils.isInternetAvailable
 import com.appttude.h_mal.atlas_weather.utils.tryOrNullSuspended
+import com.appttude.h_mal.atlas_weather.widget.WidgetState.*
+import com.appttude.h_mal.atlas_weather.widget.WidgetState.Companion.getWidgetState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,6 +33,7 @@ import java.util.*
  * Implementation of a JobIntentService used for home screen widget
  */
 const val HALF_DAY = 43200000L
+
 class WidgetJobServiceIntent : BaseWidgetServiceIntentClass<NewAppWidget>() {
 
     private val kodein = LateInitKodein()
@@ -77,7 +77,7 @@ class WidgetJobServiceIntent : BaseWidgetServiceIntentClass<NewAppWidget>() {
         val pm = getSystemService(POWER_SERVICE) as PowerManager
         val isScreenOn = pm.isInteractive
         val locationGranted =
-                checkSelfPermission(this, ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED
+            checkSelfPermission(this, ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED
         val internetAvailable = isInternetAvailable(this.applicationContext)
 
         return getWidgetState(locationGranted, isScreenOn, internetAvailable)
@@ -103,8 +103,8 @@ class WidgetJobServiceIntent : BaseWidgetServiceIntentClass<NewAppWidget>() {
     }
 
     private fun setupView(
-            appWidgetId: Int,
-            collection: WidgetWeatherCollection?
+        appWidgetId: Int,
+        collection: WidgetWeatherCollection?
     ) {
         val views = createRemoteView(R.layout.weather_app_widget)
         setLastUpdated(views, collection?.widgetData?.timeStamp)
@@ -118,17 +118,17 @@ class WidgetJobServiceIntent : BaseWidgetServiceIntentClass<NewAppWidget>() {
     }
 
     override fun bindErrorView(
-            widgetId: Int,
-            views: RemoteViews,
-            data: Any?
+        widgetId: Int,
+        views: RemoteViews,
+        data: Any?
     ) {
         bindEmptyView(widgetId, views, data)
     }
 
     override fun bindEmptyView(
-            widgetId: Int,
-            views: RemoteViews,
-            data: Any?
+        widgetId: Int,
+        views: RemoteViews,
+        data: Any?
     ) {
         val clickUpdate = createUpdatePendingIntent(NewAppWidget::class.java, widgetId)
 
@@ -167,6 +167,7 @@ class WidgetJobServiceIntent : BaseWidgetServiceIntentClass<NewAppWidget>() {
         }
     }
 
+    @SuppressLint("DiscouragedApi")
     private fun loadCells(
         appWidgetId: Int,
         remoteViews: RemoteViews,
@@ -189,7 +190,7 @@ class WidgetJobServiceIntent : BaseWidgetServiceIntentClass<NewAppWidget>() {
     }
 
     private fun setLastUpdated(views: RemoteViews, timeStamp: Long?) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && timeStamp != null) {
+        if (timeStamp != null) {
             val difference = System.currentTimeMillis().minus(timeStamp)
 
             val status = if (difference > HALF_DAY) {

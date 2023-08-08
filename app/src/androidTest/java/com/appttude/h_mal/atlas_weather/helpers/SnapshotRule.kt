@@ -14,6 +14,9 @@ class SnapshotRule : TestWatcher() {
     }
 
     fun getScreenshotName(description: Description): String {
-        return description.className.replace(".", "-") + "_" + description.methodName.replace(".", "-")
+        return description.className.replace(".", "-") + "_" + description.methodName.replace(
+            ".",
+            "-"
+        )
     }
 }

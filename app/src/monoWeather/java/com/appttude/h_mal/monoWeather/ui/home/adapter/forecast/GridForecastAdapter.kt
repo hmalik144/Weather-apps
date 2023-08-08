@@ -6,10 +6,10 @@ import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.model.weather.Hour
 import com.appttude.h_mal.atlas_weather.utils.generateView
 
-class GridForecastAdapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class GridForecastAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var weather: MutableList<Hour> = mutableListOf()
 
-    fun addCurrent(current: List<Hour>?){
+    fun addCurrent(current: List<Hour>?) {
         weather.clear()
         current?.let { weather.addAll(it) }
         notifyDataSetChanged()

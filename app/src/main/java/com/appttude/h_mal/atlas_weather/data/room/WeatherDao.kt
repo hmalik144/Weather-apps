@@ -18,16 +18,16 @@ interface WeatherDao {
     fun upsertListOfFullWeather(items: List<EntityItem>)
 
     @Query("SELECT * FROM EntityItem WHERE id = :userId LIMIT 1")
-    fun getCurrentFullWeather(userId: String) : LiveData<EntityItem>
+    fun getCurrentFullWeather(userId: String): LiveData<EntityItem>
 
     @Query("SELECT * FROM EntityItem WHERE id = :userId LIMIT 1")
-    fun getCurrentFullWeatherSingle(userId: String) : EntityItem
+    fun getCurrentFullWeatherSingle(userId: String): EntityItem
 
     @Query("SELECT * FROM EntityItem WHERE id != :id")
-    fun getAllFullWeatherWithoutCurrent(id: String = CURRENT_LOCATION) : LiveData<List<EntityItem>>
+    fun getAllFullWeatherWithoutCurrent(id: String = CURRENT_LOCATION): LiveData<List<EntityItem>>
 
     @Query("SELECT * FROM EntityItem WHERE id != :id")
-    fun getWeatherListWithoutCurrent(id: String = CURRENT_LOCATION) : List<EntityItem>
+    fun getWeatherListWithoutCurrent(id: String = CURRENT_LOCATION): List<EntityItem>
 
     @Query("DELETE FROM EntityItem WHERE id = :userId")
     fun deleteEntry(userId: String): Int

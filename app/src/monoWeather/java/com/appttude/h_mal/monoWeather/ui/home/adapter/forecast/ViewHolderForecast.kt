@@ -6,7 +6,7 @@ import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.model.weather.Hour
 
 class ViewHolderForecast(
-        itemView: View
+    itemView: View
 ) : RecyclerView.ViewHolder(itemView) {
 
     var recyclerView: RecyclerView = itemView.findViewById(R.id.forecast_recyclerview)

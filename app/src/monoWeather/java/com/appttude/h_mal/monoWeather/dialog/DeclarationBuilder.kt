@@ -1,14 +1,10 @@
 package com.appttude.h_mal.monoWeather.dialog
 
 import android.content.Context
-import android.content.res.Resources
-import android.os.Build
 import android.text.Html
-import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
-import androidx.core.content.ContextCompat
 
-interface DeclarationBuilder{
+interface DeclarationBuilder {
     val link: String
     val message: String
 

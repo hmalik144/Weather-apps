@@ -30,7 +30,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE)
                 val widgetManager = AppWidgetManager.getInstance(requireContext())
                 val ids =
-                    widgetManager.getAppWidgetIds(ComponentName(requireContext(), NewAppWidget::class.java))
+                    widgetManager.getAppWidgetIds(
+                        ComponentName(
+                            requireContext(),
+                            NewAppWidget::class.java
+                        )
+                    )
                 AppWidgetManager.getInstance(requireContext())
                     .notifyAppWidgetViewDataChanged(ids, R.id.whole_widget_view)
                 intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)

@@ -16,6 +16,7 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
+@Suppress("unused")
 class WorldViewModelTest {
     @get:Rule
     val rule = InstantTaskExecutorRule()
@@ -48,8 +49,8 @@ class WorldViewModelTest {
 
 
 fun <T> LiveData<T>.getOrAwaitValue(
-        time: Long = 2,
-        timeUnit: TimeUnit = TimeUnit.SECONDS
+    time: Long = 2,
+    timeUnit: TimeUnit = TimeUnit.SECONDS
 ): T {
     var data: T? = null
     val latch = CountDownLatch(1)

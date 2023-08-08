@@ -11,9 +11,23 @@
     <string name="location_name">Enter Location name</string>
     <string name="degrees_c">°C</string>
     <string name="degrees">°</string>
-    <string name="min">Min:</string>
-    <string name="max">Max:</string>
-    <string name="average">Average:</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
+    <string name="icon">icon</string>
+    <string name="degree_sign">°</string>
+    <string name="temperature">Temperature</string>
+    <string name="wind_header">Wind:</string>
+    <string name="image_string">image</string>
+    <string name="humidity_header">Humidity:</string>
+    <string name="precip_header">Precip:</string>
+    <string name="sunset_header">Sunset:</string>
+    <string name="sunrise_header">Sunrise:</string>
+    <string name="uv_header">UV:</string>
+    <string name="cloud_header">Cloud:</string>
+    <string name="min_header">Min:</string>
+    <string name="average_header">Average:</string>
+    <string name="max_header">Max:</string>
+    <string name="loading_nforecast">Loading \nforecast…</string>
+    <string name="retrieve_warning">Unable to retrieve weather</string>
+    <string name="empty_retrieve_warning">Make sure you are connected to the internet and have location permissions granted</string>
 </resources>

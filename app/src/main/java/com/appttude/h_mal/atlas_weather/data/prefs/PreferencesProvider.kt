@@ -9,9 +9,10 @@ import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
  * Shared preferences to save & load last timestamp
  */
 const val LOCATION_CONST = "location_"
+
 class PreferenceProvider(
     context: Context
-){
+) {
 
     private val appContext = context.applicationContext
 
@@ -20,30 +21,30 @@ class PreferenceProvider(
 
     fun saveLastSavedAt(locationName: String) {
         preference.edit().putLong(
-                locationName,
-                System.currentTimeMillis()
+            locationName,
+            System.currentTimeMillis()
         ).apply()
     }
 
-    fun getLastSavedAt(locationName: String): Long? {
-        return  preference.getLong(locationName, 0L)
+    fun getLastSavedAt(locationName: String): Long {
+        return preference.getLong(locationName, 0L)
     }
 
     fun getAllKeys() = preference.all.keys.apply {
         remove(CURRENT_LOCATION)
     }
 
-    fun deleteLocation(locationName: String){
+    fun deleteLocation(locationName: String) {
         preference.edit().remove(locationName).apply()
     }
 
     fun isNotificationsEnabled(): Boolean = preference.getBoolean("notif_boolean", true)
 
-    fun setFirstTimeRun(){
+    fun setFirstTimeRun() {
         preference.edit().putBoolean("FIRST_TIME_RUN", false).apply()
     }
 
-    fun isWidgetBlackground(): Boolean {
+    fun isWidgetBackground(): Boolean {
         return preference.getBoolean("widget_black_background", false)
     }
 

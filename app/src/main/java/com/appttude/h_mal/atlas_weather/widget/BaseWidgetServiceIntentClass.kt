@@ -8,7 +8,6 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Intent
-import android.os.Build
 import android.widget.RemoteViews
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
@@ -34,8 +33,8 @@ abstract class BaseWidgetServiceIntentClass<T : AppWidgetProvider> : JobIntentSe
 
     // Create pending intent commonly used for 'click to update' features
     fun createUpdatePendingIntent(
-            appWidgetProvider: Class<T>,
-            appWidgetId: Int
+        appWidgetProvider: Class<T>,
+        appWidgetId: Int
     ): PendingIntent? {
         val seconds = (System.currentTimeMillis() / 1000L).toInt()
         val intentUpdate = Intent(applicationContext, appWidgetProvider)
@@ -43,11 +42,12 @@ abstract class BaseWidgetServiceIntentClass<T : AppWidgetProvider> : JobIntentSe
         val idArray = intArrayOf(appWidgetId)
         intentUpdate.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, idArray)
 
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent.getBroadcast(this, seconds, intentUpdate, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        } else {
-            PendingIntent.getBroadcast(this, seconds, intentUpdate, PendingIntent.FLAG_UPDATE_CURRENT)
-        }
+        return PendingIntent.getBroadcast(
+                this,
+                seconds,
+                intentUpdate,
+                PendingIntent.FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE
+            )
     }
 
     /**
@@ -58,15 +58,15 @@ abstract class BaseWidgetServiceIntentClass<T : AppWidgetProvider> : JobIntentSe
         val clickIntentTemplate = Intent(this, activityClass)
 
         return TaskStackBuilder.create(this)
-                .addNextIntentWithParentStack(clickIntentTemplate)
-                .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
+            .addNextIntentWithParentStack(clickIntentTemplate)
+            .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
     fun setImageView(
-            path: String?,
-            views: RemoteViews,
-            @IdRes viewId: Int,
-            appWidgetId: Int
+        path: String?,
+        views: RemoteViews,
+        @IdRes viewId: Int,
+        appWidgetId: Int
     ) {
         CoroutineScope(Dispatchers.Main).launch {
             Picasso.get().load(path).into(views, viewId, intArrayOf(appWidgetId))

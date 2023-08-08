@@ -4,12 +4,10 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 
-fun isInternetAvailable(
-        context: Context
-): Boolean {
+fun isInternetAvailable(context: Context): Boolean {
     var result = false
     val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
     connectivityManager?.let {
         it.getNetworkCapabilities(connectivityManager.activeNetwork)?.apply {
             result = when {

@@ -17,9 +17,9 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.PickerActions
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
+import com.appttude.h_mal.atlas_weather.helpers.EspressoHelper.waitForView
 import com.appttude.h_mal.atlas_weather.helpers.checkErrorMessage
 import com.appttude.h_mal.atlas_weather.helpers.checkImage
-import com.appttude.h_mal.atlas_weather.helpers.EspressoHelper.waitForView
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.anything
 import org.hamcrest.CoreMatchers.equalTo
@@ -138,7 +138,7 @@ open class BaseTestRobot {
     fun getStringFromResource(@StringRes resId: Int): String =
         Resources.getSystem().getString(resId)
 
-    fun pullToRefresh(resId: Int){
+    fun pullToRefresh(resId: Int) {
         onView(allOf(withId(resId), isDisplayed())).perform(swipeDown())
     }
 

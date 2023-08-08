@@ -5,12 +5,12 @@
         android:id="@+id/nav_home"
         android:icon="@drawable/ic_baseline_home_24"
         android:title="@string/title_home"
-        app:showAsAction="ifRoom|withText"/>
+        app:showAsAction="ifRoom|withText" />
 
     <item
         android:id="@+id/nav_world"
         android:icon="@drawable/ic_baseline_public_24"
         android:title="@string/title_world"
-        app:showAsAction="always|withText"/>
+        app:showAsAction="always|withText" />
 
 </menu>

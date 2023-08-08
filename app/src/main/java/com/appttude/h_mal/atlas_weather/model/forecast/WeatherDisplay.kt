@@ -22,7 +22,7 @@ data class WeatherDisplay(
     val lat: Double = 0.00,
     val lon: Double = 0.00,
     var displayName: String?
-): Parcelable {
+) : Parcelable {
 
     constructor(parcel: Parcel) : this(
         parcel.readValue(Double::class.java.classLoader) as? Double,

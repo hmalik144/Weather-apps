@@ -27,7 +27,7 @@ class AddLocationFragment : BaseFragment(R.layout.activity_add_forecast) {
 
         submit.setOnClickListener {
             val locationName = location_name_tv.text?.trim()?.toString()
-            if (locationName.isNullOrBlank()){
+            if (locationName.isNullOrBlank()) {
                 submit.error = "Location cannot be blank"
                 return@setOnClickListener
             }
@@ -38,7 +38,7 @@ class AddLocationFragment : BaseFragment(R.layout.activity_add_forecast) {
         viewModel.operationError.observe(viewLifecycleOwner, errorObserver())
 
         viewModel.operationComplete.observe(viewLifecycleOwner) {
-            it?.getContentIfNotHandled()?.let {message ->
+            it?.getContentIfNotHandled()?.let { message ->
                 displayToast(message)
             }
             goBack()

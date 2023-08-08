@@ -8,7 +8,7 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 
-interface DeclarationBuilder{
+interface DeclarationBuilder {
     val link: String
     val message: String
 

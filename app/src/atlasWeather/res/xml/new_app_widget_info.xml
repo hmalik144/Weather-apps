@@ -3,13 +3,13 @@
     android:configure="com.appttude.h_mal.atlas_weather.ui.widget.WidgetLocationPermissionActivity"
     android:initialKeyguardLayout="@layout/weather_app_widget"
     android:initialLayout="@layout/weather_app_widget"
-    android:minHeight="110.0dp"
     android:minWidth="320.0dp"
+    android:minHeight="110.0dp"
     android:minResizeWidth="320.0dp"
     android:minResizeHeight="110.0dp"
     android:previewImage="@drawable/widget_screenshot"
-    android:updatePeriodMillis="1800000"
     android:resizeMode="vertical"
+    android:updatePeriodMillis="1800000"
     android:widgetCategory="home_screen">
 
 </appwidget-provider>

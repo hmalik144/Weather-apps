@@ -12,8 +12,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:includeFontPadding="false"
-        android:textColor="#ffffff"
-        android:text="Loading \nforecast..." />
-
+        android:text="@string/loading_nforecast"
+        android:textColor="#ffffff" />
 
 </LinearLayout>

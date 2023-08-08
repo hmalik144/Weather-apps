@@ -9,12 +9,11 @@ import android.location.LocationManager
 import android.os.HandlerThread
 import androidx.annotation.RequiresPermission
 import com.appttude.h_mal.atlas_weather.model.types.LocationType
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
-import com.google.android.gms.location.LocationRequest.PRIORITY_LOW_POWER
 import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.OnTokenCanceledListener
 import kotlinx.coroutines.tasks.await
@@ -28,8 +27,8 @@ class LocationProviderImpl(
     private val applicationContext: Context
 ) : LocationProvider, LocationHelper(applicationContext) {
     private var locationManager =
-            applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
-    private val client = FusedLocationProviderClient(applicationContext)
+        applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
+    private val client = LocationServices.getFusedLocationProviderClient(applicationContext)
     private val geoCoder: Geocoder by lazy { Geocoder(applicationContext, Locale.getDefault()) }
 
     @RequiresPermission(value = ACCESS_COARSE_LOCATION)
@@ -48,18 +47,19 @@ class LocationProviderImpl(
     }
 
     override suspend fun getLocationNameFromLatLong(
-            lat: Double, long: Double, type: LocationType
+        lat: Double, long: Double, type: LocationType
     ): String {
         val address = getAddressFromLatLong(lat, long) ?: return "$lat $long"
 
         return when (type) {
             LocationType.Town -> {
                 val location = address
-                        .municipalitySubdivision
-                        ?.takeIf { it.isNotBlank() }
-                        ?: address.municipality
+                    .municipalitySubdivision
+                    ?.takeIf { it.isNotBlank() }
+                    ?: address.municipality
                 location ?: throw IOException("No location municipalitySubdivision or municipality")
             }
+
             LocationType.City -> {
                 address.municipality ?: throw IOException("No location municipality")
             }
@@ -68,7 +68,7 @@ class LocationProviderImpl(
 
     @SuppressLint("MissingPermission")
     private suspend fun getAFreshLocation(): Location? {
-        return client.getCurrentLocation(PRIORITY_LOW_POWER, object : CancellationToken() {
+        return client.getCurrentLocation(Priority.PRIORITY_LOW_POWER, object : CancellationToken() {
             override fun isCancellationRequested(): Boolean = false
             override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken = this
         }).await()
@@ -84,20 +84,30 @@ class LocationProviderImpl(
 
         return suspendCoroutine { cont ->
             val callback = object : LocationCallback() {
-                override fun onLocationResult(p0: LocationResult?) {
+                override fun onLocationResult(p0: LocationResult) {
                     client.removeLocationUpdates(this)
-                    cont.resume(p0?.lastLocation)
+                    cont.resume(p0.lastLocation)
                 }
             }
 
             with(locationManager!!) {
                 when {
                     isProviderEnabled(LocationManager.GPS_PROVIDER) -> {
-                        client.requestLocationUpdates(createLocationRequest(PRIORITY_HIGH_ACCURACY), callback, looper)
+                        client.requestLocationUpdates(
+                            createLocationRequest(Priority.PRIORITY_HIGH_ACCURACY),
+                            callback,
+                            looper
+                        )
                     }
+
                     isProviderEnabled(LocationManager.NETWORK_PROVIDER) -> {
-                        client.requestLocationUpdates(createLocationRequest(PRIORITY_LOW_POWER), callback, looper)
+                        client.requestLocationUpdates(
+                            createLocationRequest(Priority.PRIORITY_LOW_POWER),
+                            callback,
+                            looper
+                        )
                     }
+
                     else -> {
                         cont.resume(null)
                     }
@@ -108,7 +118,7 @@ class LocationProviderImpl(
     }
 
     private fun createLocationRequest(priority: Int) = LocationRequest.create()
-            .setPriority(priority)
-            .setNumUpdates(1)
-            .setExpirationDuration(1000)
+        .setPriority(priority)
+        .setNumUpdates(1)
+        .setExpirationDuration(1000)
 }

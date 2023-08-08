@@ -18,7 +18,7 @@ import org.junit.Before
 import org.junit.Test
 import java.io.IOException
 
-class ServicesHelperTest{
+class ServicesHelperTest {
 
     private val gson = Gson()
 
@@ -26,8 +26,10 @@ class ServicesHelperTest{
 
     @MockK
     lateinit var repository: Repository
+
     @MockK
     lateinit var settingsRepository: SettingsRepository
+
     @MockK
     lateinit var locationProvider: LocationProviderImpl
 
@@ -43,7 +45,7 @@ class ServicesHelperTest{
     }
 
     @Test
-    fun testWidgetDataAsync_successfulResponse() = runBlocking{
+    fun testWidgetDataAsync_successfulResponse() = runBlocking {
         // Arrange
         val entityItem = EntityItem(CURRENT_LOCATION, FullWeather(weatherResponse).apply {
             temperatureUnit = "°C"
@@ -51,10 +53,23 @@ class ServicesHelperTest{
         })
 
         // Act
-        coEvery { locationProvider.getCurrentLatLong() } returns Pair(weatherResponse.lat, weatherResponse.lon)
+        coEvery { locationProvider.getCurrentLatLong() } returns Pair(
+            weatherResponse.lat,
+            weatherResponse.lon
+        )
         every { repository.isSearchValid(CURRENT_LOCATION) }.returns(true)
-        coEvery { repository.getWeatherFromApi(weatherResponse.lat.toString(), weatherResponse.lon.toString()) }.returns(weatherResponse)
-        coEvery { locationProvider.getLocationNameFromLatLong(weatherResponse.lat, weatherResponse.lon) }.returns(CURRENT_LOCATION)
+        coEvery {
+            repository.getWeatherFromApi(
+                weatherResponse.lat.toString(),
+                weatherResponse.lon.toString()
+            )
+        }.returns(weatherResponse)
+        coEvery {
+            locationProvider.getLocationNameFromLatLong(
+                weatherResponse.lat,
+                weatherResponse.lon
+            )
+        }.returns(CURRENT_LOCATION)
         every { repository.saveLastSavedAt(CURRENT_LOCATION) } returns Unit
         coEvery { repository.saveCurrentWeatherToRoom(entityItem) } returns Unit
 
@@ -64,9 +79,9 @@ class ServicesHelperTest{
     }
 
     @Test
-    fun testWidgetDataAsync_unsuccessfulResponse() = runBlocking{
+    fun testWidgetDataAsync_unsuccessfulResponse() = runBlocking {
         // Act
-        coEvery { locationProvider.getCurrentLatLong() } returns Pair(0.0,0.0)
+        coEvery { locationProvider.getCurrentLatLong() } returns Pair(0.0, 0.0)
         every { repository.isSearchValid(CURRENT_LOCATION) }.returns(true)
         coEvery { repository.getWeatherFromApi("0.0", "0.0") } throws IOException("error")
 
@@ -76,7 +91,7 @@ class ServicesHelperTest{
     }
 
     @Test
-    fun testWidgetDataAsync_invalidSearch() = runBlocking{
+    fun testWidgetDataAsync_invalidSearch() = runBlocking {
         // Act
         every { repository.isSearchValid(CURRENT_LOCATION) }.returns(false)
 
