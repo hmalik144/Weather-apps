@@ -14,16 +14,22 @@ commands:
     description: checkout repo and android dependencies
     steps:
       - checkout
-      - android/restore-gradle-cache
-  build_gradle:
-    description: Build the gradle
+      - run:
+          name: Give gradle permissions
+          command: |
+            sudo chmod +x ./gradlew
+  assemble_app:
+    description: Assemble the app with flavour specified
+    parameters:
+      flavour:
+        type: string
+        default: "AtlasWeather"
     steps:
       - android/restore-gradle-cache
       - run:
-          name: Download Dependencies
-          command: |
-            sudo chmod +x ./gradlew
-            ./gradlew androidDependencies
+         name: assemble flavour
+         command: |
+           ./gradlew assemble<< parameters.flavour >>DebugAndroidTest
       - android/save-gradle-cache
   run_tests:
     description: run tests for flavour specified
@@ -33,11 +39,12 @@ commands:
         default: "AtlasWeather"
     steps:
       # The next step will run the unit tests
-      - build_gradle
+      - assemble_app:
+          flavour: << parameters.flavour >>
       - run:
           name: Run non-instrumentation unit tests
           command: |
-            ./gradlew test<< parameters.flavour >>DebugUnitTest --continue
+            ./gradlew test<< parameters.flavour >>DebugUnitTest
       - store_artifacts:
           path: app/build/reports
           destination: reports
@@ -50,10 +57,11 @@ commands:
         type: string
         default: "AtlasWeather"
     steps:
-      - build_gradle
+      - assemble_app:
+          flavour: << parameters.flavour >>
       - android/start-emulator-and-run-tests:
           post-emulator-launch-assemble-command: ./gradlew assemble<< parameters.flavour >>DebugAndroidTest
-          test-command: ./gradlew connected<< parameters.flavour >>DebugAndroidTest
+          test-command: ./gradlew connected<< parameters.flavour >>DebugAndroidTest --continue
           system-image: system-images;android-26;google_apis;x86
           pull-data: true
           pull-data-path: /sdcard/Android/data/com.appttude.h_mal.<< parameters.flavour >>/files/screengrab/en-US/images/screenshots
@@ -83,7 +91,8 @@ commands:
           name: Setup playstore key
           command: |
             echo "$GOOGLE_PLAY_KEY" > "google-play-key.json"
-      - build_gradle
+      - assemble_app:
+          flavour: << parameters.flavour >>
       - run:
           name: Run fastlane command to deploy to playstore
           command: |
