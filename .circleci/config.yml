@@ -56,7 +56,7 @@ commands:
           test-command: ./gradlew connected<< parameters.flavour >>DebugAndroidTest
           system-image: system-images;android-26;google_apis;x86
           pull-data: true
-          pull-data-path: /storage/emulated/0/Android/data/
+          pull-data-path: /sdcard/Android/data/com.appttude.h_mal.<< parameters.flavour >>/files/screengrab/en-US/images/screenshots
           pull-data-target: ~/app-data
           restore-gradle-cache-prefix: v1a
       # store test reports

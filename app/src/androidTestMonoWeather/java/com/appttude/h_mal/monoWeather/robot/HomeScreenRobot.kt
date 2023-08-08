@@ -10,4 +10,5 @@ class HomeScreenRobot : BaseTestRobot() {
 
     fun verifyCurrentLocation(location: String) = matchText(R.id.location_main_4, location)
     fun refresh() = pullToRefresh(R.id.swipe_refresh)
+    fun isDisplayed() = matchViewWaitFor(R.id.temp_main_4)
 }

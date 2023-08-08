@@ -16,7 +16,7 @@ class HomePageUITest : BaseTest<MainActivity>(MainActivity::class.java) {
     @Test
     fun loadApp_validWeatherResponse_returnsValidPage() {
         homeScreen {
-            waitFor(2000)
+            isDisplayed()
             verifyCurrentTemperature(2)
             verifyCurrentLocation("Mock Location")
         }
