@@ -52,7 +52,6 @@ commands:
           test-command: ./gradlew connected<< parameters.flavour >>DebugAndroidTest --continue
           system-image: system-images;android-26;google_apis;x86
           pull-data: true
-          pull-data-path: /storage/emulated/0/Android/data/com.appttude.h_mal.<< parameters.package_suffix >>/files/screengrab/en-US/images/screenshots
           pull-data-target: ~/app-data
       # store screenshots for failed ui tests
       - when:
