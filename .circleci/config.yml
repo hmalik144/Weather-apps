@@ -56,6 +56,9 @@ commands:
       flavour:
         type: string
         default: "AtlasWeather"
+      package_suffix:
+        type: string
+        default: "atlas_weather"
     steps:
       - assemble_app:
           flavour: << parameters.flavour >>
@@ -64,7 +67,7 @@ commands:
           test-command: ./gradlew connected<< parameters.flavour >>DebugAndroidTest --continue
           system-image: system-images;android-26;google_apis;x86
           pull-data: true
-          pull-data-path: /sdcard/Android/data/com.appttude.h_mal.<< parameters.flavour >>/files/screengrab/en-US/images/screenshots
+          pull-data-path: /sdcard/Android/data/com.appttude.h_mal.<< parameters.package_suffix >>/files/screengrab/en-US/images/screenshots
           pull-data-target: ~/app-data
           restore-gradle-cache-prefix: v1a
       # store test reports
@@ -110,6 +113,9 @@ jobs:
       flavour:
         type: string
         default: "AtlasWeather"
+      package_suffix:
+        type: string
+        default: "atlas_weather"
     # These next lines define the Android machine image executor.
     # See: https://circleci.com/docs/2.0/executor-types/
     executor:
@@ -147,6 +153,7 @@ workflows:
       - build-and-test:
           context: appttude
           flavour: "MonoWeather"
+          package_suffix: "monoWeather"
           filters:
             branches:
               ignore:
@@ -165,6 +172,7 @@ workflows:
       - build-and-test:
           context: appttude
           flavour: "AtlasWeather"
+          package_suffix: "atlas_weather"
           filters:
             branches:
               ignore:
