@@ -18,19 +18,7 @@ commands:
           name: Give gradle permissions
           command: |
             sudo chmod +x ./gradlew
-  assemble_app:
-    description: Assemble the app with flavour specified
-    parameters:
-      flavour:
-        type: string
-        default: "AtlasWeather"
-    steps:
       - android/restore-gradle-cache
-      - run:
-         name: assemble flavour
-         command: |
-           ./gradlew assemble<< parameters.flavour >>DebugAndroidTest
-      - android/save-gradle-cache
   run_tests:
     description: run tests for flavour specified
     parameters:
@@ -39,12 +27,11 @@ commands:
         default: "AtlasWeather"
     steps:
       # The next step will run the unit tests
-      - assemble_app:
-          flavour: << parameters.flavour >>
       - run:
           name: Run non-instrumentation unit tests
           command: |
             ./gradlew test<< parameters.flavour >>DebugUnitTest
+      - android/save-gradle-cache
       - store_artifacts:
           path: app/build/reports
           destination: reports
@@ -60,24 +47,24 @@ commands:
         type: string
         default: "atlas_weather"
     steps:
-      - assemble_app:
-          flavour: << parameters.flavour >>
       - android/start-emulator-and-run-tests:
           post-emulator-launch-assemble-command: ./gradlew assemble<< parameters.flavour >>DebugAndroidTest
           test-command: ./gradlew connected<< parameters.flavour >>DebugAndroidTest --continue
           system-image: system-images;android-26;google_apis;x86
           pull-data: true
-          pull-data-path: /sdcard/Android/data/com.appttude.h_mal.<< parameters.package_suffix >>/files/screengrab/en-US/images/screenshots
+          pull-data-path: /storage/emulated/0/Android/data/com.appttude.h_mal.<< parameters.package_suffix >>/files/screengrab/en-US/images/screenshots
           pull-data-target: ~/app-data
-          restore-gradle-cache-prefix: v1a
+      # store screenshots for failed ui tests
+      - when:
+          condition: on_fail
+          steps:
+            - store_artifacts:
+                path: ~/app-data
+                destination: screenshots
       # store test reports
       - store_artifacts:
           path: app/build/reports/androidTests/connected
           destination: reports
-      # store screenshots for failed ui tests
-      - store_artifacts:
-          path: ~/app-data
-          destination: screenshots
       - store_test_results:
           path: app/build/outputs/androidTest-results/connected
   deploy_to_play_store:
@@ -94,8 +81,6 @@ commands:
           name: Setup playstore key
           command: |
             echo "$GOOGLE_PLAY_KEY" > "google-play-key.json"
-      - assemble_app:
-          flavour: << parameters.flavour >>
       - run:
           name: Run fastlane command to deploy to playstore
           command: |
