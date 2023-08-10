@@ -3,6 +3,7 @@ package com.appttude.h_mal.atlas_weather.application
 import androidx.room.Room
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.idling.CountingIdlingResource
+import androidx.test.platform.app.InstrumentationRegistry
 import com.appttude.h_mal.atlas_weather.data.location.MockLocationProvider
 import com.appttude.h_mal.atlas_weather.data.network.NetworkModule
 import com.appttude.h_mal.atlas_weather.data.network.WeatherApi
@@ -12,6 +13,8 @@ import com.appttude.h_mal.atlas_weather.data.network.interceptors.QueryParamsInt
 import com.appttude.h_mal.atlas_weather.data.network.networkUtils.loggingInterceptor
 import com.appttude.h_mal.atlas_weather.data.room.AppDatabase
 import com.appttude.h_mal.atlas_weather.data.room.Converter
+import com.appttude.h_mal.atlas_weather.test.BuildConfig
+import com.appttude.h_mal.atlas_weather.test.BuildConfig.APPLICATION_ID
 import java.io.BufferedReader
 
 class TestAppClass : BaseAppClass() {
@@ -40,11 +43,10 @@ class TestAppClass : BaseAppClass() {
             .build()
     }
 
-    fun stubUrl(url: String, rawPath: String) {
-        val id = resources.getIdentifier(rawPath, "raw", packageName)
-        val iStream = resources.openRawResource(id)
+    fun stubUrl(url: String, rawPath: String, code: Int = 200) {
+        val iStream = InstrumentationRegistry.getInstrumentation().context.assets.open("$rawPath.json")
         val data = iStream.bufferedReader().use(BufferedReader::readText)
-        mockingNetworkInterceptor.addUrlStub(url = url, data = data)
+        mockingNetworkInterceptor.addUrlStub(url = url, data = data, code = code)
     }
 
     fun removeUrlStub(url: String) {

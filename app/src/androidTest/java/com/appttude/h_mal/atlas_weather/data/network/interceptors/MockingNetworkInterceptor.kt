@@ -11,23 +11,21 @@ class MockingNetworkInterceptor(
     private val idlingResource: CountingIdlingResource
 ) : Interceptor {
 
-    private var feedMap: MutableMap<String, String> = mutableMapOf()
-    private var urlCallTracker: MutableMap<String, Int> = mutableMapOf()
+    private var feedMap: MutableMap<String, Pair<String, Int>> = mutableMapOf()
 
     override fun intercept(chain: Interceptor.Chain): Response {
         idlingResource.increment()
         val original = chain.request()
         val originalHttpUrl = original.url.toString().split("?")[0]
 
-        urlCallTracker.computeIfPresent(originalHttpUrl) { _, j ->
-            j + 1
-        }
+        feedMap[originalHttpUrl]?.let { responsePair ->
+            val code = responsePair.second
+            val jsonBody = responsePair.first
 
-        feedMap[originalHttpUrl]?.let { jsonPath ->
-            val body = jsonPath.toResponseBody("application/json".toMediaType())
+            val body = jsonBody.toResponseBody("application/json".toMediaType())
 
             val chainResponseBuilder = Response.Builder()
-                .code(200)
+                .code(code)
                 .protocol(Protocol.HTTP_1_1)
                 .request(original)
                 .message("OK")
@@ -40,7 +38,7 @@ class MockingNetworkInterceptor(
         return chain.proceed(original)
     }
 
-    fun addUrlStub(url: String, data: String) = feedMap.put(url, data)
+    fun addUrlStub(url: String, data: String, code: Int = 200) = feedMap.put(url, Pair(data, code))
     fun removeUrlStub(url: String) = feedMap.remove(url)
 
 }

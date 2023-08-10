@@ -30,4 +30,5 @@
     <string name="loading_nforecast">Loading \nforecast…</string>
     <string name="retrieve_warning">Unable to retrieve weather</string>
     <string name="empty_retrieve_warning">Make sure you are connected to the internet and have location permissions granted</string>
+    <string name="no_weather_to_display">No weather to display</string>
 </resources>

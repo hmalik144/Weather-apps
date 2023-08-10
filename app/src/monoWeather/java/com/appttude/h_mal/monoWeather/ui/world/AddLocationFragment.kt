@@ -8,18 +8,16 @@ import com.appttude.h_mal.atlas_weather.utils.displayToast
 import com.appttude.h_mal.atlas_weather.utils.goBack
 import com.appttude.h_mal.atlas_weather.utils.hideKeyboard
 import com.appttude.h_mal.atlas_weather.viewmodel.WorldViewModel
-import com.appttude.h_mal.monoWeather.ui.BaseFragment
+import com.appttude.h_mal.atlas_weather.ui.BaseFragment
 import kotlinx.android.synthetic.main.activity_add_forecast.location_name_tv
 import kotlinx.android.synthetic.main.activity_add_forecast.progressBar
 import kotlinx.android.synthetic.main.activity_add_forecast.submit
 
 
-class AddLocationFragment : BaseFragment(R.layout.activity_add_forecast) {
+class AddLocationFragment : BaseFragment<WorldViewModel>(R.layout.activity_add_forecast) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val viewModel by getFragmentViewModel<WorldViewModel>()
 
         submit.setOnClickListener {
             val locationName = location_name_tv.text?.trim()?.toString()
@@ -30,14 +28,12 @@ class AddLocationFragment : BaseFragment(R.layout.activity_add_forecast) {
             viewModel.fetchDataForSingleLocationSearch(locationName)
             hideKeyboard()
         }
+    }
 
-        viewModel.operationState.observe(viewLifecycleOwner, progressBarStateObserver(progressBar))
-        viewModel.operationError.observe(viewLifecycleOwner, errorObserver())
-
-        viewModel.operationComplete.observe(viewLifecycleOwner) {
-            it?.getContentIfNotHandled()?.let { message ->
-                displayToast(message)
-            }
+    override fun onSuccess(data: Any?) {
+        super.onSuccess(data)
+        if (data is String) {
+            displayToast(data)
             goBack()
         }
     }

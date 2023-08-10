@@ -12,10 +12,12 @@ class EmptyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var bodyTV: TextView = itemView.findViewById(R.id.body_text)
     var headerTV: TextView = itemView.findViewById(R.id.header_text)
 
-    fun bindData(@DrawableRes imageRes: Int?, header: String, body: String) {
-        imageRes?.let { icon.setImageResource(it) }
-        headerTV.text = header
-        bodyTV.text = body
-
-    }
+    fun bindData(
+        @DrawableRes imageRes: Int? = R.drawable.ic_baseline_cloud_off_24,
+        header: String = itemView.resources.getString(R.string.retrieve_warning),
+        body: String = itemView.resources.getString(R.string.empty_retrieve_warning) ){
+            imageRes?.let { icon.setImageResource(it) }
+            headerTV.text = header
+            bodyTV.text = body
+        }
 }

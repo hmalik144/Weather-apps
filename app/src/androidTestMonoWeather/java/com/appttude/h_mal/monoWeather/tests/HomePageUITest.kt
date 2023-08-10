@@ -9,7 +9,7 @@ import org.junit.Test
 class HomePageUITest : MonoBaseTest() {
 
     override fun beforeLaunch() {
-        stubEndpoint("https://api.openweathermap.org/data/2.5/onecall", Stubs.Valid)
+        stubEndpoint("https://api.openweathermap.org/data/2.5/onecall", Stubs.Metric)
     }
 
     @Test

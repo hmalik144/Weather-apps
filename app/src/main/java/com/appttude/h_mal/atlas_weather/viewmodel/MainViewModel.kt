@@ -2,13 +2,11 @@ package com.appttude.h_mal.atlas_weather.viewmodel
 
 import android.Manifest
 import androidx.annotation.RequiresPermission
-import androidx.lifecycle.MutableLiveData
 import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
 import com.appttude.h_mal.atlas_weather.data.repository.Repository
 import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
 import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
 import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
-import com.appttude.h_mal.atlas_weather.utils.Event
 import com.appttude.h_mal.atlas_weather.viewmodel.baseViewModels.WeatherViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,48 +17,40 @@ class MainViewModel(
     private val repository: Repository
 ) : WeatherViewModel() {
 
-    val weatherLiveData = MutableLiveData<WeatherDisplay>()
-
-    val operationState = MutableLiveData<Event<Boolean>>()
-    val operationError = MutableLiveData<Event<String>>()
-    val operationRefresh = MutableLiveData<Event<Boolean>>()
-
     init {
         repository.loadCurrentWeatherFromRoom(CURRENT_LOCATION).observeForever {
             it?.let {
                 val weather = WeatherDisplay(it)
-                weatherLiveData.postValue(weather)
+                onSuccess(weather)
             }
         }
     }
 
     @RequiresPermission(value = Manifest.permission.ACCESS_COARSE_LOCATION)
     fun fetchData() {
-        if (!repository.isSearchValid(CURRENT_LOCATION)) {
-            operationRefresh.postValue(Event(false))
-            return
-        }
-
+        onStart()
         CoroutineScope(Dispatchers.IO).launch {
-            operationState.postValue(Event(true))
             try {
-                // Get location
-                val latLong = locationProvider.getCurrentLatLong()
-                // Get weather from api
-                val weather = repository
-                    .getWeatherFromApi(latLong.first.toString(), latLong.second.toString())
-                val currentLocation =
-                    locationProvider.getLocationNameFromLatLong(weather.lat, weather.lon)
-                val fullWeather = createFullWeather(weather, currentLocation)
-                val entityItem = EntityItem(CURRENT_LOCATION, fullWeather)
+                // Has the search been conducted in the last 5 minutes
+                val entityItem = if (repository.isSearchValid(CURRENT_LOCATION)) {
+                    // Get location
+                    val latLong = locationProvider.getCurrentLatLong()
+                    // Get weather from api
+                    val weather = repository
+                        .getWeatherFromApi(latLong.first.toString(), latLong.second.toString())
+                    val currentLocation =
+                        locationProvider.getLocationNameFromLatLong(weather.lat, weather.lon)
+                    val fullWeather = createFullWeather(weather, currentLocation)
+                    EntityItem(CURRENT_LOCATION, fullWeather)
+                } else {
+                    repository.getSingleWeather(CURRENT_LOCATION)
+                }
                 // Save data if not null
                 repository.saveLastSavedAt(CURRENT_LOCATION)
                 repository.saveCurrentWeatherToRoom(entityItem)
+                onSuccess(Unit)
             } catch (e: Exception) {
-                operationError.postValue(Event(e.message!!))
-            } finally {
-                operationState.postValue(Event(false))
-                operationRefresh.postValue(Event(false))
+                onError(e.message!!)
             }
         }
     }

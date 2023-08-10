@@ -7,7 +7,7 @@ import com.appttude.h_mal.atlas_weather.data.repository.SettingsRepository
 import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
 import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
 import com.appttude.h_mal.atlas_weather.model.weather.FullWeather
-import com.google.gson.Gson
+import com.appttude.h_mal.atlas_weather.utils.BaseTest
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
@@ -18,9 +18,7 @@ import org.junit.Before
 import org.junit.Test
 import java.io.IOException
 
-class ServicesHelperTest {
-
-    private val gson = Gson()
+class ServicesHelperTest : BaseTest() {
 
     lateinit var helper: ServicesHelper
 
@@ -40,8 +38,7 @@ class ServicesHelperTest {
         MockKAnnotations.init(this)
         helper = ServicesHelper(repository, settingsRepository, locationProvider)
 
-        val json = this::class.java.classLoader!!.getResource("weather_sample.json").readText()
-        weatherResponse = gson.fromJson(json, WeatherResponse::class.java)
+        weatherResponse = getTestData("weather_sample.json", WeatherResponse::class.java)
     }
 
     @Test

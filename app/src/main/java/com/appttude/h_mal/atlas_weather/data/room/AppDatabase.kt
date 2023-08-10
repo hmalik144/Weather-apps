@@ -15,7 +15,7 @@ import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
 @TypeConverters(Converter::class)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun getSimpleDao(): WeatherDao
+    abstract fun getWeatherDao(): WeatherDao
 
     companion object {
 
