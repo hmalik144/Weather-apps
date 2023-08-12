@@ -35,5 +35,5 @@ fun <T> LiveData<T>.getOrAwaitValue(
 }
 
 fun sleep(millis: Long = 1000) {
-    runBlocking(Dispatchers.IO) { delay(millis) }
+    runBlocking(Dispatchers.Default) { delay(millis) }
 }

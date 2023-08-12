@@ -15,6 +15,7 @@ import com.appttude.h_mal.atlas_weather.utils.sleep
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import org.junit.Before
 import org.junit.Rule
@@ -28,6 +29,7 @@ class WorldViewModelTest : BaseTest() {
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
+    @InjectMockKs
     lateinit var viewModel: WorldViewModel
 
     @MockK(relaxed = true)
@@ -36,12 +38,11 @@ class WorldViewModelTest : BaseTest() {
     @MockK
     lateinit var locationProvider: LocationProviderImpl
 
-    lateinit var weatherResponse: WeatherResponse
+    private lateinit var weatherResponse: WeatherResponse
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        viewModel = WorldViewModel(locationProvider, repository)
 
         weatherResponse = getTestData("weather_sample.json", WeatherResponse::class.java)
     }
@@ -49,18 +50,17 @@ class WorldViewModelTest : BaseTest() {
     @Test
     fun fetchDataForSingleLocation_validLocation_validReturn() {
         // Arrange
-        val location = CURRENT_LOCATION
         val entityItem = EntityItem(CURRENT_LOCATION, FullWeather(weatherResponse).apply {
             temperatureUnit = "°C"
             locationString = CURRENT_LOCATION
         })
 
         // Act
+        every { repository.isSearchValid(CURRENT_LOCATION) }.returns(true)
         coEvery { locationProvider.getLatLongFromLocationName(CURRENT_LOCATION) } returns Pair(
             weatherResponse.lat,
             weatherResponse.lon
         )
-        every { repository.isSearchValid(CURRENT_LOCATION) }.returns(true)
         coEvery {
             repository.getWeatherFromApi(
                 weatherResponse.lat.toString(),
@@ -77,10 +77,14 @@ class WorldViewModelTest : BaseTest() {
         every { repository.saveLastSavedAt(CURRENT_LOCATION) } returns Unit
         coEvery { repository.saveCurrentWeatherToRoom(entityItem) } returns Unit
 
-        viewModel.fetchDataForSingleLocation(location)
+        viewModel.fetchDataForSingleLocation(CURRENT_LOCATION)
 
         // Assert
-        sleep(300)
+        viewModel.uiState.observeForever {
+            println(it.javaClass.name)
+        }
+
+        sleep(3000)
         assertIs<ViewState.HasData<*>>(viewModel.uiState.getOrAwaitValue())
     }
 

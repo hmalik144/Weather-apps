@@ -52,6 +52,7 @@ class WorldViewModel(
                 } else {
                     repository.getSingleWeather(locationName)
                 }
+                onSuccess(Unit)
                 repository.saveCurrentWeatherToRoom(weatherEntity)
                 repository.saveLastSavedAt(weatherEntity.id)
             } catch (e: IOException) {

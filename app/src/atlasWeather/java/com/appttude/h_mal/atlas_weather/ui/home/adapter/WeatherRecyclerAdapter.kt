@@ -1,20 +1,19 @@
 package com.appttude.h_mal.atlas_weather.ui.home.adapter
 
-import android.annotation.SuppressLint
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.model.forecast.Forecast
 import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
 import com.appttude.h_mal.atlas_weather.utils.generateView
+import com.appttude.h_mal.atlas_weather.ui.home.adapter.forecast.ViewHolderForecast
+import com.appttude.h_mal.atlas_weather.ui.home.adapter.forecastDaily.ViewHolderForecastDaily
 
 class WeatherRecyclerAdapter(
-    val itemClick: (Forecast) -> Unit
+    private val itemClick: (Forecast) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var weather: WeatherDisplay? = null
 
-    @SuppressLint("NotifyDataSetChanged")
     fun addCurrent(current: WeatherDisplay) {
         weather = current
         notifyDataSetChanged()
@@ -32,8 +31,8 @@ class WeatherRecyclerAdapter(
                 ViewHolderCurrent(viewCurrent)
             }
 
-            is ViewType.Forecast -> {
-                val viewForecast = parent.generateView(R.layout.list_item_forecast)
+            is ViewType.ForecastHourly -> {
+                val viewForecast = parent.generateView(R.layout.hourly_item_forecast)
                 ViewHolderForecast(viewForecast)
             }
 
@@ -41,13 +40,19 @@ class WeatherRecyclerAdapter(
                 val viewFurther = parent.generateView(R.layout.list_item_further)
                 ViewHolderFurtherDetails(viewFurther)
             }
+
+            is ViewType.ForecastDaily -> {
+                val viewForecast = parent.generateView(R.layout.list_item_forecast)
+                ViewHolderForecastDaily(viewForecast)
+            }
         }
     }
 
     sealed class ViewType {
         object Empty : ViewType()
         object Current : ViewType()
-        object Forecast : ViewType()
+        object ForecastHourly : ViewType()
+        object ForecastDaily : ViewType()
         object Further : ViewType()
     }
 
@@ -55,19 +60,20 @@ class WeatherRecyclerAdapter(
         return when (type) {
             0 -> ViewType.Empty
             1 -> ViewType.Current
-            2 -> ViewType.Forecast
+            2 -> ViewType.ForecastHourly
             3 -> ViewType.Further
+            4 -> ViewType.ForecastDaily
             else -> ViewType.Empty
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         if (weather == null) return 0
-
         return when (position) {
             0 -> 1
-            in 1 until itemCount - 2 -> 2
-            itemCount - 1 -> 3
+            1 -> 3
+            2 -> 2
+            in 3 until (itemCount) -> 4
             else -> 0
         }
     }
@@ -84,28 +90,31 @@ class WeatherRecyclerAdapter(
                 viewHolderCurrent.bindData(weather)
             }
 
-            is ViewType.Forecast -> {
-                val viewHolderForecast = holder as ViewHolderForecast
-
-                weather?.forecast?.get(position - 1)?.let { i ->
-                    viewHolderForecast.bindView(i)
-                    viewHolderForecast.itemView.setOnClickListener {
-                        itemClick(i)
-                    }
-                }
-            }
-
             is ViewType.Further -> {
                 val viewHolderCurrent = holder as ViewHolderFurtherDetails
                 viewHolderCurrent.bindData(weather)
+            }
+
+            is ViewType.ForecastHourly -> {
+                val viewHolderForecast = holder as ViewHolderForecast
+                viewHolderForecast.bindView(weather?.hourly)
+            }
+
+            is ViewType.ForecastDaily -> {
+                val viewHolderForecast = holder as ViewHolderForecastDaily
+                weather?.forecast?.getOrNull(position - 3)?.let { f ->
+                    viewHolderForecast.bindView(f)
+                    viewHolderForecast.itemView.setOnClickListener {
+                        itemClick.invoke(f)
+                    }
+                }
             }
         }
 
     }
 
     override fun getItemCount(): Int {
-        if (weather == null) return 0
-        return 2 + (weather?.forecast?.size ?: 0)
+        return if (weather == null) 1 else 3 + (weather?.forecast?.size ?: 0)
     }
 
 }

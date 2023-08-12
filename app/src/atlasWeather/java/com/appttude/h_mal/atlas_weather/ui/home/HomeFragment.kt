@@ -34,15 +34,6 @@ class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        recyclerAdapter = WeatherRecyclerAdapter(itemClick = {
-            navigateToFurtherDetails(it)
-        })
-
-        forecast_listview.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = recyclerAdapter
-        }
-
         swipe_refresh.apply {
             setOnRefreshListener {
                 getPermissionResult(ACCESS_COARSE_LOCATION, LOCATION_PERMISSION_REQUEST) {
@@ -51,16 +42,14 @@ class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
                 }
             }
         }
-    }
 
-    override fun onFailure(error: Any?) {
-        swipe_refresh.isRefreshing = false
-    }
+        recyclerAdapter = WeatherRecyclerAdapter(itemClick = {
+            navigateToFurtherDetails(it)
+        })
 
-    override fun onSuccess(data: Any?) {
-        swipe_refresh.isRefreshing = false
-        if (data is WeatherDisplay) {
-            recyclerAdapter.addCurrent(data)
+        forecast_listview.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = recyclerAdapter
         }
     }
 
@@ -71,6 +60,19 @@ class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
         getPermissionResult(ACCESS_COARSE_LOCATION, LOCATION_PERMISSION_REQUEST) {
             viewModel.fetchData()
         }
+    }
+
+    override fun onSuccess(data: Any?) {
+        super.onSuccess(data)
+        swipe_refresh.isRefreshing = false
+        if (data is WeatherDisplay) {
+            recyclerAdapter.addCurrent(data)
+        }
+    }
+
+    override fun onFailure(error: Any?) {
+        super.onFailure(error)
+        swipe_refresh.isRefreshing = false
     }
 
     @SuppressLint("MissingPermission")

@@ -1,9 +1,10 @@
-package com.appttude.h_mal.monoWeather.ui.home.adapter.forecast
+package com.appttude.h_mal.atlas_weather.ui.home.adapter.forecast
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.model.weather.Hour
+import com.appttude.h_mal.atlas_weather.ui.home.adapter.forecast.GridForecastAdapter
 
 class ViewHolderForecast(
     itemView: View

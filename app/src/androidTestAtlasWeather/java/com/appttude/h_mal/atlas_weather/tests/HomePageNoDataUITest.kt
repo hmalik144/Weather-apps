@@ -15,6 +15,7 @@ class HomePageNoDataUITest : BaseTest<MainActivity>(MainActivity::class.java) {
     @Test
     fun loadApp_invalidKeyWeatherResponse_returnsEmptyViewPage() {
         homeScreen {
+            waitFor(2000)
             // verify empty
             verifyUnableToRetrieve()
         }
@@ -23,6 +24,7 @@ class HomePageNoDataUITest : BaseTest<MainActivity>(MainActivity::class.java) {
     @Test
     fun invalidKeyWeatherResponse_swipeToRefresh_returnsValidPage() {
         homeScreen {
+            waitFor(2000)
             // verify empty
             verifyUnableToRetrieve()
 

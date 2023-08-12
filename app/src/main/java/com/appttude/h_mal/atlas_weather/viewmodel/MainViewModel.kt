@@ -48,7 +48,6 @@ class MainViewModel(
                 // Save data if not null
                 repository.saveLastSavedAt(CURRENT_LOCATION)
                 repository.saveCurrentWeatherToRoom(entityItem)
-                onSuccess(Unit)
             } catch (e: Exception) {
                 onError(e.message!!)
             }
