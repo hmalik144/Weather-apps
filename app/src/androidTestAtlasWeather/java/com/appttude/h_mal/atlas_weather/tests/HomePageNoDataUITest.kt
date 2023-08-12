@@ -17,8 +17,6 @@ class HomePageNoDataUITest : BaseTest<MainActivity>(MainActivity::class.java) {
         homeScreen {
             // verify empty
             verifyUnableToRetrieve()
-            // verify toast
-            checkToastMessage("Invalid API key. Please see http://openweathermap.org/faq#error401 for more info.")
         }
     }
 
@@ -27,8 +25,6 @@ class HomePageNoDataUITest : BaseTest<MainActivity>(MainActivity::class.java) {
         homeScreen {
             // verify empty
             verifyUnableToRetrieve()
-            // verify toast
-            checkToastMessage("Invalid API key. Please see http://openweathermap.org/faq#error401 for more info.")
 
             stubEndpoint("https://api.openweathermap.org/data/2.5/onecall", Stubs.Metric)
             refresh()

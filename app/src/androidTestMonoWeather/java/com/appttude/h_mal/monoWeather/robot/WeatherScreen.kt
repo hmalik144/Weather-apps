@@ -3,8 +3,8 @@ package com.appttude.h_mal.monoWeather.robot
 import com.appttude.h_mal.atlas_weather.BaseTestRobot
 import com.appttude.h_mal.atlas_weather.R
 
-fun homeScreen(func: HomeScreenRobot.() -> Unit) = HomeScreenRobot().apply { func() }
-class HomeScreenRobot : BaseTestRobot() {
+fun weatherScreen(func: WeatherScreen.() -> Unit) = WeatherScreen().apply { func() }
+class WeatherScreen : BaseTestRobot() {
     fun verifyCurrentTemperature(temperature: Int) =
         matchText(R.id.temp_main_4, temperature.toString())
 

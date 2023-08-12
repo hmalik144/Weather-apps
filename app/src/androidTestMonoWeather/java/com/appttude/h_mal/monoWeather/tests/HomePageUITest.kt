@@ -3,7 +3,7 @@ package com.appttude.h_mal.monoWeather.tests
 
 import com.appttude.h_mal.atlas_weather.utils.Stubs
 import com.appttude.h_mal.monoWeather.MonoBaseTest
-import com.appttude.h_mal.monoWeather.robot.homeScreen
+import com.appttude.h_mal.monoWeather.robot.weatherScreen
 import org.junit.Test
 
 class HomePageUITest : MonoBaseTest() {
@@ -14,7 +14,7 @@ class HomePageUITest : MonoBaseTest() {
 
     @Test
     fun loadApp_validWeatherResponse_returnsValidPage() {
-        homeScreen {
+        weatherScreen {
             isDisplayed()
             verifyCurrentTemperature(2)
             verifyCurrentLocation("Mock Location")

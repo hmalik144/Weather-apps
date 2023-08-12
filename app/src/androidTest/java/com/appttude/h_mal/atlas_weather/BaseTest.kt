@@ -15,6 +15,7 @@ import androidx.test.espresso.Root
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.matcher.RootMatchers.withDecorView
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
@@ -26,6 +27,7 @@ import com.appttude.h_mal.atlas_weather.utils.Stubs
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.Description
 import org.hamcrest.Matcher
+import org.hamcrest.Matchers
 import org.hamcrest.TypeSafeMatcher
 import org.junit.After
 import org.junit.Before
@@ -42,6 +44,7 @@ open class BaseTest<A : Activity>(
     lateinit var scenario: ActivityScenario<A>
     private lateinit var testApp: TestAppClass
     private lateinit var testActivity: Activity
+    private lateinit var decorView: View
 
     @get:Rule
     var permissionRule = GrantPermissionRule.grant(Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -66,6 +69,7 @@ open class BaseTest<A : Activity>(
 
         scenario = ActivityScenario.launch(startIntent)
         scenario.onActivity {
+            decorView = it.window.decorView
             testActivity = it
         }
         afterLaunch()
@@ -77,6 +81,10 @@ open class BaseTest<A : Activity>(
 
     fun unstubEndpoint(url: String) {
         testApp.removeUrlStub(url)
+    }
+
+    fun stubLocation(location: String, lat: Double = 0.00, long: Double = 0.00) {
+        testApp.stubLocation(location, lat, long)
     }
 
     fun getActivity() = testActivity
@@ -102,27 +110,8 @@ open class BaseTest<A : Activity>(
 
     @Suppress("DEPRECATION")
     fun checkToastMessage(message: String) {
-        Espresso.onView(ViewMatchers.withText(message)).inRoot(object : BaseCustomMatcher<Root>() {
-            override fun describe(description: Description?) {
-                description?.appendText("is toast")
-            }
-
-            override fun matchesSafely(root: Root): Boolean {
-                root.run {
-                    if (windowLayoutParams.get().type == WindowManager.LayoutParams.TYPE_TOAST) {
-                        decorView.run {
-                            if (windowToken === applicationWindowToken) {
-                                // windowToken == appToken means this window isn't contained by any other windows.
-                                // if it was a window for an activity, it would have TYPE_BASE_APPLICATION.
-                                return true
-                            }
-                        }
-                    }
-                }
-                return false
-            }
-        }
-        ).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withText(message)).inRoot(withDecorView(Matchers.not(decorView)))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
             waitFor(3500)
         }

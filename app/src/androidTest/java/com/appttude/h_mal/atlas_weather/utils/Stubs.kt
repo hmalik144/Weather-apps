@@ -6,5 +6,6 @@ enum class Stubs(
     Metric("valid_response_metric"),
     Imperial("valid_response_imperial"),
     WrongLocation("wrong_location_response"),
-    InvalidKey("invalid_api_key_response")
+    InvalidKey("invalid_api_key_response"),
+    Sydney("valid_response_metric_sydney")
 }

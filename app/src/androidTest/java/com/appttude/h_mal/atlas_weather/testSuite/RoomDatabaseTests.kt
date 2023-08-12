@@ -1,5 +1,6 @@
 package com.appttude.h_mal.atlas_weather.testSuite
 
+import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.room.util.UUIDUtil
@@ -10,6 +11,7 @@ import com.appttude.h_mal.atlas_weather.data.room.WeatherDao
 import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
 import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
 import com.appttude.h_mal.atlas_weather.model.weather.FullWeather
+import com.appttude.h_mal.atlas_weather.test.BuildConfig
 import com.appttude.h_mal.atlas_weather.utils.getOrAwaitValue
 import io.mockk.every
 import io.mockk.mockk
@@ -20,6 +22,7 @@ import org.junit.Test
 import org.junit.Assert.*
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
+import org.mockito.Mockito.mock
 import java.util.UUID
 
 
@@ -96,7 +99,11 @@ class RoomDatabaseTests {
     }
 
     private fun createEntity(id: String = CURRENT_LOCATION): EntityItem {
-        val weather = mockk<FullWeather>()
+        val weather = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            FullWeather()
+        } else {
+            mockk<FullWeather>()
+        }
         return EntityItem(id, weather)
     }
 

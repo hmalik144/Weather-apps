@@ -18,6 +18,7 @@ class WorldViewModel(
     private val locationProvider: LocationProvider,
     private val repository: Repository
 ) : WeatherViewModel() {
+    private var currentLocation: String? = null
 
     private val weatherListLiveData = repository.loadRoomWeatherLiveData()
 
@@ -27,8 +28,12 @@ class WorldViewModel(
                 WeatherDisplay(data)
             }
             onSuccess(list)
+            currentLocation?.let { i -> list.first { j -> j.location == i } }
+                ?.let { k -> onSuccess(k) }
         }
     }
+
+    fun setLocation(location: String) = run { currentLocation = location }
 
     fun getSingleLocation(locationName: String) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -48,8 +53,7 @@ class WorldViewModel(
                     repository.getSingleWeather(locationName)
                 }
                 repository.saveCurrentWeatherToRoom(weatherEntity)
-                repository.saveLastSavedAt(locationName)
-                onSuccess(Unit)
+                repository.saveLastSavedAt(weatherEntity.id)
             } catch (e: IOException) {
                 onError(e.message!!)
             }

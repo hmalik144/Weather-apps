@@ -23,7 +23,7 @@ class WeatherRecyclerAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (getDataType(viewType)) {
             is ViewType.Empty -> {
-                val emptyViewHolder = View(parent.context)
+                val emptyViewHolder = parent.generateView(R.layout.empty_state_layout)
                 EmptyViewHolder(emptyViewHolder)
             }
 
@@ -75,7 +75,8 @@ class WeatherRecyclerAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getDataType(getItemViewType(position))) {
             is ViewType.Empty -> {
-                holder as EmptyViewHolder
+                val emptyViewHolder = holder as EmptyViewHolder
+                emptyViewHolder.bindData()
             }
 
             is ViewType.Current -> {

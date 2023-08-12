@@ -23,6 +23,7 @@ class WorldItemFragment : BaseFragment<WorldViewModel>(R.layout.fragment_home) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         param1 = WorldItemFragmentArgs.fromBundle(requireArguments()).locationName
+        param1?.let { viewModel.setLocation(it) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,12 +53,11 @@ class WorldItemFragment : BaseFragment<WorldViewModel>(R.layout.fragment_home) {
     }
 
     override fun onSuccess(data: Any?) {
-        super.onSuccess(data)
-        swipe_refresh.isRefreshing = false
-
         if (data is WeatherDisplay) {
             recyclerAdapter.addCurrent(data)
         }
+        super.onSuccess(data)
+        swipe_refresh.isRefreshing = false
     }
 
     override fun onFailure(error: Any?) {

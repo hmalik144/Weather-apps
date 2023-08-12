@@ -3,18 +3,16 @@ package com.appttude.h_mal.monoWeather.ui.world
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
+import com.appttude.h_mal.atlas_weather.ui.BaseFragment
 import com.appttude.h_mal.atlas_weather.utils.navigateTo
 import com.appttude.h_mal.atlas_weather.viewmodel.WorldViewModel
-import com.appttude.h_mal.atlas_weather.ui.BaseFragment
 import com.appttude.h_mal.monoWeather.ui.world.WorldFragmentDirections.actionWorldFragmentToWorldItemFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.fragment__two.floatingActionButton
-import kotlinx.android.synthetic.main.fragment__two.progressBar
-import kotlinx.android.synthetic.main.fragment__two.world_recycler
+import kotlinx.android.synthetic.monoWeather.fragment__two.floatingActionButton
+import kotlinx.android.synthetic.monoWeather.fragment__two.world_recycler
 
 
 /**
@@ -27,7 +25,6 @@ class WorldFragment : BaseFragment<WorldViewModel>(R.layout.fragment__two) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         viewModel.fetchAllLocations()
     }
 
@@ -61,6 +58,7 @@ class WorldFragment : BaseFragment<WorldViewModel>(R.layout.fragment__two) {
 
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun onSuccess(data: Any?) {
         super.onSuccess(data)
 
