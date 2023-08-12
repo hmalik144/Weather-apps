@@ -84,6 +84,7 @@ commands:
           name: Run fastlane command to deploy to playstore
           command: |
             pwd
+            bundle install
             bundle exec fastlane deploy<< parameters.flavour >>
       - store_test_results:
           path: fastlane/report.xml
