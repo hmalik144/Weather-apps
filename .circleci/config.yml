@@ -74,6 +74,7 @@ commands:
         default: "AtlasWeather"
     steps:
       # The next step will run the unit tests
+      - setup_repo
       - android/decode-keystore:
           keystore-location: "./app/keystore.jks"
       - run:
