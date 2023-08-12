@@ -25,7 +25,7 @@ platform :android do
         build_type: "Release",
         )
     upload_to_play_store(
-        aab: "app/build/outputs/bundle/monoWeather/app-monoWeather-release.aab",
+        aab: "app/build/outputs/bundle/monoWeatherRelease/app-monoWeather-release.aab",
         json_key: "google-play-key.json",
         package_name: "h_mal.appttude.com.monoWeather")
   end
@@ -38,7 +38,7 @@ platform :android do
         build_type: "Release",
         )
     upload_to_play_store(
-        aab: "app/build/outputs/bundle/atlasWeather/app-atlas-release.aab",
+        aab: "app/build/outputs/bundle/atlasWeatherRelease/app-atlas-release.aab",
         json_key: "google-play-key.json",
         package_name: "h_mal.appttude.com.atlas_weather")
   end
