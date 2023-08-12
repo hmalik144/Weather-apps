@@ -10,7 +10,7 @@ import org.junit.Test
 class HomePageUITest : BaseTest<MainActivity>(MainActivity::class.java) {
 
     override fun beforeLaunch() {
-        stubEndpoint("https://api.openweathermap.org/data/2.5/onecall", Stubs.Valid)
+        stubEndpoint("https://api.openweathermap.org/data/2.5/onecall", Stubs.Metric)
     }
 
     @Test

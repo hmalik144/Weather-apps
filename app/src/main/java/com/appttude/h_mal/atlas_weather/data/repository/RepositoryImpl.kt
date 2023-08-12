@@ -24,33 +24,32 @@ class RepositoryImpl(
     }
 
     override suspend fun saveCurrentWeatherToRoom(entityItem: EntityItem) {
-        db.getSimpleDao().upsertFullWeather(entityItem)
+        db.getWeatherDao().upsertFullWeather(entityItem)
     }
 
     override suspend fun saveWeatherListToRoom(
         list: List<EntityItem>
     ) {
-        db.getSimpleDao().upsertListOfFullWeather(list)
+        db.getWeatherDao().upsertListOfFullWeather(list)
     }
 
-    override fun loadRoomWeatherLiveData() = db.getSimpleDao().getAllFullWeatherWithoutCurrent()
+    override fun loadRoomWeatherLiveData() = db.getWeatherDao().getAllFullWeatherWithoutCurrent()
 
     override suspend fun loadWeatherList(): List<String> {
-        return db.getSimpleDao()
+        return db.getWeatherDao()
             .getWeatherListWithoutCurrent()
             .map { it.id }
     }
 
     override fun loadCurrentWeatherFromRoom(id: String) =
-        db.getSimpleDao().getCurrentFullWeather(id)
+        db.getWeatherDao().getCurrentFullWeather(id)
 
     override suspend fun loadSingleCurrentWeatherFromRoom(id: String) =
-        db.getSimpleDao().getCurrentFullWeatherSingle(id)
+        db.getWeatherDao().getCurrentFullWeatherSingle(id)
 
     override fun isSearchValid(locationName: String): Boolean {
         val lastSaved = prefs
             .getLastSavedAt("$LOCATION_CONST$locationName")
-            ?: return true
         val difference = System.currentTimeMillis() - lastSaved
 
         return difference > FALLBACK_TIME
@@ -62,7 +61,7 @@ class RepositoryImpl(
 
     override suspend fun deleteSavedWeatherEntry(locationName: String): Boolean {
         prefs.deleteLocation(locationName)
-        return db.getSimpleDao().deleteEntry(locationName) > 0
+        return db.getWeatherDao().deleteEntry(locationName) > 0
     }
 
     override fun getSavedLocations(): List<String> {
@@ -70,7 +69,7 @@ class RepositoryImpl(
     }
 
     override suspend fun getSingleWeather(locationName: String): EntityItem {
-        return db.getSimpleDao().getCurrentFullWeatherSingle(locationName)
+        return db.getWeatherDao().getCurrentFullWeatherSingle(locationName)
     }
 
 }

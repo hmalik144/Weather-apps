@@ -13,10 +13,11 @@ import androidx.navigation.ui.onNavDestinationSelected
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.application.LOCATION_PERMISSION_REQUEST
 import com.appttude.h_mal.atlas_weather.model.forecast.Forecast
+import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
 import com.appttude.h_mal.atlas_weather.utils.navigateTo
 import com.appttude.h_mal.atlas_weather.viewmodel.MainViewModel
 import com.appttude.h_mal.monoWeather.dialog.PermissionsDeclarationDialog
-import com.appttude.h_mal.monoWeather.ui.BaseFragment
+import com.appttude.h_mal.atlas_weather.ui.BaseFragment
 import com.appttude.h_mal.monoWeather.ui.home.adapter.WeatherRecyclerAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -25,22 +26,16 @@ import kotlinx.android.synthetic.main.fragment_home.*
  * A simple [Fragment] subclass.
  * create an instance of this fragment.
  */
-class HomeFragment : BaseFragment(R.layout.fragment_home) {
-
-    private val viewModel by getFragmentViewModel<MainViewModel>()
+class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
 
     lateinit var dialog: PermissionsDeclarationDialog
+    lateinit var recyclerAdapter: WeatherRecyclerAdapter
 
     @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        val recyclerAdapter = WeatherRecyclerAdapter(itemClick = {
-            navigateToFurtherDetails(it)
-        })
-
-        forecast_listview.adapter = recyclerAdapter
         dialog = PermissionsDeclarationDialog(requireContext())
 
         swipe_refresh.apply {
@@ -52,13 +47,11 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             }
         }
 
-        viewModel.weatherLiveData.observe(viewLifecycleOwner) {
-            recyclerAdapter.addCurrent(it)
-        }
+        recyclerAdapter = WeatherRecyclerAdapter(itemClick = {
+            navigateToFurtherDetails(it)
+        })
 
-        viewModel.operationState.observe(viewLifecycleOwner, progressBarStateObserver(progressBar))
-        viewModel.operationError.observe(viewLifecycleOwner, errorObserver())
-        viewModel.operationRefresh.observe(viewLifecycleOwner, refreshObserver(swipe_refresh))
+        forecast_listview.adapter = recyclerAdapter
     }
 
     @SuppressLint("MissingPermission")
@@ -74,6 +67,20 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     override fun onStop() {
         super.onStop()
         dialog.dismiss()
+    }
+
+    override fun onSuccess(data: Any?) {
+        super.onSuccess(data)
+        swipe_refresh.isRefreshing = false
+
+        if (data is WeatherDisplay) {
+            recyclerAdapter.addCurrent(data)
+        }
+    }
+
+    override fun onFailure(error: Any?) {
+        super.onFailure(error)
+        swipe_refresh.isRefreshing = false
     }
 
     @SuppressLint("MissingPermission")

@@ -3,42 +3,37 @@ package com.appttude.h_mal.monoWeather.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.appttude.h_mal.atlas_weather.R
+import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
+import com.appttude.h_mal.atlas_weather.ui.BaseFragment
 import com.appttude.h_mal.atlas_weather.utils.navigateTo
 import com.appttude.h_mal.atlas_weather.viewmodel.WorldViewModel
 import com.appttude.h_mal.monoWeather.ui.home.adapter.WeatherRecyclerAdapter
 import kotlinx.android.synthetic.main.fragment_home.forecast_listview
-import kotlinx.android.synthetic.main.fragment_home.progressBar
 import kotlinx.android.synthetic.main.fragment_home.swipe_refresh
 
 
-class WorldItemFragment : BaseFragment(R.layout.fragment_home) {
+class WorldItemFragment : BaseFragment<WorldViewModel>(R.layout.fragment_home) {
 
-    private val viewModel by getFragmentViewModel<WorldViewModel>()
     private var param1: String? = null
+
+    private lateinit var recyclerAdapter: WeatherRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         param1 = WorldItemFragmentArgs.fromBundle(requireArguments()).locationName
+        param1?.let { viewModel.setLocation(it) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerAdapter = WeatherRecyclerAdapter {
+        recyclerAdapter = WeatherRecyclerAdapter {
             val directions =
                 WorldItemFragmentDirections.actionWorldItemFragmentToFurtherDetailsFragment(it)
             navigateTo(directions)
         }
-
-        param1?.let { viewModel.getSingleLocation(it) }
-
-        viewModel.singleWeatherLiveData.observe(viewLifecycleOwner, Observer {
-            recyclerAdapter.addCurrent(it)
-            swipe_refresh.isRefreshing = false
-        })
 
         forecast_listview.apply {
             layoutManager = LinearLayoutManager(context)
@@ -54,9 +49,19 @@ class WorldItemFragment : BaseFragment(R.layout.fragment_home) {
             }
         }
 
-        viewModel.operationState.observe(viewLifecycleOwner, progressBarStateObserver(progressBar))
-        viewModel.operationError.observe(viewLifecycleOwner, errorObserver())
-        viewModel.operationRefresh.observe(viewLifecycleOwner, refreshObserver(swipe_refresh))
+        param1?.let { viewModel.getSingleLocation(it) }
     }
 
+    override fun onSuccess(data: Any?) {
+        if (data is WeatherDisplay) {
+            recyclerAdapter.addCurrent(data)
+        }
+        super.onSuccess(data)
+        swipe_refresh.isRefreshing = false
+    }
+
+    override fun onFailure(error: Any?) {
+        super.onFailure(error)
+        swipe_refresh.isRefreshing = false
+    }
 }

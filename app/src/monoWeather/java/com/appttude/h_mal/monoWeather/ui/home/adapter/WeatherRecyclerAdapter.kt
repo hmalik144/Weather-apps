@@ -83,7 +83,8 @@ class WeatherRecyclerAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getDataType(getItemViewType(position))) {
             is ViewType.Empty -> {
-                holder as EmptyViewHolder
+                val emptyViewHolder = holder as EmptyViewHolder
+                emptyViewHolder.bindData()
             }
 
             is ViewType.Current -> {
@@ -115,7 +116,7 @@ class WeatherRecyclerAdapter(
     }
 
     override fun getItemCount(): Int {
-        return if (weather == null) 0 else 3 + (weather?.forecast?.size ?: 0)
+        return if (weather == null) 1 else 3 + (weather?.forecast?.size ?: 0)
     }
 
 }

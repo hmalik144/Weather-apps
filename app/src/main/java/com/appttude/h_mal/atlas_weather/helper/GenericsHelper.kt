@@ -11,6 +11,13 @@ object GenericsHelper {
             ?.kotlin
             ?: throw IllegalStateException("Can not find class from generic argument")
 
+//    @Suppress("UNCHECKED_CAST")
+//    fun <CLASS : Any> Any.getGenericClassInMethod(position: Int): KClass<CLASS> =
+//        ((javaClass.methods as? ParameterizedType)
+//            ?.actualTypeArguments?.getOrNull(position) as? Class<CLASS>)
+//            ?.kotlin
+//            ?: throw IllegalStateException("Can not find class from generic argument")
+
 //    /**
 //     * Create a view binding out of the the generic [VB]
 //     *

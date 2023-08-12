@@ -1,7 +1,5 @@
-package com.appttude.h_mal.monoWeather.ui
+package com.appttude.h_mal.atlas_weather.ui
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -9,16 +7,17 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.createViewModelLazy
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.appttude.h_mal.atlas_weather.application.LOCATION_PERMISSION_REQUEST
+import com.appttude.h_mal.atlas_weather.base.BaseActivity
+import com.appttude.h_mal.atlas_weather.helper.GenericsHelper.getGenericClassAt
+import com.appttude.h_mal.atlas_weather.model.ViewState
 import com.appttude.h_mal.atlas_weather.utils.Event
 import com.appttude.h_mal.atlas_weather.utils.displayToast
-import com.appttude.h_mal.atlas_weather.utils.hide
-import com.appttude.h_mal.atlas_weather.utils.show
 import com.appttude.h_mal.atlas_weather.viewmodel.ApplicationViewModelFactory
+import com.appttude.h_mal.atlas_weather.viewmodel.baseViewModels.BaseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,13 +27,18 @@ import org.kodein.di.generic.instance
 import kotlin.properties.Delegates
 
 @Suppress("EmptyMethod", "EmptyMethod")
-abstract class BaseFragment(@LayoutRes contentLayoutId: Int) : Fragment(contentLayoutId),
+abstract class BaseFragment<V : BaseViewModel>(@LayoutRes contentLayoutId: Int) :
+    Fragment(contentLayoutId),
     KodeinAware {
 
     override val kodein by kodein()
     val factory by instance<ApplicationViewModelFactory>()
 
-    inline fun <reified VM : ViewModel> getFragmentViewModel(): Lazy<VM> = viewModels { factory }
+    val viewModel: V by getFragmentViewModel()
+
+    var mActivity: BaseActivity? = null
+    private fun getFragmentViewModel(): Lazy<V> =
+        createViewModelLazy(getGenericClassAt(0), { viewModelStore }, factoryProducer = { factory })
 
     private var shortAnimationDuration by Delegates.notNull<Int>()
 
@@ -43,25 +47,42 @@ abstract class BaseFragment(@LayoutRes contentLayoutId: Int) : Fragment(contentL
         shortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
     }
 
-    // toggle visibility of progress spinner while async operations are taking place
-    fun progressBarStateObserver(progressBar: View) = Observer<Event<Boolean>> {
-        it.getContentIfNotHandled()?.let { i ->
-            if (i)
-                progressBar.fadeIn()
-            else
-                progressBar.fadeOut()
+    @Suppress("UNCHECKED_CAST")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mActivity = activity as BaseActivity
+        configureObserver()
+    }
+
+    private fun configureObserver() {
+        viewModel.uiState.observe(viewLifecycleOwner) {
+            when (it) {
+                is ViewState.HasStarted -> onStarted()
+                is ViewState.HasData<*> -> onSuccess(it.data)
+                is ViewState.HasError<*> -> onFailure(it.error)
+            }
         }
     }
 
-    // display a toast when operation fails
-    fun errorObserver() = Observer<Event<String>> {
-        it.getContentIfNotHandled()?.let { message ->
-            displayToast(message)
-        }
+    /**
+     *  Called in case of starting operation liveData in viewModel
+     */
+    open fun onStarted() {
+        mActivity?.onStarted()
     }
 
-    fun refreshObserver(refresher: SwipeRefreshLayout) = Observer<Event<Boolean>> {
-        refresher.isRefreshing = false
+    /**
+     *  Called in case of success or some data emitted from the liveData in viewModel
+     */
+    open fun onSuccess(data: Any?) {
+        mActivity?.onSuccess(data)
+    }
+
+    /**
+     *  Called in case of failure or some error emitted from the liveData in viewModel
+     */
+    open fun onFailure(error: Any?) {
+        mActivity?.onFailure(error)
     }
 
     /**
@@ -87,46 +108,6 @@ abstract class BaseFragment(@LayoutRes contentLayoutId: Int) : Fragment(contentL
             CoroutineScope(Dispatchers.Main).launch {
                 permissionGranted.invoke()
             }
-        }
-    }
-
-    private fun View.fadeIn() {
-        apply {
-            // Set the content view to 0% opacity but visible, so that it is visible
-            // (but fully transparent) during the animation.
-            alpha = 0f
-            hide()
-
-            // Animate the content view to 100% opacity, and clear any animation
-            // listener set on the view.
-            animate()
-                .alpha(1f)
-                .setDuration(shortAnimationDuration.toLong())
-                .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        show()
-                    }
-                })
-        }
-    }
-
-    private fun View.fadeOut() {
-        apply {
-            // Set the content view to 0% opacity but visible, so that it is visible
-            // (but fully transparent) during the animation.
-            alpha = 1f
-            show()
-
-            // Animate the content view to 100% opacity, and clear any animation
-            // listener set on the view.
-            animate()
-                .alpha(0f)
-                .setDuration(shortAnimationDuration.toLong())
-                .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        hide()
-                    }
-                })
         }
     }
 

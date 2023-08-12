@@ -27,18 +27,4 @@
         android:contentDescription="@string/image_string"
         app:srcCompat="@drawable/ic_baseline_add_24" />
 
-    <FrameLayout
-        android:id="@+id/progressBar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/black"
-        android:visibility="gone"
-        tools:visibility="visible">
-
-        <ProgressBar
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-    </FrameLayout>
 </RelativeLayout>

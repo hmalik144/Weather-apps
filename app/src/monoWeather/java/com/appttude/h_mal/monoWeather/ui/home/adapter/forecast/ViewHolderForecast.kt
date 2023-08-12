@@ -15,6 +15,5 @@ class ViewHolderForecast(
         val adapter = GridForecastAdapter()
         adapter.addCurrent(forecasts)
         recyclerView.adapter = adapter
-
     }
 }

@@ -1,26 +1,35 @@
 package com.appttude.h_mal.atlas_weather.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import com.appttude.h_mal.atlas_weather.data.location.LocationProviderImpl
+import com.appttude.h_mal.atlas_weather.data.network.response.forecast.WeatherResponse
 import com.appttude.h_mal.atlas_weather.data.repository.Repository
 import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
+import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
+import com.appttude.h_mal.atlas_weather.model.ViewState
+import com.appttude.h_mal.atlas_weather.model.types.LocationType
+import com.appttude.h_mal.atlas_weather.model.weather.FullWeather
+import com.appttude.h_mal.atlas_weather.utils.BaseTest
+import com.appttude.h_mal.atlas_weather.utils.getOrAwaitValue
+import com.appttude.h_mal.atlas_weather.utils.sleep
 import io.mockk.MockKAnnotations
+import io.mockk.coEvery
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
-import java.util.concurrent.TimeoutException
+import java.io.IOException
+import kotlin.test.assertIs
 
-@Suppress("unused")
-class WorldViewModelTest {
+
+class WorldViewModelTest : BaseTest() {
+
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
+    @InjectMockKs
     lateinit var viewModel: WorldViewModel
 
     @MockK(relaxed = true)
@@ -29,46 +38,102 @@ class WorldViewModelTest {
     @MockK
     lateinit var locationProvider: LocationProviderImpl
 
+    private lateinit var weatherResponse: WeatherResponse
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        viewModel = WorldViewModel(locationProvider, repository)
 
+        weatherResponse = getTestData("weather_sample.json", WeatherResponse::class.java)
+    }
+
+    @Test
+    fun fetchDataForSingleLocation_validLocation_validReturn() {
+        // Arrange
+        val entityItem = EntityItem(CURRENT_LOCATION, FullWeather(weatherResponse).apply {
+            temperatureUnit = "°C"
+            locationString = CURRENT_LOCATION
+        })
+
+        // Act
+        every { repository.isSearchValid(CURRENT_LOCATION) }.returns(true)
+        coEvery { locationProvider.getLatLongFromLocationName(CURRENT_LOCATION) } returns Pair(
+            weatherResponse.lat,
+            weatherResponse.lon
+        )
+        coEvery {
+            repository.getWeatherFromApi(
+                weatherResponse.lat.toString(),
+                weatherResponse.lon.toString()
+            )
+        }.returns(weatherResponse)
+        coEvery {
+            locationProvider.getLocationNameFromLatLong(
+                weatherResponse.lat,
+                weatherResponse.lon,
+                LocationType.City
+            )
+        }.returns(CURRENT_LOCATION)
+        every { repository.saveLastSavedAt(CURRENT_LOCATION) } returns Unit
+        coEvery { repository.saveCurrentWeatherToRoom(entityItem) } returns Unit
+
+        viewModel.fetchDataForSingleLocation(CURRENT_LOCATION)
+
+        // Assert
+        viewModel.uiState.observeForever {
+            println(it.javaClass.name)
+        }
+
+        sleep(3000)
+        assertIs<ViewState.HasData<*>>(viewModel.uiState.getOrAwaitValue())
     }
 
     @Test
     fun fetchDataForSingleLocation_invalidLocation_invalidReturn() {
+        // Arrange
         val location = CURRENT_LOCATION
+
+        // Act
+        every { locationProvider.getLatLongFromLocationName(CURRENT_LOCATION) } throws IOException("Unable to get location")
+        every { repository.isSearchValid(CURRENT_LOCATION) }.returns(true)
+        coEvery {
+            repository.getWeatherFromApi(
+                weatherResponse.lat.toString(),
+                weatherResponse.lon.toString()
+            )
+        }.returns(weatherResponse)
 
         viewModel.fetchDataForSingleLocation(location)
 
-        assertEquals(viewModel.operationRefresh.getOrAwaitValue()?.getContentIfNotHandled(), false)
-    }
-}
-
-
-fun <T> LiveData<T>.getOrAwaitValue(
-    time: Long = 2,
-    timeUnit: TimeUnit = TimeUnit.SECONDS
-): T {
-    var data: T? = null
-    val latch = CountDownLatch(1)
-    val observer = object : Observer<T> {
-        override fun onChanged(o: T?) {
-            data = o
-            latch.countDown()
-            this@getOrAwaitValue.removeObserver(this)
-        }
+        // Assert
+        sleep(300)
+        assertIs<ViewState.HasError<*>>(viewModel.uiState.getOrAwaitValue())
     }
 
-    this.observeForever(observer)
+    @Test
+    fun searchAboveFallbackTime_validLocation_validReturn() {
+        // Arrange
+        val entityItem = EntityItem(CURRENT_LOCATION, FullWeather(weatherResponse).apply {
+            temperatureUnit = "°C"
+            locationString = CURRENT_LOCATION
+        })
 
-    // Don't wait indefinitely if the LiveData is not set.
-    if (!latch.await(time, timeUnit)) {
-        throw TimeoutException("LiveData value was never set.")
+        // Act
+        coEvery { repository.getSingleWeather(CURRENT_LOCATION) }.returns(entityItem)
+        every { repository.isSearchValid(CURRENT_LOCATION) }.returns(false)
+        coEvery {
+            repository.getWeatherFromApi(
+                weatherResponse.lat.toString(),
+                weatherResponse.lon.toString()
+            )
+        }.returns(weatherResponse)
+        every { repository.saveLastSavedAt(CURRENT_LOCATION) } returns Unit
+        coEvery { repository.saveCurrentWeatherToRoom(entityItem) } returns Unit
+
+        viewModel.fetchDataForSingleLocation(CURRENT_LOCATION)
+
+        // Assert
+        sleep(300)
+        assertIs<ViewState.HasData<*>>(viewModel.uiState.getOrAwaitValue())
     }
-
-    @Suppress("UNCHECKED_CAST")
-    return data as T
 }

@@ -1,13 +1,11 @@
 package com.appttude.h_mal.atlas_weather.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
 import com.appttude.h_mal.atlas_weather.data.network.response.forecast.WeatherResponse
 import com.appttude.h_mal.atlas_weather.data.repository.Repository
 import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
 import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
 import com.appttude.h_mal.atlas_weather.model.types.LocationType
-import com.appttude.h_mal.atlas_weather.utils.Event
 import com.appttude.h_mal.atlas_weather.viewmodel.baseViewModels.WeatherViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,15 +18,7 @@ class WorldViewModel(
     private val locationProvider: LocationProvider,
     private val repository: Repository
 ) : WeatherViewModel() {
-
-    val weatherLiveData = MutableLiveData<List<WeatherDisplay>>()
-    val singleWeatherLiveData = MutableLiveData<WeatherDisplay>()
-
-    val operationState = MutableLiveData<Event<Boolean>>()
-    val operationError = MutableLiveData<Event<String>>()
-    val operationRefresh = MutableLiveData<Event<Boolean>>()
-
-    val operationComplete = MutableLiveData<Event<String>>()
+    private var currentLocation: String? = null
 
     private val weatherListLiveData = repository.loadRoomWeatherLiveData()
 
@@ -37,44 +27,46 @@ class WorldViewModel(
             val list = it.map { data ->
                 WeatherDisplay(data)
             }
-            weatherLiveData.postValue(list)
+            onSuccess(list)
+            currentLocation?.let { i -> list.first { j -> j.location == i } }
+                ?.let { k -> onSuccess(k) }
         }
     }
+
+    fun setLocation(location: String) = run { currentLocation = location }
 
     fun getSingleLocation(locationName: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val entity = repository.getSingleWeather(locationName)
             val item = WeatherDisplay(entity)
-            singleWeatherLiveData.postValue(item)
+            onSuccess(item)
         }
     }
 
     fun fetchDataForSingleLocation(locationName: String) {
-        if (!repository.isSearchValid(locationName)) {
-            operationRefresh.postValue(Event(false))
-            return
-        }
+        onStart()
         CoroutineScope(Dispatchers.IO).launch {
-            operationState.postValue(Event(true))
             try {
-                val weatherEntity = createWeatherEntity(locationName)
+                val weatherEntity = if (repository.isSearchValid(locationName)) {
+                    createWeatherEntity(locationName)
+                } else {
+                    repository.getSingleWeather(locationName)
+                }
+                onSuccess(Unit)
                 repository.saveCurrentWeatherToRoom(weatherEntity)
-                repository.saveLastSavedAt(locationName)
+                repository.saveLastSavedAt(weatherEntity.id)
             } catch (e: IOException) {
-                operationError.postValue(Event(e.message!!))
-            } finally {
-                operationState.postValue(Event(false))
-                operationRefresh.postValue(Event(false))
+                onError(e.message!!)
             }
         }
     }
 
     fun fetchDataForSingleLocationSearch(locationName: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            operationState.postValue(Event(true))
+            onStart()
             // Check if location exists
             if (repository.getSavedLocations().contains(locationName)) {
-                operationError.postValue(Event("$locationName already exists"))
+                onError("$locationName already exists")
                 return@launch
             }
 
@@ -89,29 +81,26 @@ class WorldViewModel(
                     LocationType.City
                 )
                 if (repository.getSavedLocations().contains(retrievedLocation)) {
-                    operationError.postValue(Event("$retrievedLocation already exists"))
+                    onError("$retrievedLocation already exists")
                     return@launch
                 }
                 // Save data if not null
                 repository.saveCurrentWeatherToRoom(entityItem)
                 repository.saveLastSavedAt(retrievedLocation)
-                operationComplete.postValue(Event("$retrievedLocation saved"))
-
+                onSuccess("$retrievedLocation saved")
             } catch (e: IOException) {
-                operationError.postValue(Event(e.message!!))
-            } finally {
-                operationState.postValue(Event(false))
+                onError(e.message!!)
             }
         }
     }
 
     fun fetchAllLocations() {
+        onStart()
         if (!repository.isSearchValid(ALL_LOADED)) {
-            operationRefresh.postValue(Event(false))
+            onSuccess(Unit)
             return
         }
         CoroutineScope(Dispatchers.IO).launch {
-            operationState.postValue(Event(true))
             try {
                 val list = mutableListOf<EntityItem>()
                 repository.loadWeatherList().forEach { locationName ->
@@ -128,25 +117,25 @@ class WorldViewModel(
                 repository.saveWeatherListToRoom(list)
                 repository.saveLastSavedAt(ALL_LOADED)
             } catch (e: IOException) {
-                operationError.postValue(Event(e.message!!))
+                onError(e.message!!)
             } finally {
-                operationState.postValue(Event(false))
+                onSuccess(Unit)
             }
         }
     }
 
     fun deleteLocation(locationName: String) {
+        onStart()
         CoroutineScope(Dispatchers.IO).launch {
-            operationState.postValue(Event(true))
             try {
                 val success = repository.deleteSavedWeatherEntry(locationName)
                 if (!success) {
-                    operationError.postValue(Event("Failed to delete"))
+                    onError("Failed to delete")
                 }
             } catch (e: IOException) {
-                operationError.postValue(Event(e.message!!))
+                onError(e.message!!)
             } finally {
-                operationState.postValue(Event(false))
+                onSuccess(Unit)
             }
         }
     }
