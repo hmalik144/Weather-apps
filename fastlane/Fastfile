@@ -25,21 +25,21 @@ platform :android do
         build_type: "Release",
         )
     upload_to_play_store(
-        aab: "app/build/outputs/bundle/monoWeather/app-driver-release.aab",
+        aab: "app/build/outputs/bundle/monoWeather/app-monoWeather-release.aab",
         json_key: "google-play-key.json",
         package_name: "h_mal.appttude.com.monoWeather")
   end
 
   desc "Deploy a new Atlas Weather version to the Google Play"
-  lane :deployMono do
+  lane :deployAtlas do
     gradle(
         task: "clean bundle",
         flavor: "AtlasWeather",
         build_type: "Release",
         )
     upload_to_play_store(
-        aab: "app/build/outputs/bundle/atlasWeather/app-driver-release.aab",
+        aab: "app/build/outputs/bundle/atlasWeather/app-atlas-release.aab",
         json_key: "google-play-key.json",
-        package_name: "h_mal.appttude.com.monoWeather")
+        package_name: "h_mal.appttude.com.atlas_weather")
   end
 end
