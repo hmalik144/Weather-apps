@@ -18,7 +18,7 @@ default_platform(:android)
 platform :android do
 
   desc "Deploy a new Mono Weather version to the Google Play"
-  lane :deployMono do
+  lane :deployMonoWeather do
     gradle(
         task: "clean bundle",
         flavor: "MonoWeather",
@@ -31,7 +31,7 @@ platform :android do
   end
 
   desc "Deploy a new Atlas Weather version to the Google Play"
-  lane :deployAtlas do
+  lane :deployAtlasWeather do
     gradle(
         task: "clean bundle",
         flavor: "AtlasWeather",
