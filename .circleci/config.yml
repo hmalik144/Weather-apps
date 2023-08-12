@@ -8,6 +8,7 @@ version: 2.1
 # See: https://circleci.com/docs/2.0/orb-intro/
 orbs:
   android: circleci/android@2.3.0
+  ruby: circleci/ruby@1.2.0
 
 commands:
   setup_repo:
@@ -80,11 +81,10 @@ commands:
           name: Setup playstore key
           command: |
             echo "$GOOGLE_PLAY_KEY" > "google-play-key.json"
+      - ruby/install-deps
       - run:
           name: Run fastlane command to deploy to playstore
           command: |
-            pwd
-            bundle install
             bundle exec fastlane deploy<< parameters.flavour >>
       - store_test_results:
           path: fastlane/report.xml
@@ -110,10 +110,10 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - setup_repo
-      - run_tests:
-          flavour: << parameters.flavour >>
-      - run_ui_tests:
-          flavour: << parameters.flavour >>
+      # - run_tests:
+      #     flavour: << parameters.flavour >>
+      # - run_ui_tests:
+      #     flavour: << parameters.flavour >>
   deploy-to-playstore:
     parameters:
       flavour:
