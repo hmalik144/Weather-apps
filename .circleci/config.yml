@@ -45,7 +45,7 @@ commands:
         default: "AtlasWeather"
       package_suffix:
         type: string
-        default: "atlas_weather"
+        default: "atlasWeather"
     steps:
       - android/start-emulator-and-run-tests:
           post-emulator-launch-assemble-command: ./gradlew assemble<< parameters.flavour >>DebugAndroidTest
@@ -114,7 +114,7 @@ jobs:
         default: "AtlasWeather"
       package_suffix:
         type: string
-        default: "atlas_weather"
+        default: "atlasWeather"
     # These next lines define the Android machine image executor.
     # See: https://circleci.com/docs/2.0/executor-types/
     executor:
@@ -126,7 +126,7 @@ jobs:
       - setup_repo
       - run_ui_tests:
           flavour: << parameters.flavour >>
-          package_suffix: << parameter.package_suffix >>
+          package_suffix: << parameters.package_suffix >>
   deploy-to-playstore:
     parameters:
       flavour:
