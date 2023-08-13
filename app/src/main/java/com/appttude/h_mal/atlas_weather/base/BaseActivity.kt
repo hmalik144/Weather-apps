@@ -1,29 +1,22 @@
 package com.appttude.h_mal.atlas_weather.base
 
 import android.content.Intent
-import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup.LayoutParams
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.inflate
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelLazy
 import com.appttude.h_mal.atlas_weather.R
-import com.appttude.h_mal.atlas_weather.helper.GenericsHelper.getGenericClassAt
-import com.appttude.h_mal.atlas_weather.model.ViewState
 import com.appttude.h_mal.atlas_weather.utils.displayToast
 import com.appttude.h_mal.atlas_weather.utils.hide
 import com.appttude.h_mal.atlas_weather.utils.show
 import com.appttude.h_mal.atlas_weather.utils.triggerAnimation
-import com.appttude.h_mal.atlas_weather.viewmodel.ApplicationViewModelFactory
-import com.appttude.h_mal.atlas_weather.viewmodel.baseViewModels.BaseViewModel
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
-import org.kodein.di.generic.instance
 
 abstract class BaseActivity : AppCompatActivity(), KodeinAware {
 
-    private lateinit var loadingView: View
+    private var loadingView: View? = null
 
     override val kodein by kodein()
 
@@ -36,9 +29,9 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
      */
     private fun instantiateLoadingView() {
         loadingView = inflate(this, R.layout.progress_layout, null)
-        loadingView.setOnClickListener(null)
+        loadingView?.setOnClickListener(null)
         addContentView(loadingView, LayoutParams(MATCH_PARENT, MATCH_PARENT))
-        loadingView.hide()
+        loadingView?.hide()
     }
 
     override fun onStart() {
@@ -55,14 +48,14 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
      *  Called in case of success or some data emitted from the liveData in viewModel
      */
     open fun onStarted() {
-        loadingView.fadeIn()
+        loadingView?.fadeIn()
     }
 
     /**
      *  Called in case of success or some data emitted from the liveData in viewModel
      */
     open fun onSuccess(data: Any?) {
-        loadingView.fadeOut()
+        loadingView?.fadeOut()
     }
 
     /**
@@ -70,7 +63,7 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
      */
     open fun onFailure(error: Any?) {
         if (error is String) displayToast(error)
-        loadingView.fadeOut()
+        loadingView?.fadeOut()
     }
 
     private fun View.fadeIn() = apply {
@@ -85,7 +78,7 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
 
 
     override fun onBackPressed() {
-        loadingView.hide()
+        loadingView?.hide()
         super.onBackPressed()
     }
 }

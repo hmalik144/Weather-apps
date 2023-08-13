@@ -11,24 +11,30 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import com.appttude.h_mal.atlas_weather.R
-import com.appttude.h_mal.atlas_weather.application.LOCATION_PERMISSION_REQUEST
+import com.appttude.h_mal.atlas_weather.base.BaseFragment
 import com.appttude.h_mal.atlas_weather.model.forecast.Forecast
 import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
+import com.appttude.h_mal.atlas_weather.utils.displayToast
 import com.appttude.h_mal.atlas_weather.utils.navigateTo
 import com.appttude.h_mal.atlas_weather.viewmodel.MainViewModel
 import com.appttude.h_mal.monoWeather.dialog.PermissionsDeclarationDialog
-import com.appttude.h_mal.atlas_weather.ui.BaseFragment
 import com.appttude.h_mal.monoWeather.ui.home.adapter.WeatherRecyclerAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.OnNeverAskAgain
+import permissions.dispatcher.OnPermissionDenied
+import permissions.dispatcher.OnShowRationale
+import permissions.dispatcher.PermissionRequest
+import permissions.dispatcher.RuntimePermissions
 
 
 /**
  * A simple [Fragment] subclass.
  * create an instance of this fragment.
  */
+@RuntimePermissions
 class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
 
-    lateinit var dialog: PermissionsDeclarationDialog
     lateinit var recyclerAdapter: WeatherRecyclerAdapter
 
     @SuppressLint("MissingPermission")
@@ -36,14 +42,10 @@ class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        dialog = PermissionsDeclarationDialog(requireContext())
-
         swipe_refresh.apply {
             setOnRefreshListener {
-                getPermissionResult(ACCESS_COARSE_LOCATION, LOCATION_PERMISSION_REQUEST) {
-                    viewModel.fetchData()
-                    isRefreshing = true
-                }
+                showLocationWithPermissionCheck()
+                isRefreshing = true
             }
         }
 
@@ -57,16 +59,7 @@ class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
     @SuppressLint("MissingPermission")
     override fun onStart() {
         super.onStart()
-        dialog.showDialog(agreeCallback = {
-            getPermissionResult(ACCESS_COARSE_LOCATION, LOCATION_PERMISSION_REQUEST) {
-                viewModel.fetchData()
-            }
-        })
-    }
-
-    override fun onStop() {
-        super.onStop()
-        dialog.dismiss()
+        showLocationWithPermissionCheck()
     }
 
     override fun onSuccess(data: Any?) {
@@ -83,14 +76,8 @@ class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
         swipe_refresh.isRefreshing = false
     }
 
-    @SuppressLint("MissingPermission")
-    override fun permissionsGranted() {
-        viewModel.fetchData()
-    }
-
     private fun navigateToFurtherDetails(forecast: Forecast) {
-        val directions = HomeFragmentDirections
-            .actionHomeFragmentToFurtherDetailsFragment(forecast)
+        val directions = HomeFragmentDirections.actionHomeFragmentToFurtherDetailsFragment(forecast)
         navigateTo(directions)
     }
 
@@ -102,5 +89,36 @@ class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val navController = findNavController(requireActivity(), R.id.container)
         return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // NOTE: delegate the permission handling to generated method
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
+
+    @SuppressLint("MissingPermission")
+    @NeedsPermission(ACCESS_COARSE_LOCATION)
+    fun showLocation() {
+        viewModel.fetchData()
+    }
+
+    @OnShowRationale(ACCESS_COARSE_LOCATION)
+    fun showRationaleForLocation(request: PermissionRequest) {
+        PermissionsDeclarationDialog(requireContext()).showDialog({
+            request.proceed()
+        }, {
+            request.cancel()
+        })
+    }
+
+    @OnPermissionDenied(ACCESS_COARSE_LOCATION)
+    fun onLocationDenied() {
+        displayToast("Location permissions have been denied")
+    }
+
+    @OnNeverAskAgain(ACCESS_COARSE_LOCATION)
+    fun onLocationNeverAskAgain() {
+        displayToast("Location permissions have been to never ask again")
     }
 }
