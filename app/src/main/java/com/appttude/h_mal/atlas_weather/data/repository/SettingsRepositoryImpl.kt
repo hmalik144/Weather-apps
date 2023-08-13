@@ -9,6 +9,7 @@ class SettingsRepositoryImpl(
     override fun isNotificationsEnabled(): Boolean = prefs.isNotificationsEnabled()
 
     override fun setFirstTime() = prefs.setFirstTimeRun()
+    override fun getFirstTime(): Boolean = prefs.getFirstTimeRun()
 
     override fun isBlackBackground() = prefs.isWidgetBackground()
 }

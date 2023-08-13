@@ -1,5 +1,6 @@
 package com.appttude.h_mal.monoWeather.ui.widget
 
+import android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.app.Activity
 import android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
@@ -7,20 +8,26 @@ import android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID
 import android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_IDS
 import android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID
 import android.content.Intent
-import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.os.Build
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat.checkSelfPermission
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.utils.displayToast
 import com.appttude.h_mal.monoWeather.dialog.DeclarationBuilder
+import com.appttude.h_mal.monoWeather.dialog.PermissionsDeclarationDialog
 import kotlinx.android.synthetic.monoWeather.permissions_declaration_dialog.cancel
 import kotlinx.android.synthetic.monoWeather.permissions_declaration_dialog.submit
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.OnNeverAskAgain
+import permissions.dispatcher.OnPermissionDenied
+import permissions.dispatcher.OnShowRationale
+import permissions.dispatcher.PermissionRequest
+import permissions.dispatcher.RuntimePermissions
 
-const val PERMISSION_CODE = 401
-
+@RuntimePermissions
 class WidgetLocationPermissionActivity : AppCompatActivity(), DeclarationBuilder {
     override val link: String = "https://sites.google.com/view/hmaldev/home/monochrome"
     override var message: String = ""
@@ -54,29 +61,14 @@ class WidgetLocationPermissionActivity : AppCompatActivity(), DeclarationBuilder
         }
 
         submit.setOnClickListener {
-            if (checkSelfPermission(this, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
-                requestPermissions(arrayOf(ACCESS_COARSE_LOCATION), PERMISSION_CODE)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                showBackgroundLocationWithPermissionCheck()
             } else {
-                submitWidget()
+                showLocationWithPermissionCheck()
             }
         }
 
         cancel.setOnClickListener { finish() }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PERMISSION_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED) {
-                submitWidget()
-            } else {
-                displayToast("Location Permission denied")
-            }
-        }
     }
 
     private fun submitWidget() {
@@ -105,5 +97,67 @@ class WidgetLocationPermissionActivity : AppCompatActivity(), DeclarationBuilder
             putExtra(EXTRA_APPWIDGET_IDS, intArrayOf(mAppWidgetId))
             sendBroadcast(this)
         }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // NOTE: delegate the permission handling to generated method
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
+
+    @NeedsPermission(ACCESS_COARSE_LOCATION)
+    fun showLocation() {
+        submitWidget()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    @NeedsPermission(ACCESS_BACKGROUND_LOCATION)
+    fun showBackgroundLocation() {
+        submitWidget()
+    }
+
+    @OnShowRationale(ACCESS_COARSE_LOCATION)
+    fun showRationaleForLocation(request: PermissionRequest) {
+        PermissionsDeclarationDialog(this).showDialog({
+            request.proceed()
+        }, {
+            request.cancel()
+        })
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    @OnShowRationale(ACCESS_BACKGROUND_LOCATION)
+    fun showRationaleForBackgroundLocation(request: PermissionRequest) {
+        PermissionsDeclarationDialog(this).showDialog({
+            request.proceed()
+        }, {
+            request.cancel()
+        })
+    }
+
+    @OnPermissionDenied(ACCESS_COARSE_LOCATION)
+    fun onLocationDenied() {
+        displayToast("Location permissions have been denied")
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    @OnPermissionDenied(ACCESS_BACKGROUND_LOCATION)
+    fun onBackgroundLocationDenied() {
+        displayToast("Background Location permissions have been denied")
+    }
+
+    @OnNeverAskAgain(ACCESS_COARSE_LOCATION)
+    fun onLocationNeverAskAgain() {
+        displayToast("Location permissions have been to never ask again")
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    @OnNeverAskAgain(ACCESS_BACKGROUND_LOCATION)
+    fun onBackgroundLocationNeverAskAgain() {
+        displayToast("Background Location permissions have been to never ask again")
     }
 }

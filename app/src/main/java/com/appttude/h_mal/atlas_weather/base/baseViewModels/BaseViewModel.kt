@@ -1,4 +1,4 @@
-package com.appttude.h_mal.atlas_weather.viewmodel.baseViewModels
+package com.appttude.h_mal.atlas_weather.base.baseViewModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
