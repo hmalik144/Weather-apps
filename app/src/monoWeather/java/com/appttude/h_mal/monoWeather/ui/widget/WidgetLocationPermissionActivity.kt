@@ -78,8 +78,7 @@ class WidgetLocationPermissionActivity : AppCompatActivity(), DeclarationBuilder
 
     private fun finishCurrencyWidgetActivity() {
         // Make sure we pass back the original appWidgetId
-        val resultValue = intent
-        resultValue.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId)
+        val resultValue = Intent().putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId)
         setResult(Activity.RESULT_OK, resultValue)
         finish()
     }
