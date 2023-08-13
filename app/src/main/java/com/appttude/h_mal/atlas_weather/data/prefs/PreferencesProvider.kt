@@ -44,6 +44,8 @@ class PreferenceProvider(
         preference.edit().putBoolean("FIRST_TIME_RUN", false).apply()
     }
 
+    fun getFirstTimeRun() = preference.getBoolean("FIRST_TIME_RUN", false)
+
     fun isWidgetBackground(): Boolean {
         return preference.getBoolean("widget_black_background", false)
     }

@@ -91,7 +91,7 @@ gen-external-apklibs
 .idea/jarRepositorie
 
 # Gem/fastlane
-/Gemfile.lock
+Gemfile.lock
 /fastlane/report.xml
 # Google play files
 /google-play-key.json

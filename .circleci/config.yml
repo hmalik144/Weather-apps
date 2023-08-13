@@ -45,21 +45,19 @@ commands:
         default: "AtlasWeather"
       package_suffix:
         type: string
-        default: "atlas_weather"
+        default: "atlasWeather"
     steps:
       - android/start-emulator-and-run-tests:
           post-emulator-launch-assemble-command: ./gradlew assemble<< parameters.flavour >>DebugAndroidTest
           test-command: ./gradlew connected<< parameters.flavour >>DebugAndroidTest --continue
           system-image: system-images;android-26;google_apis;x86
-          pull-data: true
-          pull-data-target: ~/app-data
       # store screenshots for failed ui tests
       - when:
           condition: on_fail
           steps:
             - store_artifacts:
-                path: ~/app-data
-                destination: screenshots
+                path: app/build/outputs/connected_android_test_additional_output/monoWeatherDebugAndroidTest/connected
+                destination: connected_android_test
       # store test reports
       - store_artifacts:
           path: app/build/reports/androidTests/connected
@@ -74,7 +72,6 @@ commands:
         default: "AtlasWeather"
     steps:
       # The next step will run the unit tests
-      - setup_repo
       - android/decode-keystore:
           keystore-location: "./app/keystore.jks"
       - run:
@@ -84,6 +81,7 @@ commands:
       - run:
           name: Run fastlane command to deploy to playstore
           command: |
+            pwd
             bundle exec fastlane deploy<< parameters.flavour >>
       - store_test_results:
           path: fastlane/report.xml
@@ -97,9 +95,6 @@ jobs:
       flavour:
         type: string
         default: "AtlasWeather"
-      package_suffix:
-        type: string
-        default: "atlas_weather"
     # These next lines define the Android machine image executor.
     # See: https://circleci.com/docs/2.0/executor-types/
     executor:
@@ -109,10 +104,29 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - setup_repo
-      # - run_tests:
-      #     flavour: << parameters.flavour >>
-      # - run_ui_tests:
-      #     flavour: << parameters.flavour >>
+      - run_tests:
+          flavour: << parameters.flavour >>
+  run_instrumentation_test:
+    # Parameters used for determining
+    parameters:
+      flavour:
+        type: string
+        default: "AtlasWeather"
+      package_suffix:
+        type: string
+        default: "atlasWeather"
+    # These next lines define the Android machine image executor.
+    # See: https://circleci.com/docs/2.0/executor-types/
+    executor:
+      name: android/android-machine
+      tag: 2023.05.1
+    # Add steps to the job
+    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    steps:
+      - setup_repo
+      - run_ui_tests:
+          flavour: << parameters.flavour >>
+          package_suffix: << parameters.package_suffix >>
   deploy-to-playstore:
     parameters:
       flavour:
@@ -137,11 +151,19 @@ workflows:
       - build-and-test:
           context: appttude
           flavour: "MonoWeather"
-          package_suffix: "monoWeather"
           filters:
             branches:
               ignore:
                 - main_atlas
+      - run_instrumentation_test:
+          context: appttude
+          flavour: "MonoWeather"
+          package_suffix: "monoWeather"
+          filters:
+            branches:
+              only:
+                - master
+                - main_mono
       - deploy-to-playstore:
           context: appttude
           flavour: "MonoWeather"
@@ -156,11 +178,19 @@ workflows:
       - build-and-test:
           context: appttude
           flavour: "AtlasWeather"
-          package_suffix: "atlas_weather"
           filters:
             branches:
               ignore:
                 - main_mono
+      - run_instrumentation_test:
+          context: appttude
+          flavour: "AtlasWeather"
+          package_suffix: "atlasWeather"
+          filters:
+            branches:
+              only:
+                - master
+                - main_atlas
       - deploy-to-playstore:
           context: appttude
           flavour: "AtlasWeather"
