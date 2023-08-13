@@ -6,7 +6,7 @@ import com.appttude.h_mal.atlas_weather.data.repository.Repository
 import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
 import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
 import com.appttude.h_mal.atlas_weather.model.types.LocationType
-import com.appttude.h_mal.atlas_weather.viewmodel.baseViewModels.WeatherViewModel
+import com.appttude.h_mal.atlas_weather.base.baseViewModels.WeatherViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -3,7 +3,7 @@ package com.appttude.h_mal.atlas_weather.ui.world
 import android.os.Bundle
 import android.view.View
 import com.appttude.h_mal.atlas_weather.R
-import com.appttude.h_mal.atlas_weather.ui.BaseFragment
+import com.appttude.h_mal.atlas_weather.base.BaseFragment
 import com.appttude.h_mal.atlas_weather.utils.displayToast
 import com.appttude.h_mal.atlas_weather.utils.goBack
 import com.appttude.h_mal.atlas_weather.viewmodel.WorldViewModel
