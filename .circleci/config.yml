@@ -172,7 +172,7 @@ workflows:
               only:
                 - main_mono
           requires:
-            - build-and-test
+            - run_instrumentation_test
   build-release-atlas:
     jobs:
       - build-and-test:
@@ -199,4 +199,4 @@ workflows:
               only:
                 - main_atlas
           requires:
-            - build-and-test
+            - run_instrumentation_test
