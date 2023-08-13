@@ -5,8 +5,8 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.appttude.h_mal.atlas_weather.R
+import com.appttude.h_mal.atlas_weather.base.BaseFragment
 import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
-import com.appttude.h_mal.atlas_weather.ui.BaseFragment
 import com.appttude.h_mal.atlas_weather.utils.navigateTo
 import com.appttude.h_mal.atlas_weather.viewmodel.WorldViewModel
 import kotlinx.android.synthetic.atlasWeather.fragment_add_location.floatingActionButton
