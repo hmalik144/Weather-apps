@@ -22,7 +22,7 @@ abstract class BaseWidgetServiceIntentClass<T : AppWidgetProvider> : JobIntentSe
     lateinit var appWidgetManager: AppWidgetManager
     lateinit var appWidgetIds: IntArray
 
-    fun initBaseWidget(componentName: ComponentName) {
+    fun initiallizeWidgetData(componentName: ComponentName) {
         appWidgetManager = AppWidgetManager.getInstance(baseContext)
         appWidgetIds = appWidgetManager.getAppWidgetIds(componentName)
     }

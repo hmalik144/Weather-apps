@@ -48,7 +48,7 @@ class WidgetJobServiceIntent : BaseWidgetServiceIntentClass<NewAppWidget>() {
 
     private fun executeWidgetUpdate() {
         val componentName = ComponentName(this, NewAppWidget::class.java)
-        initBaseWidget(componentName)
+        initiallizeWidgetData(componentName)
 
         initiateWidgetUpdate(getCurrentWidgetState())
     }
@@ -56,9 +56,7 @@ class WidgetJobServiceIntent : BaseWidgetServiceIntentClass<NewAppWidget>() {
     private fun initiateWidgetUpdate(state: WidgetState) {
         when (state) {
             NO_LOCATION, SCREEN_ON_CONNECTION_UNAVAILABLE -> updateErrorWidget(state)
-            SCREEN_ON_CONNECTION_AVAILABLE -> updateWidget(false)
-            SCREEN_OFF_CONNECTION_AVAILABLE -> updateWidget(true)
-            SCREEN_OFF_CONNECTION_UNAVAILABLE -> return
+            else -> updateWidget(false)
         }
     }
 
