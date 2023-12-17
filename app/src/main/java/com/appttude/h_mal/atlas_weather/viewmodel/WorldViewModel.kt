@@ -3,7 +3,7 @@ package com.appttude.h_mal.atlas_weather.viewmodel
 import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
 import com.appttude.h_mal.atlas_weather.data.network.response.forecast.WeatherResponse
 import com.appttude.h_mal.atlas_weather.data.repository.Repository
-import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
+import com.appttude.h_mal.atlas_weather.data.room.entity.WeatherEntity
 import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
 import com.appttude.h_mal.atlas_weather.model.types.LocationType
 import com.appttude.h_mal.atlas_weather.base.baseViewModels.WeatherViewModel
@@ -102,7 +102,7 @@ class WorldViewModel(
         }
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val list = mutableListOf<EntityItem>()
+                val list = mutableListOf<WeatherEntity>()
                 repository.loadWeatherList().forEach { locationName ->
                     // If search not valid move onto next in loop
                     if (!repository.isSearchValid(locationName)) return@forEach
@@ -151,7 +151,7 @@ class WorldViewModel(
         return repository.getWeatherFromApi(lat.toString(), lon.toString())
     }
 
-    private suspend fun createWeatherEntity(locationName: String): EntityItem {
+    private suspend fun createWeatherEntity(locationName: String): WeatherEntity {
         val weather = getWeather(locationName)
         val location =
             locationProvider.getLocationNameFromLatLong(weather.lat, weather.lon, LocationType.City)

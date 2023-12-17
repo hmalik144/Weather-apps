@@ -5,7 +5,7 @@ import com.appttude.h_mal.atlas_weather.data.location.LocationProviderImpl
 import com.appttude.h_mal.atlas_weather.data.network.response.forecast.WeatherResponse
 import com.appttude.h_mal.atlas_weather.data.repository.Repository
 import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
-import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
+import com.appttude.h_mal.atlas_weather.data.room.entity.WeatherEntity
 import com.appttude.h_mal.atlas_weather.model.ViewState
 import com.appttude.h_mal.atlas_weather.model.types.LocationType
 import com.appttude.h_mal.atlas_weather.model.weather.FullWeather
@@ -50,7 +50,7 @@ class WorldViewModelTest : BaseTest() {
     @Test
     fun fetchDataForSingleLocation_validLocation_validReturn() {
         // Arrange
-        val entityItem = EntityItem(CURRENT_LOCATION, FullWeather(weatherResponse).apply {
+        val weatherEntity = WeatherEntity(CURRENT_LOCATION, FullWeather(weatherResponse).apply {
             temperatureUnit = "°C"
             locationString = CURRENT_LOCATION
         })
@@ -75,7 +75,7 @@ class WorldViewModelTest : BaseTest() {
             )
         }.returns(CURRENT_LOCATION)
         every { repository.saveLastSavedAt(CURRENT_LOCATION) } returns Unit
-        coEvery { repository.saveCurrentWeatherToRoom(entityItem) } returns Unit
+        coEvery { repository.saveCurrentWeatherToRoom(weatherEntity) } returns Unit
 
         viewModel.fetchDataForSingleLocation(CURRENT_LOCATION)
 
@@ -113,13 +113,13 @@ class WorldViewModelTest : BaseTest() {
     @Test
     fun searchAboveFallbackTime_validLocation_validReturn() {
         // Arrange
-        val entityItem = EntityItem(CURRENT_LOCATION, FullWeather(weatherResponse).apply {
+        val weatherEntity = WeatherEntity(CURRENT_LOCATION, FullWeather(weatherResponse).apply {
             temperatureUnit = "°C"
             locationString = CURRENT_LOCATION
         })
 
         // Act
-        coEvery { repository.getSingleWeather(CURRENT_LOCATION) }.returns(entityItem)
+        coEvery { repository.getSingleWeather(CURRENT_LOCATION) }.returns(weatherEntity)
         every { repository.isSearchValid(CURRENT_LOCATION) }.returns(false)
         coEvery {
             repository.getWeatherFromApi(
@@ -128,7 +128,7 @@ class WorldViewModelTest : BaseTest() {
             )
         }.returns(weatherResponse)
         every { repository.saveLastSavedAt(CURRENT_LOCATION) } returns Unit
-        coEvery { repository.saveCurrentWeatherToRoom(entityItem) } returns Unit
+        coEvery { repository.saveCurrentWeatherToRoom(weatherEntity) } returns Unit
 
         viewModel.fetchDataForSingleLocation(CURRENT_LOCATION)
 

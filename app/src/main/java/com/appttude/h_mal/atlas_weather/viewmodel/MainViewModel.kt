@@ -5,7 +5,7 @@ import androidx.annotation.RequiresPermission
 import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
 import com.appttude.h_mal.atlas_weather.data.repository.Repository
 import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
-import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
+import com.appttude.h_mal.atlas_weather.data.room.entity.WeatherEntity
 import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
 import com.appttude.h_mal.atlas_weather.base.baseViewModels.WeatherViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -18,8 +18,8 @@ class MainViewModel(
 ) : WeatherViewModel() {
 
     init {
-        repository.loadCurrentWeatherFromRoom(CURRENT_LOCATION).observeForever {
-            it?.let {
+        repository.loadCurrentWeatherFromRoom(CURRENT_LOCATION).observeForever {w ->
+            w?.let {
                 val weather = WeatherDisplay(it)
                 onSuccess(weather)
             }
@@ -29,10 +29,10 @@ class MainViewModel(
     @RequiresPermission(value = Manifest.permission.ACCESS_COARSE_LOCATION)
     fun fetchData() {
         onStart()
-        CoroutineScope(Dispatchers.IO).launch {
+        job = CoroutineScope(Dispatchers.IO).launch {
             try {
                 // Has the search been conducted in the last 5 minutes
-                val entityItem = if (repository.isSearchValid(CURRENT_LOCATION)) {
+                val weatherEntity = if (repository.isSearchValid(CURRENT_LOCATION)) {
                     // Get location
                     val latLong = locationProvider.getCurrentLatLong()
                     // Get weather from api
@@ -41,13 +41,13 @@ class MainViewModel(
                     val currentLocation =
                         locationProvider.getLocationNameFromLatLong(weather.lat, weather.lon)
                     val fullWeather = createFullWeather(weather, currentLocation)
-                    EntityItem(CURRENT_LOCATION, fullWeather)
+                    WeatherEntity(CURRENT_LOCATION, fullWeather)
                 } else {
                     repository.getSingleWeather(CURRENT_LOCATION)
                 }
                 // Save data if not null
                 repository.saveLastSavedAt(CURRENT_LOCATION)
-                repository.saveCurrentWeatherToRoom(entityItem)
+                repository.saveCurrentWeatherToRoom(weatherEntity)
             } catch (e: Exception) {
                 onError(e.message!!)
             }

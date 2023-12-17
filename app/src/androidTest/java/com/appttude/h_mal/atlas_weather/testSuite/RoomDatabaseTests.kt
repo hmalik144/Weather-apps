@@ -3,26 +3,20 @@ package com.appttude.h_mal.atlas_weather.testSuite
 import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
-import androidx.room.util.UUIDUtil
 import androidx.test.platform.app.InstrumentationRegistry
 import com.appttude.h_mal.atlas_weather.data.room.AppDatabase
 import com.appttude.h_mal.atlas_weather.data.room.Converter
 import com.appttude.h_mal.atlas_weather.data.room.WeatherDao
 import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
-import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
+import com.appttude.h_mal.atlas_weather.data.room.entity.WeatherEntity
 import com.appttude.h_mal.atlas_weather.model.weather.FullWeather
-import com.appttude.h_mal.atlas_weather.test.BuildConfig
 import com.appttude.h_mal.atlas_weather.utils.getOrAwaitValue
-import io.mockk.every
 import io.mockk.mockk
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.Assert.*
-import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.anyString
-import org.mockito.Mockito.mock
 import java.util.UUID
 
 
@@ -98,16 +92,16 @@ class RoomDatabaseTests {
         assertNull(dao.getCurrentFullWeatherSingle(id))
     }
 
-    private fun createEntity(id: String = CURRENT_LOCATION): EntityItem {
+    private fun createEntity(id: String = CURRENT_LOCATION): WeatherEntity {
         val weather = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             FullWeather()
         } else {
             mockk<FullWeather>()
         }
-        return EntityItem(id, weather)
+        return WeatherEntity(id, weather)
     }
 
-    private fun createEntityList(size: Int = 4): List<EntityItem> {
+    private fun createEntityList(size: Int = 4): List<WeatherEntity> {
         return (0.. size).map {
             val id = UUID.randomUUID().toString()
             createEntity(id)

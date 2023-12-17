@@ -5,7 +5,7 @@ import com.appttude.h_mal.atlas_weather.data.network.response.forecast.WeatherRe
 import com.appttude.h_mal.atlas_weather.data.repository.Repository
 import com.appttude.h_mal.atlas_weather.data.repository.SettingsRepository
 import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
-import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
+import com.appttude.h_mal.atlas_weather.data.room.entity.WeatherEntity
 import com.appttude.h_mal.atlas_weather.model.weather.FullWeather
 import com.appttude.h_mal.atlas_weather.utils.BaseTest
 import io.mockk.MockKAnnotations
@@ -44,7 +44,7 @@ class ServicesHelperTest : BaseTest() {
     @Test
     fun testWidgetDataAsync_successfulResponse() = runBlocking {
         // Arrange
-        val entityItem = EntityItem(CURRENT_LOCATION, FullWeather(weatherResponse).apply {
+        val weatherEntity = WeatherEntity(CURRENT_LOCATION, FullWeather(weatherResponse).apply {
             temperatureUnit = "°C"
             locationString = CURRENT_LOCATION
         })
@@ -68,7 +68,7 @@ class ServicesHelperTest : BaseTest() {
             )
         }.returns(CURRENT_LOCATION)
         every { repository.saveLastSavedAt(CURRENT_LOCATION) } returns Unit
-        coEvery { repository.saveCurrentWeatherToRoom(entityItem) } returns Unit
+        coEvery { repository.saveCurrentWeatherToRoom(weatherEntity) } returns Unit
 
         // Assert
         val result = helper.fetchData()

@@ -1,29 +1,29 @@
 package com.appttude.h_mal.atlas_weather.base.baseViewModels
 
 import com.appttude.h_mal.atlas_weather.data.network.response.forecast.WeatherResponse
-import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
+import com.appttude.h_mal.atlas_weather.data.room.entity.WeatherEntity
 import com.appttude.h_mal.atlas_weather.model.weather.FullWeather
 
 abstract class WeatherViewModel : BaseViewModel() {
 
     fun createFullWeather(
         weather: WeatherResponse,
-        location: String
+        locationName: String
     ): FullWeather {
         return FullWeather(weather).apply {
             temperatureUnit = "°C"
-            locationString = location
+            locationString = locationName
         }
     }
 
     fun createWeatherEntity(
-        locationId: String,
+        locationName: String,
         weather: FullWeather
-    ): EntityItem {
+    ): WeatherEntity {
         weather.apply {
-            locationString = locationId
+            locationString = locationName
         }
 
-        return EntityItem(locationId, weather)
+        return WeatherEntity(locationName, weather)
     }
 }

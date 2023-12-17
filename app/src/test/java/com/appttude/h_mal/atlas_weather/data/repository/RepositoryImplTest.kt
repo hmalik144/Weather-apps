@@ -5,22 +5,17 @@ import com.appttude.h_mal.atlas_weather.data.network.response.forecast.WeatherRe
 import com.appttude.h_mal.atlas_weather.data.prefs.LOCATION_CONST
 import com.appttude.h_mal.atlas_weather.data.prefs.PreferenceProvider
 import com.appttude.h_mal.atlas_weather.data.room.AppDatabase
-import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
+import com.appttude.h_mal.atlas_weather.data.room.entity.WeatherEntity
 import com.appttude.h_mal.atlas_weather.utils.BaseTest
 import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doAnswer
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
-import io.mockk.coJustRun
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import io.mockk.justRun
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers.anyString
-import retrofit2.Response
 import java.io.IOException
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -124,7 +119,7 @@ class RepositoryImplTest : BaseTest() {
     @Test
     fun loadWeatherList_validResponse() {
         // Arrange
-        val elements = listOf<EntityItem>(
+        val elements = listOf<WeatherEntity>(
             mockk { every { id } returns any() },
             mockk { every { id } returns any() },
             mockk { every { id } returns any() },

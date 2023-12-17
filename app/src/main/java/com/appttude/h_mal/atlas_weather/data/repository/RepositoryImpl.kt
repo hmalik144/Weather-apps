@@ -6,7 +6,7 @@ import com.appttude.h_mal.atlas_weather.data.network.response.forecast.WeatherRe
 import com.appttude.h_mal.atlas_weather.data.prefs.LOCATION_CONST
 import com.appttude.h_mal.atlas_weather.data.prefs.PreferenceProvider
 import com.appttude.h_mal.atlas_weather.data.room.AppDatabase
-import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
+import com.appttude.h_mal.atlas_weather.data.room.entity.WeatherEntity
 import com.appttude.h_mal.atlas_weather.utils.FALLBACK_TIME
 
 
@@ -23,12 +23,12 @@ class RepositoryImpl(
         return responseUnwrap { api.getFromApi(lat, long) }
     }
 
-    override suspend fun saveCurrentWeatherToRoom(entityItem: EntityItem) {
-        db.getWeatherDao().upsertFullWeather(entityItem)
+    override suspend fun saveCurrentWeatherToRoom(weatherEntity: WeatherEntity) {
+        db.getWeatherDao().upsertFullWeather(weatherEntity)
     }
 
     override suspend fun saveWeatherListToRoom(
-        list: List<EntityItem>
+        list: List<WeatherEntity>
     ) {
         db.getWeatherDao().upsertListOfFullWeather(list)
     }
@@ -68,7 +68,7 @@ class RepositoryImpl(
         return prefs.getAllKeys().toList()
     }
 
-    override suspend fun getSingleWeather(locationName: String): EntityItem {
+    override suspend fun getSingleWeather(locationName: String): WeatherEntity {
         return db.getWeatherDao().getCurrentFullWeatherSingle(locationName)
     }
 

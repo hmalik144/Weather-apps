@@ -3,9 +3,11 @@ package com.appttude.h_mal.atlas_weather.data.location
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.annotation.SuppressLint
 import android.content.Context
+import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
+import android.os.Build
 import androidx.annotation.RequiresPermission
 import com.appttude.h_mal.atlas_weather.model.types.LocationType
 import com.google.android.gms.location.LocationServices
@@ -20,8 +22,6 @@ import java.util.*
 class LocationProviderImpl(
     private val applicationContext: Context
 ) : LocationProvider, LocationHelper(applicationContext) {
-    private var locationManager =
-        applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
     private val client = LocationServices.getFusedLocationProviderClient(applicationContext)
     private val geoCoder: Geocoder by lazy { Geocoder(applicationContext, Locale.getDefault()) }
 
@@ -70,11 +70,14 @@ class LocationProviderImpl(
     private suspend fun getAFreshLocation(): Location? {
         return client.getCurrentLocation(
             Priority.PRIORITY_HIGH_ACCURACY,
-            object : CancellationToken() {
-                override fun isCancellationRequested(): Boolean = false
-                override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken =
-                    this
-            }).await()
+            cancellationToken
+        ).await()
+    }
+
+    private val cancellationToken = object : CancellationToken() {
+        override fun isCancellationRequested(): Boolean = false
+        override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken =
+            this
     }
 
 }
