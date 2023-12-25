@@ -1,6 +1,7 @@
 package com.appttude.h_mal.atlas_weather.application
 
 import android.app.Application
+import com.appttude.h_mal.atlas_weather.data.WeatherSource
 import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
 import com.appttude.h_mal.atlas_weather.data.network.WeatherApi
 import com.appttude.h_mal.atlas_weather.data.prefs.PreferenceProvider
@@ -33,7 +34,8 @@ abstract class BaseAppClass : Application(), KodeinAware {
         bind() from singleton { RepositoryImpl(instance(), instance(), instance()) }
         bind() from singleton { SettingsRepositoryImpl(instance()) }
         bind() from singleton { ServicesHelper(instance(), instance(), instance()) }
-        bind() from provider { ApplicationViewModelFactory(instance(), instance()) }
+        bind() from singleton { WeatherSource(instance(), instance()) }
+        bind() from provider { ApplicationViewModelFactory(this@BaseAppClass, instance(), instance(),instance()) }
     }
 
     abstract fun createNetworkModule(): WeatherApi

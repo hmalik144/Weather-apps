@@ -8,10 +8,9 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import androidx.test.core.app.ActivityScenario
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
-import androidx.test.espresso.Root
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.assertion.ViewAssertions
@@ -20,15 +19,12 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
 import com.appttude.h_mal.atlas_weather.application.TestAppClass
-import com.appttude.h_mal.atlas_weather.helpers.BaseCustomMatcher
-import com.appttude.h_mal.atlas_weather.helpers.BaseViewAction
+import com.appttude.h_mal.atlas_weather.data.prefs.PreferenceProvider
 import com.appttude.h_mal.atlas_weather.helpers.SnapshotRule
 import com.appttude.h_mal.atlas_weather.utils.Stubs
 import kotlinx.coroutines.runBlocking
-import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
-import org.hamcrest.TypeSafeMatcher
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -45,6 +41,8 @@ open class BaseTest<A : Activity>(
     private lateinit var testApp: TestAppClass
     private lateinit var testActivity: Activity
     private lateinit var decorView: View
+
+    private val prefs by lazy { PreferenceProvider(ApplicationProvider.getApplicationContext()) }
 
     @get:Rule
     var permissionRule = GrantPermissionRule.grant(Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -86,6 +84,8 @@ open class BaseTest<A : Activity>(
     fun stubLocation(location: String, lat: Double = 0.00, long: Double = 0.00) {
         testApp.stubLocation(location, lat, long)
     }
+
+    fun clearPrefs() = prefs.clearPrefs()
 
     fun getActivity() = testActivity
 

@@ -31,4 +31,12 @@
     <string name="retrieve_warning">Unable to retrieve weather</string>
     <string name="empty_retrieve_warning">Make sure you are connected to the internet and have location permissions granted</string>
     <string name="no_weather_to_display">No weather to display</string>
+    <string name="unit_key">Units</string>
+    <string name="widget_black_background">widget_black_background</string>
+    <string name="weather_units">Weather units</string>
+
+    <string-array name="units">
+        <item>Metric</item>
+        <item>Imperial</item>
+    </string-array>
 </resources>

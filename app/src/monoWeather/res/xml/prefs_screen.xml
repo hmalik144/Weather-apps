@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <ListPreference
+        android:title="@string/weather_units"
+        android:entries="@array/units"
+        android:entryValues="@array/units"
+        android:defaultValue="Metric"
+        android:key="UnitType"
+        />
     <PreferenceCategory android:title="Widget Settings">
         <SwitchPreference
             android:defaultValue="false"
-            android:key="widget_black_background"
+            android:key="@string/widget_black_background"
             android:title="Set widget background black" />
     </PreferenceCategory>
 </PreferenceScreen>

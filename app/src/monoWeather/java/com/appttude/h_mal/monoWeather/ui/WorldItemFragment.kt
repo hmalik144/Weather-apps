@@ -16,22 +16,22 @@ import kotlinx.android.synthetic.main.fragment_home.swipe_refresh
 
 class WorldItemFragment : BaseFragment<WorldViewModel>(R.layout.fragment_home) {
 
-    private var param1: String? = null
+    private var retrievedLocationName: String? = null
 
     private lateinit var recyclerAdapter: WeatherRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        param1 = WorldItemFragmentArgs.fromBundle(requireArguments()).locationName
-        param1?.let { viewModel.setLocation(it) }
+        retrievedLocationName = WorldItemFragmentArgs.fromBundle(requireArguments()).locationName
+        retrievedLocationName?.let { viewModel.setLocation(it) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         recyclerAdapter = WeatherRecyclerAdapter {
-            val directions =
-                WorldItemFragmentDirections.actionWorldItemFragmentToFurtherDetailsFragment(it)
+            val directions = WorldItemFragmentDirections
+                .actionWorldItemFragmentToFurtherDetailsFragment(it)
             navigateTo(directions)
         }
 
@@ -42,14 +42,14 @@ class WorldItemFragment : BaseFragment<WorldViewModel>(R.layout.fragment_home) {
 
         swipe_refresh.apply {
             setOnRefreshListener {
-                param1?.let {
+                retrievedLocationName?.let {
                     viewModel.fetchDataForSingleLocation(it)
                     isRefreshing = true
                 }
             }
         }
 
-        param1?.let { viewModel.getSingleLocation(it) }
+        retrievedLocationName?.let { viewModel.getSingleLocation(it) }
     }
 
     override fun onSuccess(data: Any?) {
