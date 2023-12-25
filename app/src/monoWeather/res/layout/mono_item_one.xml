@@ -23,8 +23,8 @@
             android:layout_height="32dp"
             android:layout_marginEnd="12dp"
             android:contentDescription="@string/image_string"
-            app:tint="@color/colorAccent"
-            app:srcCompat="@drawable/maps_and_flags" />
+            app:srcCompat="@drawable/maps_and_flags"
+            app:tint="@color/colorAccent" />
 
         <TextView
             android:id="@+id/location_main_4"
@@ -51,11 +51,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
-        android:text="@string/degrees_c"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@id/temp_main_4"
-        app:layout_constraintTop_toTopOf="@id/temp_main_4" />
+        app:layout_constraintTop_toTopOf="@id/temp_main_4"
+        tools:text="@string/degrees_c" />
 
     <ImageView
         android:id="@+id/icon_main_4"
@@ -64,11 +64,11 @@
         android:layout_marginTop="6dp"
         android:layout_marginBottom="12dp"
         android:contentDescription="@string/image_string"
-        app:tint="@color/colorAccent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/temp_main_4"
-        app:srcCompat="@drawable/cloud_symbol" />
+        app:srcCompat="@drawable/cloud_symbol"
+        app:tint="@color/colorAccent" />
 
     <TextView
         android:id="@+id/condition_main_4"

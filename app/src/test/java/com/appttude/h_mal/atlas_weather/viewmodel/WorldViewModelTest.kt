@@ -1,26 +1,31 @@
 package com.appttude.h_mal.atlas_weather.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.appttude.h_mal.atlas_weather.data.WeatherSource
 import com.appttude.h_mal.atlas_weather.data.location.LocationProviderImpl
 import com.appttude.h_mal.atlas_weather.data.network.response.forecast.WeatherResponse
-import com.appttude.h_mal.atlas_weather.data.repository.Repository
 import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
-import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
 import com.appttude.h_mal.atlas_weather.model.ViewState
 import com.appttude.h_mal.atlas_weather.model.types.LocationType
 import com.appttude.h_mal.atlas_weather.model.weather.FullWeather
 import com.appttude.h_mal.atlas_weather.utils.BaseTest
 import com.appttude.h_mal.atlas_weather.utils.getOrAwaitValue
 import com.appttude.h_mal.atlas_weather.utils.sleep
+import com.nhaarman.mockitokotlin2.any
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.anyList
+import org.mockito.ArgumentMatchers.anyString
 import java.io.IOException
+import kotlin.test.assertEquals
 import kotlin.test.assertIs
 
 
@@ -32,8 +37,8 @@ class WorldViewModelTest : BaseTest() {
     @InjectMockKs
     lateinit var viewModel: WorldViewModel
 
-    @MockK(relaxed = true)
-    lateinit var repository: Repository
+    @RelaxedMockK
+    lateinit var weatherSource: WeatherSource
 
     @MockK
     lateinit var locationProvider: LocationProviderImpl
@@ -43,30 +48,19 @@ class WorldViewModelTest : BaseTest() {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-
         weatherResponse = getTestData("weather_sample.json", WeatherResponse::class.java)
     }
 
     @Test
     fun fetchDataForSingleLocation_validLocation_validReturn() {
         // Arrange
-        val entityItem = EntityItem(CURRENT_LOCATION, FullWeather(weatherResponse).apply {
-            temperatureUnit = "°C"
-            locationString = CURRENT_LOCATION
-        })
+        val latlon = any<Pair<Double, Double>>()
 
         // Act
-        every { repository.isSearchValid(CURRENT_LOCATION) }.returns(true)
         coEvery { locationProvider.getLatLongFromLocationName(CURRENT_LOCATION) } returns Pair(
             weatherResponse.lat,
             weatherResponse.lon
         )
-        coEvery {
-            repository.getWeatherFromApi(
-                weatherResponse.lat.toString(),
-                weatherResponse.lon.toString()
-            )
-        }.returns(weatherResponse)
         coEvery {
             locationProvider.getLocationNameFromLatLong(
                 weatherResponse.lat,
@@ -74,66 +68,209 @@ class WorldViewModelTest : BaseTest() {
                 LocationType.City
             )
         }.returns(CURRENT_LOCATION)
-        every { repository.saveLastSavedAt(CURRENT_LOCATION) } returns Unit
-        coEvery { repository.saveCurrentWeatherToRoom(entityItem) } returns Unit
-
-        viewModel.fetchDataForSingleLocation(CURRENT_LOCATION)
+        coEvery {
+            weatherSource.getWeather(
+                latlon,
+                CURRENT_LOCATION,
+                locationType = LocationType.City
+            )
+        } returns FullWeather(weatherResponse)
 
         // Assert
-        viewModel.uiState.observeForever {
-            println(it.javaClass.name)
+        viewModel.fetchDataForSingleLocation(CURRENT_LOCATION)
+
+        sleep(100)
+        assertIs<ViewState.HasData<*>>(viewModel.uiState.getOrAwaitValue())
+    }
+
+    @Test
+    fun fetchDataForSingleLocation_failedLocation_validReturn() {
+        // Arrange
+        val errorMessage = ArgumentMatchers.anyString()
+
+        // Act
+        coEvery { locationProvider.getLatLongFromLocationName(CURRENT_LOCATION) } returns Pair(
+            weatherResponse.lat,
+            weatherResponse.lon
+        )
+        coEvery {
+            locationProvider.getLocationNameFromLatLong(
+                weatherResponse.lat,
+                weatherResponse.lon,
+                LocationType.City
+            )
+        } throws IOException(errorMessage)
+
+        // Assert
+        viewModel.fetchDataForSingleLocation(CURRENT_LOCATION)
+        sleep(100)
+        val observerResults = viewModel.uiState.getOrAwaitValue()
+        assertIs<ViewState.HasError<*>>(observerResults)
+        assertEquals(observerResults.error as String, errorMessage)
+    }
+
+    @Test
+    fun fetchDataForSingleLocation_failedApi_validReturn() {
+        // Arrange
+        val latlon = Pair(weatherResponse.lat, weatherResponse.lon)
+        val errorMessage = ArgumentMatchers.anyString()
+
+        // Act
+        coEvery { locationProvider.getLatLongFromLocationName(CURRENT_LOCATION) } returns Pair(
+            weatherResponse.lat,
+            weatherResponse.lon
+        )
+        coEvery {
+            locationProvider.getLocationNameFromLatLong(
+                weatherResponse.lat,
+                weatherResponse.lon,
+                LocationType.City
+            )
+        }.returns(CURRENT_LOCATION)
+        coEvery {
+            weatherSource.getWeather(
+                latlon,
+                CURRENT_LOCATION,
+                locationType = LocationType.City
+            )
+        } throws IOException(errorMessage)
+
+        // Assert
+        viewModel.fetchDataForSingleLocation(CURRENT_LOCATION)
+        sleep(100)
+        val observerResults = viewModel.uiState.getOrAwaitValue()
+        assertIs<ViewState.HasError<*>>(observerResults)
+        assertEquals(observerResults.error as String, errorMessage)
+    }
+
+    @Test
+    fun fetchDataForSingleLocationSearch_validLocation_validReturn() {
+        // Arrange
+        val latlon = Pair(weatherResponse.lat, weatherResponse.lon)
+
+        // Act
+        every { weatherSource.repository.getSavedLocations() } returns anyList()
+        coEvery { locationProvider.getLatLongFromLocationName(CURRENT_LOCATION) } returns latlon
+        coEvery {
+            locationProvider.getLocationNameFromLatLong(
+                weatherResponse.lat,
+                weatherResponse.lon,
+                LocationType.City
+            )
+        }.returns(CURRENT_LOCATION)
+        coEvery {
+            weatherSource.getWeather(
+                latlon,
+                CURRENT_LOCATION,
+                locationType = LocationType.City
+            )
+        } returns FullWeather(weatherResponse).apply { locationString = CURRENT_LOCATION }
+
+        // Assert
+        viewModel.fetchDataForSingleLocationSearch(CURRENT_LOCATION)
+
+        sleep(100)
+        val result = viewModel.uiState.getOrAwaitValue()
+        assertIs<ViewState.HasData<*>>(result)
+        assertEquals(result.data as String, "$CURRENT_LOCATION saved")
+    }
+
+    @Test
+    fun fetchDataForSingleLocationSearch_locationAlreadyExists_errorReceived() {
+        // Act
+        every { weatherSource.repository.getSavedLocations() } returns listOf(CURRENT_LOCATION)
+
+        // Assert
+        viewModel.fetchDataForSingleLocationSearch(CURRENT_LOCATION)
+
+        sleep(100)
+        val result = viewModel.uiState.getOrAwaitValue()
+        assertIs<ViewState.HasError<*>>(result)
+        assertEquals(result.error as String, "$CURRENT_LOCATION already exists")
+    }
+
+    @Test
+    fun fetchDataForSingleLocationSearch_retrievedLocationExists_validError() {
+        // Arrange
+        val latlon = Pair(weatherResponse.lat, weatherResponse.lon)
+        val retrievedLocation = anyString()
+
+        // Act
+        every { weatherSource.repository.getSavedLocations() } returns listOf(retrievedLocation)
+        coEvery { locationProvider.getLatLongFromLocationName(CURRENT_LOCATION) } returns latlon
+        coEvery {
+            locationProvider.getLocationNameFromLatLong(
+                weatherResponse.lat,
+                weatherResponse.lon,
+                LocationType.City
+            )
+        }.returns(CURRENT_LOCATION)
+        coEvery {
+            weatherSource.getWeather(
+                latlon,
+                CURRENT_LOCATION,
+                locationType = LocationType.City
+            )
+        } returns FullWeather(weatherResponse).apply { locationString = retrievedLocation }
+
+        // Assert
+        viewModel.fetchDataForSingleLocationSearch(CURRENT_LOCATION)
+
+        sleep(100)
+        val result = viewModel.uiState.getOrAwaitValue()
+        assertIs<ViewState.HasError<*>>(result)
+        assertEquals(result.error as String, "$retrievedLocation already exists")
+    }
+
+    @Test
+    fun fetchAllLocations_validLocations_validReturn() {
+        // Arrange
+        val listOfPlaces = listOf("Sydney", "London", "Cairo")
+
+        // Act
+        listOfPlaces.forEachIndexed { index, s ->
+            every { weatherSource.repository.isSearchValid(s) } returns true
+            coEvery { locationProvider.getLatLongFromLocationName(s) } returns Pair(
+                index.toDouble(),
+                index.toDouble()
+            )
+            coEvery {
+                locationProvider.getLocationNameFromLatLong(
+                    index.toDouble(),
+                    index.toDouble(),
+                    LocationType.City
+                )
+            }.returns(s)
+            coEvery {
+                weatherSource.getWeather(
+                    Pair(index.toDouble(), index.toDouble()),
+                    s,
+                    LocationType.City
+                )
+            }
         }
+        coEvery { weatherSource.repository.loadWeatherList() } returns listOfPlaces
 
-        sleep(3000)
+        // Assert
+        viewModel.fetchAllLocations()
+
+        sleep(100)
         assertIs<ViewState.HasData<*>>(viewModel.uiState.getOrAwaitValue())
     }
 
     @Test
-    fun fetchDataForSingleLocation_invalidLocation_invalidReturn() {
+    fun deleteLocation_validLocations_validReturn() {
         // Arrange
-        val location = CURRENT_LOCATION
+        val location = anyString()
 
         // Act
-        every { locationProvider.getLatLongFromLocationName(CURRENT_LOCATION) } throws IOException("Unable to get location")
-        every { repository.isSearchValid(CURRENT_LOCATION) }.returns(true)
-        coEvery {
-            repository.getWeatherFromApi(
-                weatherResponse.lat.toString(),
-                weatherResponse.lon.toString()
-            )
-        }.returns(weatherResponse)
-
-        viewModel.fetchDataForSingleLocation(location)
+        coEvery { weatherSource.repository.deleteSavedWeatherEntry(location) } returns true
 
         // Assert
-        sleep(300)
-        assertIs<ViewState.HasError<*>>(viewModel.uiState.getOrAwaitValue())
-    }
+        viewModel.deleteLocation(location)
 
-    @Test
-    fun searchAboveFallbackTime_validLocation_validReturn() {
-        // Arrange
-        val entityItem = EntityItem(CURRENT_LOCATION, FullWeather(weatherResponse).apply {
-            temperatureUnit = "°C"
-            locationString = CURRENT_LOCATION
-        })
-
-        // Act
-        coEvery { repository.getSingleWeather(CURRENT_LOCATION) }.returns(entityItem)
-        every { repository.isSearchValid(CURRENT_LOCATION) }.returns(false)
-        coEvery {
-            repository.getWeatherFromApi(
-                weatherResponse.lat.toString(),
-                weatherResponse.lon.toString()
-            )
-        }.returns(weatherResponse)
-        every { repository.saveLastSavedAt(CURRENT_LOCATION) } returns Unit
-        coEvery { repository.saveCurrentWeatherToRoom(entityItem) } returns Unit
-
-        viewModel.fetchDataForSingleLocation(CURRENT_LOCATION)
-
-        // Assert
-        sleep(300)
+        sleep(100)
         assertIs<ViewState.HasData<*>>(viewModel.uiState.getOrAwaitValue())
     }
+
 }

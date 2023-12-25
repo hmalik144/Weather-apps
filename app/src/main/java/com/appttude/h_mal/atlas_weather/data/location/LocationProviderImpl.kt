@@ -5,13 +5,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Geocoder
 import android.location.Location
-import android.location.LocationManager
-import android.os.HandlerThread
 import androidx.annotation.RequiresPermission
 import com.appttude.h_mal.atlas_weather.model.types.LocationType
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationToken
@@ -19,21 +14,23 @@ import com.google.android.gms.tasks.OnTokenCanceledListener
 import kotlinx.coroutines.tasks.await
 import java.io.IOException
 import java.util.*
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 
 class LocationProviderImpl(
     private val applicationContext: Context
 ) : LocationProvider, LocationHelper(applicationContext) {
-    private var locationManager =
-        applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
     private val client = LocationServices.getFusedLocationProviderClient(applicationContext)
     private val geoCoder: Geocoder by lazy { Geocoder(applicationContext, Locale.getDefault()) }
 
     @RequiresPermission(value = ACCESS_COARSE_LOCATION)
     override suspend fun getCurrentLatLong(): Pair<Double, Double> {
-        val location = client.lastLocation.await() ?: getAFreshLocation()
+        val lastLocation = client.lastLocation.await()
+        lastLocation?.let {
+            val delta = it.time - System.currentTimeMillis()
+            if (delta < 300000) return it.getLatLonPair()
+        }
+
+        val location = getAFreshLocation()
         return location?.getLatLonPair() ?: throw IOException("Unable to get location")
     }
 
@@ -68,57 +65,16 @@ class LocationProviderImpl(
 
     @SuppressLint("MissingPermission")
     private suspend fun getAFreshLocation(): Location? {
-        return client.getCurrentLocation(Priority.PRIORITY_LOW_POWER, object : CancellationToken() {
-            override fun isCancellationRequested(): Boolean = false
-            override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken = this
-        }).await()
+        return client.getCurrentLocation(
+            Priority.PRIORITY_HIGH_ACCURACY,
+            cancellationToken
+        ).await()
     }
 
-    @SuppressLint("MissingPermission")
-    private suspend fun requestFreshLocation(): Location? {
-        val handlerThread = HandlerThread("MyHandlerThread")
-        handlerThread.start()
-        // Now get the Looper from the HandlerThread
-        // NOTE: This call will block until the HandlerThread gets control and initializes its Looper
-        val looper = handlerThread.looper
-
-        return suspendCoroutine { cont ->
-            val callback = object : LocationCallback() {
-                override fun onLocationResult(p0: LocationResult) {
-                    client.removeLocationUpdates(this)
-                    cont.resume(p0.lastLocation)
-                }
-            }
-
-            with(locationManager!!) {
-                when {
-                    isProviderEnabled(LocationManager.GPS_PROVIDER) -> {
-                        client.requestLocationUpdates(
-                            createLocationRequest(Priority.PRIORITY_HIGH_ACCURACY),
-                            callback,
-                            looper
-                        )
-                    }
-
-                    isProviderEnabled(LocationManager.NETWORK_PROVIDER) -> {
-                        client.requestLocationUpdates(
-                            createLocationRequest(Priority.PRIORITY_LOW_POWER),
-                            callback,
-                            looper
-                        )
-                    }
-
-                    else -> {
-                        cont.resume(null)
-                    }
-                }
-            }
-
-        }
+    private val cancellationToken = object : CancellationToken() {
+        override fun isCancellationRequested(): Boolean = false
+        override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken =
+            this
     }
 
-    private fun createLocationRequest(priority: Int) = LocationRequest.create()
-        .setPriority(priority)
-        .setNumUpdates(1)
-        .setExpirationDuration(1000)
 }

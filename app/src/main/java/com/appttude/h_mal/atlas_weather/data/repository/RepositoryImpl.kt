@@ -7,6 +7,7 @@ import com.appttude.h_mal.atlas_weather.data.prefs.LOCATION_CONST
 import com.appttude.h_mal.atlas_weather.data.prefs.PreferenceProvider
 import com.appttude.h_mal.atlas_weather.data.room.AppDatabase
 import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
+import com.appttude.h_mal.atlas_weather.model.types.UnitType
 import com.appttude.h_mal.atlas_weather.utils.FALLBACK_TIME
 
 
@@ -20,7 +21,7 @@ class RepositoryImpl(
         lat: String,
         long: String
     ): WeatherResponse {
-        return responseUnwrap { api.getFromApi(lat, long) }
+        return responseUnwrap { api.getFromApi(lat, long, units = prefs.getUnitsType().name.lowercase()) }
     }
 
     override suspend fun saveCurrentWeatherToRoom(entityItem: EntityItem) {
@@ -65,11 +66,15 @@ class RepositoryImpl(
     }
 
     override fun getSavedLocations(): List<String> {
-        return prefs.getAllKeys().toList()
+        return prefs.getAllKeysExcludingCurrent().toList()
     }
 
     override suspend fun getSingleWeather(locationName: String): EntityItem {
         return db.getWeatherDao().getCurrentFullWeatherSingle(locationName)
+    }
+
+    override fun getUnitType(): UnitType {
+        return prefs.getUnitsType()
     }
 
 }

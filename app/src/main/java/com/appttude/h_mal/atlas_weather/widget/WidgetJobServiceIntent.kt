@@ -1,25 +1,21 @@
 package com.appttude.h_mal.atlas_weather.widget
 
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.icu.text.SimpleDateFormat
-import android.os.PowerManager
 import android.widget.RemoteViews
-import androidx.core.app.ActivityCompat.checkSelfPermission
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.helper.ServicesHelper
 import com.appttude.h_mal.atlas_weather.model.widget.InnerWidgetCellData
+import com.appttude.h_mal.atlas_weather.model.widget.WidgetError
+import com.appttude.h_mal.atlas_weather.model.widget.WidgetState.HasData
+import com.appttude.h_mal.atlas_weather.model.widget.WidgetState.HasError
 import com.appttude.h_mal.atlas_weather.model.widget.WidgetWeatherCollection
 import com.appttude.h_mal.atlas_weather.ui.MainActivity
-import com.appttude.h_mal.atlas_weather.utils.isInternetAvailable
-import com.appttude.h_mal.atlas_weather.utils.tryOrNullSuspended
 import com.appttude.h_mal.atlas_weather.widget.WidgetState.*
-import com.appttude.h_mal.atlas_weather.widget.WidgetState.Companion.getWidgetState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,61 +42,33 @@ class WidgetJobServiceIntent : BaseWidgetServiceIntentClass<NewAppWidget>() {
         executeWidgetUpdate()
     }
 
+    @SuppressLint("MissingPermission")
     private fun executeWidgetUpdate() {
         val componentName = ComponentName(this, NewAppWidget::class.java)
-        initBaseWidget(componentName)
+        initializeWidgetData(componentName)
 
-        initiateWidgetUpdate(getCurrentWidgetState())
-    }
-
-    private fun initiateWidgetUpdate(state: WidgetState) {
-        when (state) {
-            NO_LOCATION, SCREEN_ON_CONNECTION_UNAVAILABLE -> updateErrorWidget(state)
-            SCREEN_ON_CONNECTION_AVAILABLE -> updateWidget(false)
-            SCREEN_OFF_CONNECTION_AVAILABLE -> updateWidget(true)
-            SCREEN_OFF_CONNECTION_UNAVAILABLE -> return
-        }
-    }
-
-    private fun updateWidget(fromStorage: Boolean) {
         CoroutineScope(Dispatchers.IO).launch {
-            val result = getWidgetWeather(fromStorage)
-            appWidgetIds.forEach { id -> setupView(id, result) }
+            setLoadingView()
+
+            val widgetState = helper.fetchWidgetData()
+            appWidgetIds.forEach { id ->
+                when (widgetState) {
+                    is HasData<*> -> {
+                        val data = widgetState.data as WidgetWeatherCollection
+                        setupView(id, data)
+                    }
+
+                    is HasError<*> -> {
+                        if (widgetState.error is WidgetError) {
+                            val error = widgetState.error
+                            setupErrorView(id, error)
+                        }
+                    }
+                }
+            }
         }
     }
 
-    private fun updateErrorWidget(state: WidgetState) {
-        appWidgetIds.forEach { id -> setEmptyView(id, state) }
-    }
-
-    private fun getCurrentWidgetState(): WidgetState {
-        val pm = getSystemService(POWER_SERVICE) as PowerManager
-        val isScreenOn = pm.isInteractive
-        val locationGranted =
-            checkSelfPermission(this, ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED
-        val internetAvailable = isInternetAvailable(this.applicationContext)
-
-        return getWidgetState(locationGranted, isScreenOn, internetAvailable)
-    }
-
-    @SuppressLint("MissingPermission")
-    suspend fun getWidgetWeather(storageOnly: Boolean): WidgetWeatherCollection? {
-        return tryOrNullSuspended {
-            if (!storageOnly) helper.fetchData()
-            helper.getWidgetWeatherCollection()
-        }
-    }
-
-    private fun setEmptyView(appWidgetId: Int, state: WidgetState) {
-        val error = when (state) {
-            NO_LOCATION -> "No Location Permission"
-            SCREEN_ON_CONNECTION_UNAVAILABLE -> "No network available"
-            else -> "No data"
-        }
-
-        val views = createRemoteView(R.layout.weather_app_widget)
-        bindErrorView(appWidgetId, views, error)
-    }
 
     private fun setupView(
         appWidgetId: Int,
@@ -114,6 +82,49 @@ class WidgetJobServiceIntent : BaseWidgetServiceIntentClass<NewAppWidget>() {
             bindView(appWidgetId, views, collection)
         } else {
             bindEmptyView(appWidgetId, views, "No weather available")
+        }
+    }
+
+    private fun setupErrorView(
+        appWidgetId: Int,
+        error: WidgetError
+    ) {
+        val views = createRemoteView(R.layout.weather_app_widget)
+//        setLastUpdated(views, collection?.widgetData?.timeStamp)
+        views.setInt(R.id.whole_widget_view, "setBackgroundColor", helper.getWidgetBackground())
+
+        bindEmptyView(appWidgetId, views, error.errorMessage)
+    }
+
+    @SuppressLint("DiscouragedApi")
+    private fun setLoadingView() {
+        appWidgetIds.forEach { id ->
+            val views = createRemoteView(R.layout.weather_app_widget)
+            views.setInt(R.id.whole_widget_view, "setBackgroundColor", helper.getWidgetBackground())
+
+            val clickUpdate = createUpdatePendingIntent(NewAppWidget::class.java, id)
+
+            views.apply {
+                setTextViewText(R.id.widget_current_location, "Loading...")
+                setImageViewResource(R.id.location_icon, R.drawable.location_flag)
+                setOnClickPendingIntent(R.id.widget_current_location, clickUpdate)
+
+                (0..4).forEach { i ->
+                    val dayId: Int =
+                        resources.getIdentifier("widget_item_day_$i", "id", packageName)
+                    val imageId: Int =
+                        resources.getIdentifier("widget_item_image_$i", "id", packageName)
+                    val tempId: Int =
+                        resources.getIdentifier("widget_item_temp_high_$i", "id", packageName)
+
+                    views.setTextViewText(dayId, "loading")
+                    views.setTextViewText(tempId, "")
+                    setImageViewResource(imageId, R.drawable.baseline_refresh_24)
+                }
+
+                // Instruct the widget manager to update the widget
+                appWidgetManager.updateAppWidget(id, views)
+            }
         }
     }
 

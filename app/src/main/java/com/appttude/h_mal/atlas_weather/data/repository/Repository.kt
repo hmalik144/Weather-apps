@@ -3,6 +3,7 @@ package com.appttude.h_mal.atlas_weather.data.repository
 import androidx.lifecycle.LiveData
 import com.appttude.h_mal.atlas_weather.data.network.response.forecast.WeatherResponse
 import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
+import com.appttude.h_mal.atlas_weather.model.types.UnitType
 
 interface Repository {
 
@@ -18,4 +19,5 @@ interface Repository {
     suspend fun deleteSavedWeatherEntry(locationName: String): Boolean
     fun getSavedLocations(): List<String>
     suspend fun getSingleWeather(locationName: String): EntityItem
+    fun getUnitType() : UnitType
 }

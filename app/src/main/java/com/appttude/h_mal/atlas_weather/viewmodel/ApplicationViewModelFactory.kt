@@ -1,14 +1,18 @@
 package com.appttude.h_mal.atlas_weather.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.appttude.h_mal.atlas_weather.data.WeatherSource
 import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
-import com.appttude.h_mal.atlas_weather.data.repository.RepositoryImpl
+import com.appttude.h_mal.atlas_weather.data.repository.SettingsRepository
 
 
 class ApplicationViewModelFactory(
+    private val application: Application,
     private val locationProvider: LocationProvider,
-    private val repository: RepositoryImpl
+    private val source: WeatherSource,
+    private val settingsRepository: SettingsRepository
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
@@ -17,12 +21,16 @@ class ApplicationViewModelFactory(
             return when {
                 isAssignableFrom(WorldViewModel::class.java) -> WorldViewModel(
                     locationProvider,
-                    repository
+                    source
                 )
 
                 isAssignableFrom(MainViewModel::class.java) -> MainViewModel(
                     locationProvider,
-                    repository
+                    source
+                )
+
+                isAssignableFrom(SettingsViewModel::class.java) -> SettingsViewModel(
+                    application, locationProvider, source, settingsRepository
                 )
 
                 else -> throw IllegalArgumentException("Unknown ViewModel class")
