@@ -4,11 +4,13 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
+import com.appttude.h_mal.atlas_weather.model.types.UnitType
 
 /**
  * Shared preferences to save & load last timestamp
  */
 const val LOCATION_CONST = "location_"
+const val UNIT_CONST = "UnitType"
 
 class PreferenceProvider(
     context: Context
@@ -30,7 +32,7 @@ class PreferenceProvider(
         return preference.getLong(locationName, 0L)
     }
 
-    fun getAllKeys() = preference.all.keys.apply {
+    fun getAllKeysExcludingCurrent() = preference.all.keys.apply {
         remove(CURRENT_LOCATION)
     }
 
@@ -48,6 +50,15 @@ class PreferenceProvider(
 
     fun isWidgetBackground(): Boolean {
         return preference.getBoolean("widget_black_background", false)
+    }
+
+    fun setUnitsType(type: UnitType) {
+        preference.edit().putString(UNIT_CONST, type.name).apply()
+    }
+
+    fun getUnitsType(): UnitType {
+        val unit = preference.getString(UNIT_CONST, UnitType.METRIC.name)
+        return UnitType.getByName(unit) ?: UnitType.METRIC
     }
 
 }

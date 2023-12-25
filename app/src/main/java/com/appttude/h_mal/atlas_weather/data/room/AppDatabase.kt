@@ -5,11 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.appttude.h_mal.atlas_weather.data.room.entity.WeatherEntity
+import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
 
 @Database(
-    entities = [WeatherEntity::class],
-    version = 1,
+    entities = [EntityItem::class],
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(Converter::class)

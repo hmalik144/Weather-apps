@@ -3,11 +3,8 @@ package com.appttude.h_mal.atlas_weather.data.location
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.annotation.SuppressLint
 import android.content.Context
-import android.location.Address
 import android.location.Geocoder
 import android.location.Location
-import android.location.LocationManager
-import android.os.Build
 import androidx.annotation.RequiresPermission
 import com.appttude.h_mal.atlas_weather.model.types.LocationType
 import com.google.android.gms.location.LocationServices

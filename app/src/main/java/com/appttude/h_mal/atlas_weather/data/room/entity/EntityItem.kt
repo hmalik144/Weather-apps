@@ -8,7 +8,7 @@ import com.appttude.h_mal.atlas_weather.model.weather.FullWeather
 const val CURRENT_LOCATION = "CurrentLocation"
 
 @Entity
-data class WeatherEntity(
+data class EntityItem(
     @PrimaryKey(autoGenerate = false)
     val id: String,
     val weather: FullWeather

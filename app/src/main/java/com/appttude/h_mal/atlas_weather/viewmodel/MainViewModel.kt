@@ -2,23 +2,23 @@ package com.appttude.h_mal.atlas_weather.viewmodel
 
 import android.Manifest
 import androidx.annotation.RequiresPermission
+import androidx.lifecycle.viewModelScope
+import com.appttude.h_mal.atlas_weather.base.baseViewModels.BaseViewModel
+import com.appttude.h_mal.atlas_weather.data.WeatherSource
 import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
-import com.appttude.h_mal.atlas_weather.data.repository.Repository
 import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
-import com.appttude.h_mal.atlas_weather.data.room.entity.WeatherEntity
 import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
-import com.appttude.h_mal.atlas_weather.base.baseViewModels.WeatherViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val locationProvider: LocationProvider,
-    private val repository: Repository
-) : WeatherViewModel() {
+    private val weatherSource: WeatherSource
+) : BaseViewModel() {
 
     init {
-        repository.loadCurrentWeatherFromRoom(CURRENT_LOCATION).observeForever {w ->
+        weatherSource.repository.loadCurrentWeatherFromRoom(CURRENT_LOCATION).observeForever { w ->
             w?.let {
                 val weather = WeatherDisplay(it)
                 onSuccess(weather)
@@ -31,25 +31,11 @@ class MainViewModel(
         onStart()
         job = CoroutineScope(Dispatchers.IO).launch {
             try {
-                // Has the search been conducted in the last 5 minutes
-                val weatherEntity = if (repository.isSearchValid(CURRENT_LOCATION)) {
-                    // Get location
-                    val latLong = locationProvider.getCurrentLatLong()
-                    // Get weather from api
-                    val weather = repository
-                        .getWeatherFromApi(latLong.first.toString(), latLong.second.toString())
-                    val currentLocation =
-                        locationProvider.getLocationNameFromLatLong(weather.lat, weather.lon)
-                    val fullWeather = createFullWeather(weather, currentLocation)
-                    WeatherEntity(CURRENT_LOCATION, fullWeather)
-                } else {
-                    repository.getSingleWeather(CURRENT_LOCATION)
-                }
-                // Save data if not null
-                repository.saveLastSavedAt(CURRENT_LOCATION)
-                repository.saveCurrentWeatherToRoom(weatherEntity)
+                // Get location
+                val latLong = locationProvider.getCurrentLatLong()
+                weatherSource.getWeather(latLon = latLong)
             } catch (e: Exception) {
-                onError(e.message!!)
+                onError(e.message ?: "Retrieving weather failed")
             }
         }
     }

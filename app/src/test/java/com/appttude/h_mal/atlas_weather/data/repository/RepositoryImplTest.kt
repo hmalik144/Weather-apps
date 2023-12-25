@@ -5,7 +5,8 @@ import com.appttude.h_mal.atlas_weather.data.network.response.forecast.WeatherRe
 import com.appttude.h_mal.atlas_weather.data.prefs.LOCATION_CONST
 import com.appttude.h_mal.atlas_weather.data.prefs.PreferenceProvider
 import com.appttude.h_mal.atlas_weather.data.room.AppDatabase
-import com.appttude.h_mal.atlas_weather.data.room.entity.WeatherEntity
+import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
+import com.appttude.h_mal.atlas_weather.model.types.UnitType
 import com.appttude.h_mal.atlas_weather.utils.BaseTest
 import com.nhaarman.mockitokotlin2.any
 import io.mockk.MockKAnnotations
@@ -89,6 +90,7 @@ class RepositoryImplTest : BaseTest() {
 
         //Act
         //create a successful retrofit response
+        every { prefs.getUnitsType() } returns (UnitType.METRIC)
         coEvery { api.getFromApi("", "") }.returns(mockResponse)
 
         // Assert
@@ -105,6 +107,7 @@ class RepositoryImplTest : BaseTest() {
 
         //Act
         //create a successful retrofit response
+        every { prefs.getUnitsType() } returns (UnitType.METRIC)
         coEvery { api.getFromApi(any(), any()) } returns (mockResponse)
 
         // Assert
@@ -119,7 +122,7 @@ class RepositoryImplTest : BaseTest() {
     @Test
     fun loadWeatherList_validResponse() {
         // Arrange
-        val elements = listOf<WeatherEntity>(
+        val elements = listOf<EntityItem>(
             mockk { every { id } returns any() },
             mockk { every { id } returns any() },
             mockk { every { id } returns any() },

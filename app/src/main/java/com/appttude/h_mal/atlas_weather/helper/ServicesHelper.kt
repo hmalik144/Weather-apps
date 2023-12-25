@@ -10,7 +10,8 @@ import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
 import com.appttude.h_mal.atlas_weather.data.repository.Repository
 import com.appttude.h_mal.atlas_weather.data.repository.SettingsRepository
 import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
-import com.appttude.h_mal.atlas_weather.data.room.entity.WeatherEntity
+import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
+import com.appttude.h_mal.atlas_weather.model.types.UnitType
 import com.appttude.h_mal.atlas_weather.model.weather.FullWeather
 import com.appttude.h_mal.atlas_weather.model.widget.InnerWidgetCellData
 import com.appttude.h_mal.atlas_weather.model.widget.InnerWidgetData
@@ -50,10 +51,10 @@ class ServicesHelper(
                 temperatureUnit = "°C"
                 locationString = currentLocation
             }
-            val weatherEntity = WeatherEntity(CURRENT_LOCATION, fullWeather)
+            val entityItem = EntityItem(CURRENT_LOCATION, fullWeather)
             // Save data if not null
             repository.saveLastSavedAt(CURRENT_LOCATION)
-            repository.saveCurrentWeatherToRoom(weatherEntity)
+            repository.saveCurrentWeatherToRoom(entityItem)
             true
         } catch (e: IOException) {
             e.printStackTrace()
@@ -120,15 +121,15 @@ class ServicesHelper(
         }
 
         val fullWeather = FullWeather(weather).apply {
-            temperatureUnit = "°C"
+            temperatureUnit = if (repository.getUnitType() == UnitType.METRIC) "°C" else "°F"
             locationString = currentLocation
         }
-        val weatherEntity = WeatherEntity(CURRENT_LOCATION, fullWeather)
+        val entityItem = EntityItem(CURRENT_LOCATION, fullWeather)
         // Save data to database
         repository.saveLastSavedAt(CURRENT_LOCATION)
-        repository.saveCurrentWeatherToRoom(weatherEntity)
+        repository.saveCurrentWeatherToRoom(entityItem)
 
-        val data = createWidgetWeatherCollection(weatherEntity, currentLocation)
+        val data = createWidgetWeatherCollection(entityItem, currentLocation)
         return WidgetState.HasData(data)
     }
 
@@ -201,7 +202,10 @@ class ServicesHelper(
         }
     }
 
-    private fun createWidgetWeatherCollection(result: WeatherEntity, locationName: String): WidgetWeatherCollection {
+    private fun createWidgetWeatherCollection(
+        result: EntityItem,
+        locationName: String
+    ): WidgetWeatherCollection {
         val widgetData = result.weather.let {
             val bitmap = it.current?.icon
             val temp = it.current?.temp?.toInt().toString()

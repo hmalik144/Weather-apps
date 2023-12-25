@@ -2,7 +2,6 @@ package com.appttude.h_mal.atlas_weather.ui
 
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -10,7 +9,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.base.BaseActivity
-import com.appttude.h_mal.atlas_weather.viewmodel.MainViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main_navigation.toolbar
 

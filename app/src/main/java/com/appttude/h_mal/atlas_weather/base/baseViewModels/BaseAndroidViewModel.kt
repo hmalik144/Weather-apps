@@ -1,8 +1,9 @@
 package com.appttude.h_mal.atlas_weather.base.baseViewModels
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.appttude.h_mal.atlas_weather.model.ViewState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -10,7 +11,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.launch
 
-open class BaseViewModel : ViewModel() {
+open class BaseAndroidViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _uiState = MutableLiveData<ViewState>()
     val uiState: LiveData<ViewState> = _uiState

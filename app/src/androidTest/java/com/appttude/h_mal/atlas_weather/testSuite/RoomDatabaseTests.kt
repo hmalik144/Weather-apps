@@ -8,7 +8,7 @@ import com.appttude.h_mal.atlas_weather.data.room.AppDatabase
 import com.appttude.h_mal.atlas_weather.data.room.Converter
 import com.appttude.h_mal.atlas_weather.data.room.WeatherDao
 import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
-import com.appttude.h_mal.atlas_weather.data.room.entity.WeatherEntity
+import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
 import com.appttude.h_mal.atlas_weather.model.weather.FullWeather
 import com.appttude.h_mal.atlas_weather.utils.getOrAwaitValue
 import io.mockk.mockk
@@ -92,16 +92,16 @@ class RoomDatabaseTests {
         assertNull(dao.getCurrentFullWeatherSingle(id))
     }
 
-    private fun createEntity(id: String = CURRENT_LOCATION): WeatherEntity {
+    private fun createEntity(id: String = CURRENT_LOCATION): EntityItem {
         val weather = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             FullWeather()
         } else {
             mockk<FullWeather>()
         }
-        return WeatherEntity(id, weather)
+        return EntityItem(id, weather)
     }
 
-    private fun createEntityList(size: Int = 4): List<WeatherEntity> {
+    private fun createEntityList(size: Int = 4): List<EntityItem> {
         return (0.. size).map {
             val id = UUID.randomUUID().toString()
             createEntity(id)

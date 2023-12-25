@@ -2,7 +2,7 @@ package com.appttude.h_mal.atlas_weather.model.forecast
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.appttude.h_mal.atlas_weather.data.room.entity.WeatherEntity
+import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
 import com.appttude.h_mal.atlas_weather.model.weather.Hour
 
 
@@ -43,7 +43,7 @@ data class WeatherDisplay(
     ) {
     }
 
-    constructor(entity: WeatherEntity) : this(
+    constructor(entity: EntityItem) : this(
         entity.weather.current?.temp,
         entity.weather.temperatureUnit,
         entity.id,

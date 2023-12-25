@@ -64,8 +64,6 @@ class WidgetJobServiceIntent : BaseWidgetServiceIntentClass<NewAppWidget>() {
                             setupErrorView(id, error)
                         }
                     }
-
-                    else -> return@launch
                 }
             }
         }
