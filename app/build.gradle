@@ -91,6 +91,7 @@ android {
         }
         monoWeather {
             applicationId "com.appttude.h_mal.monoWeather"
+
             versionCode 7
             versionName "4.2.0"
         }
