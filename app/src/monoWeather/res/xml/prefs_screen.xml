@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
-        android:title="Weather units"
+        android:title="@string/weather_units"
         android:entries="@array/units"
         android:entryValues="@array/units"
         android:defaultValue="Metric"

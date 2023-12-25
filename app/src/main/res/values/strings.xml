@@ -33,6 +33,7 @@
     <string name="no_weather_to_display">No weather to display</string>
     <string name="unit_key">Units</string>
     <string name="widget_black_background">widget_black_background</string>
+    <string name="weather_units">Weather units</string>
 
     <string-array name="units">
         <item>Metric</item>

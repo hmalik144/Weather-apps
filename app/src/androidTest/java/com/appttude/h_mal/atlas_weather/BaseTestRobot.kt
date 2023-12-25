@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.DatePicker
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
@@ -27,6 +28,8 @@ import org.hamcrest.Matcher
 
 @SuppressWarnings("unused")
 open class BaseTestRobot {
+
+    fun goBack() = Espresso.pressBack()
 
     fun fillEditText(resId: Int, text: String?): ViewInteraction =
         onView(withId(resId)).perform(
@@ -150,5 +153,9 @@ open class BaseTestRobot {
                 day
             )
         )
+    }
+
+    fun openMenuItem() {
+        matchView(R.id.settings_fragment).perform(click())
     }
 }

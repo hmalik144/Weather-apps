@@ -2,7 +2,6 @@ package com.appttude.h_mal.atlas_weather.viewmodel
 
 import android.Manifest
 import androidx.annotation.RequiresPermission
-import androidx.lifecycle.viewModelScope
 import com.appttude.h_mal.atlas_weather.base.baseViewModels.BaseViewModel
 import com.appttude.h_mal.atlas_weather.data.WeatherSource
 import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
@@ -35,6 +34,7 @@ class MainViewModel(
                 val latLong = locationProvider.getCurrentLatLong()
                 weatherSource.getWeather(latLon = latLong)
             } catch (e: Exception) {
+                e.printStackTrace()
                 onError(e.message ?: "Retrieving weather failed")
             }
         }

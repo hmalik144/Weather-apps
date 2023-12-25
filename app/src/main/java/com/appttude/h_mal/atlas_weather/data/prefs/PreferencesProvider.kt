@@ -2,6 +2,7 @@ package com.appttude.h_mal.atlas_weather.data.prefs
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.annotation.VisibleForTesting
 import androidx.preference.PreferenceManager
 import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
 import com.appttude.h_mal.atlas_weather.model.types.UnitType
@@ -59,6 +60,11 @@ class PreferenceProvider(
     fun getUnitsType(): UnitType {
         val unit = preference.getString(UNIT_CONST, UnitType.METRIC.name)
         return UnitType.getByName(unit) ?: UnitType.METRIC
+    }
+
+    @VisibleForTesting
+    fun clearPrefs() {
+        preference.edit().clear().apply()
     }
 
 }

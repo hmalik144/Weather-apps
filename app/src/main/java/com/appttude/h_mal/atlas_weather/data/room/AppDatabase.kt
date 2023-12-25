@@ -9,7 +9,7 @@ import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
 
 @Database(
     entities = [EntityItem::class],
-    version = 2,
+    version = 1,
     exportSchema = false
 )
 @TypeConverters(Converter::class)

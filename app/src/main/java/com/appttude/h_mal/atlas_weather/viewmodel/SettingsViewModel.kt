@@ -6,10 +6,9 @@ import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.annotation.RequiresPermission
 import androidx.core.app.ActivityCompat
 import com.appttude.h_mal.atlas_weather.R
-import com.appttude.h_mal.atlas_weather.application.AppClass
+import com.appttude.h_mal.atlas_weather.application.BaseAppClass
 import com.appttude.h_mal.atlas_weather.base.baseViewModels.BaseAndroidViewModel
 import com.appttude.h_mal.atlas_weather.data.WeatherSource
 import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
@@ -27,7 +26,7 @@ class SettingsViewModel(
     private val settingsRepository: SettingsRepository
 ) : BaseAndroidViewModel(application) {
 
-    private fun getContext() = getApplication<AppClass>().applicationContext
+    private fun getContext() = getApplication<BaseAppClass>().applicationContext
 
     fun updateWidget() {
         val context = getContext()
@@ -63,6 +62,7 @@ class SettingsViewModel(
                 val units = settingsRepository.getUnitType().name.lowercase(Locale.ROOT)
                 onSuccess("Units have been changes to $units")
             } catch (e: Exception) {
+                e.printStackTrace()
                 onError(e.message ?: "Retrieving weather failed")
             }
         }
