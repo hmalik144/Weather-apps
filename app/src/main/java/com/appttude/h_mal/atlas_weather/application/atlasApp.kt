@@ -10,7 +10,7 @@ import com.appttude.h_mal.atlas_weather.data.room.AppDatabase
 
 const val LOCATION_PERMISSION_REQUEST = 505
 
-class AppClass : BaseAppClass() {
+open class AppClass : BaseAppClass() {
 
     override fun createNetworkModule(): WeatherApi {
         return NetworkModule().invoke<WeatherApi>(

@@ -21,8 +21,13 @@ import org.kodein.di.generic.singleton
 
 abstract class BaseAppClass : Application(), KodeinAware {
 
-    // Kodein creation of modules to be retrieve within the app
+    // Kodein aware to initialise the classes used for DI
     override val kodein = Kodein.lazy {
+        import(parentModule)
+        import(flavourModule)
+    }
+
+    val parentModule = Kodein.Module("Parent Module") {
         import(androidXModule(this@BaseAppClass))
 
         bind() from singleton { createNetworkModule() }
@@ -36,6 +41,10 @@ abstract class BaseAppClass : Application(), KodeinAware {
         bind() from singleton { ServicesHelper(instance(), instance(), instance()) }
         bind() from singleton { WeatherSource(instance(), instance()) }
         bind() from provider { ApplicationViewModelFactory(this@BaseAppClass, instance(), instance(),instance()) }
+    }
+
+    open val flavourModule = Kodein.Module("Flavour") {
+        import(parentModule)
     }
 
     abstract fun createNetworkModule(): WeatherApi
