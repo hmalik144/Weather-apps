@@ -34,6 +34,8 @@
     <string name="unit_key">Units</string>
     <string name="widget_black_background">widget_black_background</string>
     <string name="weather_units">Weather units</string>
+    <string name="channel_name">channel name</string>
+    <string name="channel_description">channel description</string>
 
     <string-array name="units">
         <item>Metric</item>

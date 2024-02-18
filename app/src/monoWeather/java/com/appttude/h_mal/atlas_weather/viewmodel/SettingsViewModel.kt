@@ -13,7 +13,6 @@ import com.appttude.h_mal.atlas_weather.base.baseViewModels.BaseAndroidViewModel
 import com.appttude.h_mal.atlas_weather.data.WeatherSource
 import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
 import com.appttude.h_mal.atlas_weather.data.repository.SettingsRepository
-import com.appttude.h_mal.atlas_weather.service.notification.NotificationHelper
 import com.appttude.h_mal.atlas_weather.widget.NewAppWidget
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,11 +23,27 @@ class SettingsViewModel(
     application: Application,
     private val locationProvider: LocationProvider,
     private val weatherSource: WeatherSource,
-    private val settingsRepository: SettingsRepository,
-    private val notificationHelper: NotificationHelper
+    private val settingsRepository: SettingsRepository
 ) : BaseAndroidViewModel(application) {
 
     private fun getContext() = getApplication<BaseAppClass>().applicationContext
+
+    fun updateWidget() {
+        val context = getContext()
+        val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE)
+        val widgetManager = AppWidgetManager.getInstance(context)
+        val ids =
+            widgetManager.getAppWidgetIds(
+                ComponentName(
+                    context,
+                    NewAppWidget::class.java
+                )
+            )
+        AppWidgetManager.getInstance(context)
+            .notifyAppWidgetViewDataChanged(ids, R.id.whole_widget_view)
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+        context.sendBroadcast(intent)
+    }
 
     fun refreshWeatherData() {
         onStart()

@@ -8,8 +8,6 @@ import com.appttude.h_mal.atlas_weather.data.network.interceptors.QueryParamsInt
 import com.appttude.h_mal.atlas_weather.data.network.networkUtils.loggingInterceptor
 import com.appttude.h_mal.atlas_weather.data.room.AppDatabase
 
-const val LOCATION_PERMISSION_REQUEST = 505
-
 open class AppClass : BaseAppClass() {
 
     override fun createNetworkModule(): WeatherApi {

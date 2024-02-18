@@ -30,7 +30,7 @@
 
         <receiver
             android:name=".service.notification.NotificationReceiver"
-            android:exported="true"/>
+            android:exported="false"/>
     </application>
 
 </manifest>

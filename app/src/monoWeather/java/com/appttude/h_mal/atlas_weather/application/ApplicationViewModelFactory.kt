@@ -1,4 +1,4 @@
-package com.appttude.h_mal.atlas_weather.viewmodel
+package com.appttude.h_mal.atlas_weather.application
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
@@ -6,6 +6,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.appttude.h_mal.atlas_weather.data.WeatherSource
 import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
 import com.appttude.h_mal.atlas_weather.data.repository.SettingsRepository
+import com.appttude.h_mal.atlas_weather.viewmodel.MainViewModel
+import com.appttude.h_mal.atlas_weather.viewmodel.SettingsViewModel
+import com.appttude.h_mal.atlas_weather.viewmodel.WorldViewModel
 
 
 class ApplicationViewModelFactory(

@@ -32,6 +32,8 @@ class NotificationService(context: Context) {
             AlarmManager.INTERVAL_DAY,
             alarmPendingIntent
         )
+
+//        alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(calendar.timeInMillis, alarmPendingIntent), alarmPendingIntent)
     }
 
     fun unschedulePushNotifications() {
