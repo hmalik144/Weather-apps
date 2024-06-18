@@ -2,11 +2,13 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">@android:color/white</color>
 
     <color name="colour_one">#E8D0DD</color>
     <color name="colour_two">#5F8E7B</color>
     <color name="colour_three">#B3C0CA</color>
     <color name="colour_four">#8C98AD</color>
     <color name="colour_five">#2E3532</color>
+
+    <color name="weather_cell_colour">@android:color/transparent</color>
 </resources>

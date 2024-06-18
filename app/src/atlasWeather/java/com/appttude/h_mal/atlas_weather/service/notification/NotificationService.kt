@@ -11,8 +11,6 @@ import android.icu.util.GregorianCalendar
 import androidx.core.app.NotificationManagerCompat
 
 
-private const val HOUR_TO_SHOW_PUSH = 6
-
 class NotificationService(context: Context) {
 
     private val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
@@ -26,10 +24,10 @@ class NotificationService(context: Context) {
     fun schedulePushNotifications() {
         val calendar = getCalendarForNotification()
 
-        alarmManager.setRepeating(
+        alarmManager.setWindow(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
+            AlarmManager.INTERVAL_HOUR,
             alarmPendingIntent
         )
 

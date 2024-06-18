@@ -1,5 +1,6 @@
 package com.appttude.h_mal.atlas_weather.application
 
+import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
 import com.appttude.h_mal.atlas_weather.data.location.LocationProviderImpl
 import com.appttude.h_mal.atlas_weather.data.network.NetworkModule
 import com.appttude.h_mal.atlas_weather.data.network.WeatherApi
@@ -18,7 +19,7 @@ open class AppClass : BaseAppClass() {
         ) as WeatherApi
     }
 
-    override fun createLocationModule() = LocationProviderImpl(this)
+    override fun createLocationModule(): LocationProvider = LocationProviderImpl(this)
 
     override fun createRoomDatabase(): AppDatabase = AppDatabase(this)
 

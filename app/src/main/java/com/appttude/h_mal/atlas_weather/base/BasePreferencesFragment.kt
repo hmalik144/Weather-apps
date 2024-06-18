@@ -47,7 +47,7 @@ abstract class BasePreferencesFragment<V : BaseAndroidViewModel>(@XmlRes private
 
         val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
         prefs.registerOnSharedPreferenceChangeListener { _, s ->
-            preferenceChanged(s)
+            s?.let { preferenceChanged(s) }
         }
     }
 

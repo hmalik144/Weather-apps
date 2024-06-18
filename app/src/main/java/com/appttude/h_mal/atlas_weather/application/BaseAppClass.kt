@@ -25,7 +25,7 @@ abstract class BaseAppClass : Application(), KodeinAware {
         import(flavourModule)
     }
 
-    val parentModule = Kodein.Module("Parent Module") {
+    val parentModule = Kodein.Module("Parent Module", allowSilentOverride = true) {
         import(androidXModule(this@BaseAppClass))
 
         bind() from singleton { createNetworkModule() }
