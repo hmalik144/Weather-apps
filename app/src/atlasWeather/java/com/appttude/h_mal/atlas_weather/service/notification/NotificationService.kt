@@ -30,8 +30,6 @@ class NotificationService(context: Context) {
             AlarmManager.INTERVAL_HOUR,
             alarmPendingIntent
         )
-
-//        alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(calendar.timeInMillis, alarmPendingIntent), alarmPendingIntent)
     }
 
     fun unschedulePushNotifications() {
@@ -60,7 +58,8 @@ class NotificationService(context: Context) {
 //        }
 
         return GregorianCalendar.getInstance().apply {
-            add(Calendar.MINUTE, 1)
+//            add(Calendar.MINUTE, 1)
+            add(Calendar.SECOND, 10)
         }
     }
 }
