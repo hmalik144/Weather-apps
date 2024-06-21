@@ -39,9 +39,11 @@ class WorldFragment : BaseFragment<WorldViewModel>(R.layout.fragment_add_locatio
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun onSuccess(data: Any?) {
         super.onSuccess(data)
-        if (data is List<*>) recyclerAdapter.addCurrent(data as List<WeatherDisplay>)
+        if (data is List<*>)
+            recyclerAdapter.addCurrent(data as List<WeatherDisplay>)
     }
 
     override fun onResume() {
