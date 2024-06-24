@@ -10,7 +10,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.base.BaseActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_main_navigation.toolbar
+
 
 class MainActivity : BaseActivity() {
 
@@ -21,7 +21,7 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main_navigation)
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(findViewById(R.id.toolbar))
 
         navHost = supportFragmentManager
             .findFragmentById(R.id.container) as NavHostFragment

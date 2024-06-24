@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.base.BaseFragment
 import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
 import com.appttude.h_mal.atlas_weather.utils.navigateTo
 import com.appttude.h_mal.atlas_weather.viewmodel.WorldViewModel
-import kotlinx.android.synthetic.atlasWeather.fragment_add_location.floatingActionButton
-import kotlinx.android.synthetic.atlasWeather.fragment_add_location.world_recycler
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 /**
@@ -29,12 +29,12 @@ class WorldFragment : BaseFragment<WorldViewModel>(R.layout.fragment_add_locatio
             navigateTo(direction)
         }
 
-        world_recycler.apply {
+        view.findViewById<RecyclerView>(R.id.world_recycler).apply {
             layoutManager = LinearLayoutManager(context)
             adapter = recyclerAdapter
         }
 
-        floatingActionButton.setOnClickListener {
+        view.findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener {
             navigateTo(R.id.action_worldFragment_to_addLocationFragment)
         }
     }

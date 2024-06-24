@@ -1,6 +1,5 @@
 package com.appttude.h_mal.atlas_weather.application
 
-import MonoApp
 import androidx.room.Room
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.idling.CountingIdlingResource

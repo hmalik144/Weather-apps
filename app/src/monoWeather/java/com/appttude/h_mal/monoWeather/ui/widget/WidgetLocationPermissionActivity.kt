@@ -11,6 +11,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
+import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -18,8 +19,8 @@ import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.utils.displayToast
 import com.appttude.h_mal.monoWeather.dialog.DeclarationBuilder
 import com.appttude.h_mal.monoWeather.dialog.PermissionsDeclarationDialog
-import kotlinx.android.synthetic.monoWeather.permissions_declaration_dialog.cancel
-import kotlinx.android.synthetic.monoWeather.permissions_declaration_dialog.submit
+
+
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnPermissionDenied
@@ -60,7 +61,7 @@ class WidgetLocationPermissionActivity : AppCompatActivity(), DeclarationBuilder
             movementMethod = LinkMovementMethod.getInstance()
         }
 
-        submit.setOnClickListener {
+        findViewById<Button>(R.id.submit).setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 showBackgroundLocationWithPermissionCheck()
             } else {
@@ -68,7 +69,7 @@ class WidgetLocationPermissionActivity : AppCompatActivity(), DeclarationBuilder
             }
         }
 
-        cancel.setOnClickListener { finish() }
+        findViewById<Button>(R.id.cancel).setOnClickListener { finish() }
     }
 
     private fun submitWidget() {
