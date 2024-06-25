@@ -79,14 +79,18 @@ android {
         ]
     }
 
-    flavorDimensions ["default"]
+    buildFeatures {
+        flavorDimensions = ["version"]
+    }
     productFlavors {
         atlasWeather {
+            dimension "version"
             applicationId "com.appttude.h_mal.atlas_weather"
             versionCode 5
             versionName "3.0.0"
         }
         monoWeather {
+            dimension "version"
             applicationId "com.appttude.h_mal.monoWeather"
             versionCode 7
             versionName "4.2.0"
