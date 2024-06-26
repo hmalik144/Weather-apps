@@ -13,7 +13,7 @@ def keystorePath = System.getenv('PWD') + "/app/keystore.jks"
 def keystore = file(keystorePath).exists() ? file(keystorePath) : null
 android {
     namespace 'com.appttude.h_mal.atlas_weather'
-    compileSdk 33
+    compileSdk = Integer.parseInt(TARGET_SDK_VERSION)
     defaultConfig {
         applicationId "com.appttude.h_mal.atlas_weather"
         minSdkVersion MIN_SDK_VERSION
@@ -111,7 +111,6 @@ android {
     lint {
         abortOnError false
     }
-
 }
 
 dependencies {
@@ -132,9 +131,12 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel:$ANDROID_LIFECYCLE"
     implementation "androidx.recyclerview:recyclerview:$RECYCLER_VIEW"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$SWIPE_REFRESH"
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.google.guava:guava:29.0-android'
+    implementation "com.google.code.gson:gson:$GSON"
+    implementation "com.google.guava:guava:$GUAVA"
     implementation 'io.reactivex.rxjava2:rxjava:2.2.0'
+    // force upgrade to 1.1.0 because its required by androidTestImplementation,
+    // and without this statement AGP will silently downgrade to tracing:1.0.0
+    implementation "androidx.tracing:tracing:1.1.0"
     / * Google play services * /
     implementation "com.google.android.gms:play-services-location:$GOOGLE_PLAY_SERVICE"
     / * Unit testing * /
@@ -153,9 +155,9 @@ dependencies {
     implementation "androidx.navigation:navigation-runtime:$NAVIGATION_VERSION"
     implementation "androidx.navigation:navigation-ui:$NAVIGATION_VERSION"
     / * android unit testing and espresso * /
-    androidTestImplementation "androidx.test:rules:$TEST_KTX_VERSION"
-    androidTestImplementation 'androidx.test:core:1.5.0'
-    androidTestImplementation 'androidx.test:monitor:1.6.1'
+    androidTestImplementation "androidx.test:rules:$ANDROIDX_TEST"
+    androidTestImplementation "androidx.test:core:$ANDROIDX_TEST"
+    androidTestImplementation "androidx.test:monitor:$TEST_MONITOR"
     androidTestImplementation "androidx.test.ext:junit:$TEST_JUNIT_VERSION"
     androidTestRuntimeOnly "org.jetbrains.kotlin:kotlin-test-junit:$KOTLIN_VERSION"
     androidTestImplementation "androidx.test.espresso:espresso-core:$ESPRESSO_VERSION"

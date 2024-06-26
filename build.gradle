@@ -11,8 +11,8 @@ buildscript {
 }
 
 plugins {
-    id 'com.android.application' version "$ANDROID_APPLICATION" apply false
-    id 'com.android.library' version "$ANDROID_LIBRARY" apply false
+    id 'com.android.application' version "$GRADLE_PLUGIN_VERSION" apply false
+    id 'com.android.library' version "$GRADLE_PLUGIN_VERSION" apply false
     id 'com.google.gms.google-services' version "$GOOGLE_SERVICES" apply false
     id 'org.jetbrains.kotlin.android' version "$KOTLIN_VERSION" apply false
     id 'com.autonomousapps.dependency-analysis' version "$GRADLE_ANALYZE_VERSION"
