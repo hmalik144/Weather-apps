@@ -129,6 +129,16 @@ open class BaseTestRobot {
             )
     }
 
+    fun <VH : ViewHolder> clickSubViewInRecycler(
+        recyclerId: Int,
+        position: Int,
+    ) {
+        scrollToRecyclerItemByPosition<VH>(recyclerId, position)
+            ?.perform(
+                RecyclerViewActions.actionOnItemAtPosition<VH>(position, click())
+            )
+    }
+
     fun checkErrorOnTextEntry(resId: Int, errorMessage: String): ViewInteraction =
         onView(withId(resId)).check(matches(checkErrorMessage(errorMessage)))
 

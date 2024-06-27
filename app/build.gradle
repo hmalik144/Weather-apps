@@ -111,6 +111,7 @@ android {
     lint {
         abortOnError false
     }
+    testBuildType "debug"
 }
 
 dependencies {

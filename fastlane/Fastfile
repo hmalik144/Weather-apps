@@ -42,4 +42,25 @@ platform :android do
         json_key: "google-play-key.json",
         package_name: "com.appttude.h_mal.atlas_weather")
   end
+
+  desc "Capture screenshots"
+    lane :screenGrabMonoWeather do
+      build_android_app(
+        task: 'assemble',
+        build_type: 'Debug',
+        flavor: 'MonoWeather',
+      )
+      build_android_app(
+        task: 'assemble',
+        build_type: 'AndroidTest',
+        flavor: 'MonoWeather',
+      )
+      screengrab(
+        app_package_name: "com.appttude.h_mal.monoWeather",
+        locales: ["en-UK"],
+        app_apk_path: "app/build/outputs/apk/monoWeather/debug/app-monoWeather-debug.apk",
+        tests_apk_path: "app/build/outputs/apk/androidTest/monoWeather/debug/app-monoWeather-debug-androidTest.apk",
+        test_instrumentation_runner: "com.appttude.h_mal.atlas_weather.application.TestRunner",
+      )
+  end
 end

@@ -11,6 +11,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.appttude.h_mal.atlas_weather.BaseTestRobot
 import com.appttude.h_mal.atlas_weather.R
+import com.appttude.h_mal.atlas_weather.helpers.EspressoHelper.waitForView
 import com.appttude.h_mal.atlas_weather.model.types.UnitType
 
 
@@ -44,5 +45,11 @@ class SettingsScreen : BaseTestRobot() {
     fun verifyUnableToRetrieve() {
         matchText(R.id.header_text, R.string.retrieve_warning)
         matchText(R.id.body_text, R.string.empty_retrieve_warning)
+    }
+
+    fun isDisplayed() {
+        waitForView(
+            withText("Metric")
+        )
     }
 }

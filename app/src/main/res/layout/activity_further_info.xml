@@ -54,7 +54,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="3"
-                                tools:text="85%" />
+                                tools:text="33" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -73,7 +73,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="3"
                                 tools:ignore="InOrMmUsage"
-                                tools:text="11mm" />
+                                tools:text="30" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -92,7 +92,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="3"
                                 tools:ignore="InOrMmUsage"
-                                tools:text="11mm" />
+                                tools:text="27" />
                         </LinearLayout>
 
 
