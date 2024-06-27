@@ -8,7 +8,7 @@ import androidx.fragment.app.createViewModelLazy
 import com.appttude.h_mal.atlas_weather.base.baseViewModels.BaseViewModel
 import com.appttude.h_mal.atlas_weather.helper.GenericsHelper.getGenericClassAt
 import com.appttude.h_mal.atlas_weather.model.ViewState
-import com.appttude.h_mal.atlas_weather.viewmodel.ApplicationViewModelFactory
+import com.appttude.h_mal.atlas_weather.application.ApplicationViewModelFactory
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance

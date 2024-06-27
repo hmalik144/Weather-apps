@@ -77,6 +77,7 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
     }
 
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         loadingView?.hide()
         super.onBackPressed()

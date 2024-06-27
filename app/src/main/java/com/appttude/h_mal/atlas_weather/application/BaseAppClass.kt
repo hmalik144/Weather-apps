@@ -9,20 +9,23 @@ import com.appttude.h_mal.atlas_weather.data.repository.RepositoryImpl
 import com.appttude.h_mal.atlas_weather.data.repository.SettingsRepositoryImpl
 import com.appttude.h_mal.atlas_weather.data.room.AppDatabase
 import com.appttude.h_mal.atlas_weather.helper.ServicesHelper
-import com.appttude.h_mal.atlas_weather.viewmodel.ApplicationViewModelFactory
 import com.google.gson.Gson
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
-import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 
 abstract class BaseAppClass : Application(), KodeinAware {
 
-    // Kodein creation of modules to be retrieve within the app
+    // Kodein aware to initialise the classes used for DI
     override val kodein = Kodein.lazy {
+        import(parentModule)
+        import(flavourModule)
+    }
+
+    val parentModule = Kodein.Module("Parent Module", allowSilentOverride = true) {
         import(androidXModule(this@BaseAppClass))
 
         bind() from singleton { createNetworkModule() }
@@ -35,7 +38,10 @@ abstract class BaseAppClass : Application(), KodeinAware {
         bind() from singleton { SettingsRepositoryImpl(instance()) }
         bind() from singleton { ServicesHelper(instance(), instance(), instance()) }
         bind() from singleton { WeatherSource(instance(), instance()) }
-        bind() from provider { ApplicationViewModelFactory(this@BaseAppClass, instance(), instance(),instance()) }
+    }
+
+    open val flavourModule = Kodein.Module("Flavour") {
+        import(parentModule)
     }
 
     abstract fun createNetworkModule(): WeatherApi

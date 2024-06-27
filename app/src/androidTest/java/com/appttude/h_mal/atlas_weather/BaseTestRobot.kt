@@ -31,7 +31,7 @@ open class BaseTestRobot {
 
     fun goBack() = Espresso.pressBack()
 
-    fun fillEditText(resId: Int, text: String?): ViewInteraction =
+    fun fillEditText(resId: Int, text: String): ViewInteraction =
         onView(withId(resId)).perform(
             ViewActions.replaceText(text),
             ViewActions.closeSoftKeyboard()
