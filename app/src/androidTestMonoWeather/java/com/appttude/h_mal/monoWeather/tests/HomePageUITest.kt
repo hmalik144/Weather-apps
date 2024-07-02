@@ -5,9 +5,11 @@ import com.appttude.h_mal.atlas_weather.BaseTest
 import com.appttude.h_mal.atlas_weather.model.types.UnitType
 import com.appttude.h_mal.atlas_weather.ui.MainActivity
 import com.appttude.h_mal.atlas_weather.utils.Stubs
+import com.appttude.h_mal.monoWeather.robot.furtherInfoScreen
 import com.appttude.h_mal.monoWeather.robot.settingsScreen
 import com.appttude.h_mal.monoWeather.robot.weatherScreen
 import org.junit.Test
+import tools.fastlane.screengrab.Screengrab
 
 class HomePageUITest : BaseTest<MainActivity>(MainActivity::class.java) {
 
@@ -23,6 +25,22 @@ class HomePageUITest : BaseTest<MainActivity>(MainActivity::class.java) {
             verifyCurrentTemperature(2)
             verifyCurrentLocation("Mock Location")
         }
+    }
+
+    @Test
+    fun loadApp_validWeatherResponse_viewFurtherDetailsPage() {
+        weatherScreen {
+            isDisplayed()
+            verifyCurrentTemperature(2)
+            verifyCurrentLocation("Mock Location")
+            tapDayInformationByPosition(4)
+        }
+        furtherInfoScreen {
+            isDisplayed()
+            verifyMaxTemperature(12)
+            verifyAverageTemperature(9)
+        }
+
     }
 
     @Test

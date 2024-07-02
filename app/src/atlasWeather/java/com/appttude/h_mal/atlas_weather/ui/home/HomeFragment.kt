@@ -1,7 +1,9 @@
 package com.appttude.h_mal.atlas_weather.ui.home
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.POST_NOTIFICATIONS
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -10,9 +12,10 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.appttude.h_mal.atlas_weather.R
-import com.appttude.h_mal.atlas_weather.application.LOCATION_PERMISSION_REQUEST
+import com.appttude.h_mal.atlas_weather.application.AtlasApp
 import com.appttude.h_mal.atlas_weather.base.BaseFragment
 import com.appttude.h_mal.atlas_weather.model.forecast.Forecast
 import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
@@ -21,7 +24,7 @@ import com.appttude.h_mal.atlas_weather.ui.home.adapter.WeatherRecyclerAdapter
 import com.appttude.h_mal.atlas_weather.utils.displayToast
 import com.appttude.h_mal.atlas_weather.utils.navigateTo
 import com.appttude.h_mal.atlas_weather.viewmodel.MainViewModel
-import kotlinx.android.synthetic.main.fragment_home.*
+
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnPermissionDenied
@@ -37,14 +40,15 @@ import permissions.dispatcher.RuntimePermissions
 @RuntimePermissions
 class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
 
-    lateinit var recyclerAdapter: WeatherRecyclerAdapter
+    private lateinit var recyclerAdapter: WeatherRecyclerAdapter
+    private lateinit var swipeRefresh: SwipeRefreshLayout
 
     @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        swipe_refresh.apply {
+        swipeRefresh = view.findViewById<SwipeRefreshLayout>(R.id.swipe_refresh).apply {
             setOnRefreshListener {
                 showLocationWithPermissionCheck()
                 isRefreshing = true
@@ -55,7 +59,9 @@ class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
             navigateToFurtherDetails(it)
         })
 
-        forecast_listview.adapter = recyclerAdapter
+        view.findViewById<RecyclerView>(R.id.forecast_listview).adapter = recyclerAdapter
+
+        scheduleNotification()
     }
 
     @SuppressLint("MissingPermission")
@@ -66,7 +72,7 @@ class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
 
     override fun onSuccess(data: Any?) {
         super.onSuccess(data)
-        swipe_refresh.isRefreshing = false
+        swipeRefresh.isRefreshing = false
 
         if (data is WeatherDisplay) {
             recyclerAdapter.addCurrent(data)
@@ -75,7 +81,7 @@ class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
 
     override fun onFailure(error: Any?) {
         super.onFailure(error)
-        swipe_refresh.isRefreshing = false
+        swipeRefresh.isRefreshing = false
     }
 
     private fun navigateToFurtherDetails(forecast: Forecast) {
@@ -93,10 +99,19 @@ class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
         return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         // NOTE: delegate the permission handling to generated method
         onRequestPermissionsResult(requestCode, grantResults)
+    }
+
+    fun scheduleNotification() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            sendNotification()
+        } else {
+            (requireActivity().application as AtlasApp).scheduleNotifications()
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -122,5 +137,30 @@ class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
     @OnNeverAskAgain(ACCESS_COARSE_LOCATION)
     fun onLocationNeverAskAgain() {
         displayToast("Location permissions have been to never ask again")
+    }
+
+    @SuppressLint("MissingPermission")
+    @NeedsPermission(POST_NOTIFICATIONS)
+    fun sendNotification() {
+        (requireActivity().application as AtlasApp).scheduleNotifications()
+    }
+
+    @OnShowRationale(POST_NOTIFICATIONS)
+    fun showRationaleForNotification(request: PermissionRequest) {
+//        PermissionsDeclarationDialog(requireContext()).showDialog({
+//            request.proceed()
+//        }, {
+//            request.cancel()
+//        })
+    }
+
+    @OnPermissionDenied(POST_NOTIFICATIONS)
+    fun onNotificationDenied() {
+        displayToast("Notification permissions have been denied")
+    }
+
+    @OnNeverAskAgain(POST_NOTIFICATIONS)
+    fun onNotificationNeverAskAgain() {
+        displayToast("Notification permissions have been to never ask again")
     }
 }

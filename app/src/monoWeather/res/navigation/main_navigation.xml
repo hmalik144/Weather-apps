@@ -58,6 +58,6 @@
     <fragment
         android:id="@+id/settings_fragment"
         android:name="com.appttude.h_mal.monoWeather.ui.settings.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="Settings" />
 
 </navigation>

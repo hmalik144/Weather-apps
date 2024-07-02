@@ -6,11 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
 import com.appttude.h_mal.atlas_weather.ui.home.adapter.WeatherRecyclerAdapter
 import com.appttude.h_mal.atlas_weather.utils.navigateTo
-import kotlinx.android.synthetic.main.fragment_home.*
+
 
 
 class WorldItemFragment : Fragment() {
@@ -40,7 +41,7 @@ class WorldItemFragment : Fragment() {
 
         param1?.let { recyclerAdapter.addCurrent(it) }
 
-        forecast_listview.apply {
+        view.findViewById<RecyclerView>(R.id.forecast_listview).apply {
             layoutManager = LinearLayoutManager(context)
             adapter = recyclerAdapter
         }

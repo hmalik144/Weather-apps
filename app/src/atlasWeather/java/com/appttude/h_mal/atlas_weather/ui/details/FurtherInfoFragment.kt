@@ -4,10 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.model.forecast.Forecast
-import kotlinx.android.synthetic.main.activity_further_info.*
+
 
 
 private const val WEATHER = "param1"
@@ -36,14 +37,12 @@ class FurtherInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        maxtemp.text = param1?.mainTemp
-        averagetemp.text = param1?.averageTemp
-        minimumtemp.text = param1?.minorTemp
-        windtext.text = param1?.windText
-        preciptext.text = param1?.precipitation
-        humiditytext.text = param1?.humidity
-        uvtext.text = param1?.uvi
-        sunrisetext.text = param1?.sunrise
-        sunsettext.text = param1?.sunset
+        view.findViewById<TextView>(R.id.maxtemp).text = param1?.mainTemp
+        view.findViewById<TextView>(R.id.averagetemp).text = param1?.averageTemp
+        view.findViewById<TextView>(R.id.minimumtemp).text = param1?.minorTemp
+        view.findViewById<TextView>(R.id.windtext).text = param1?.windText
+        view.findViewById<TextView>(R.id.preciptext).text = param1?.precipitation
+        view.findViewById<TextView>(R.id.sunrisetext).text = param1?.sunrise
+        view.findViewById<TextView>(R.id.sunsettext).text = param1?.sunset
     }
 }

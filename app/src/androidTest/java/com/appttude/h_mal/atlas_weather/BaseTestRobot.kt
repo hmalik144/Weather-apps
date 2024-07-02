@@ -31,7 +31,7 @@ open class BaseTestRobot {
 
     fun goBack() = Espresso.pressBack()
 
-    fun fillEditText(resId: Int, text: String?): ViewInteraction =
+    fun fillEditText(resId: Int, text: String): ViewInteraction =
         onView(withId(resId)).perform(
             ViewActions.replaceText(text),
             ViewActions.closeSoftKeyboard()
@@ -126,6 +126,16 @@ open class BaseTestRobot {
                         }
                     }
                 )
+            )
+    }
+
+    fun <VH : ViewHolder> clickSubViewInRecycler(
+        recyclerId: Int,
+        position: Int,
+    ) {
+        scrollToRecyclerItemByPosition<VH>(recyclerId, position)
+            ?.perform(
+                RecyclerViewActions.actionOnItemAtPosition<VH>(position, click())
             )
     }
 

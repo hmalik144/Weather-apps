@@ -30,6 +30,7 @@ import org.junit.Before
 import org.junit.Rule
 import tools.fastlane.screengrab.Screengrab
 import tools.fastlane.screengrab.UiAutomatorScreenshotStrategy
+import tools.fastlane.screengrab.locale.LocaleTestRule
 
 @Suppress("EmptyMethod")
 open class BaseTest<A : Activity>(
@@ -48,7 +49,13 @@ open class BaseTest<A : Activity>(
     var permissionRule = GrantPermissionRule.grant(Manifest.permission.ACCESS_COARSE_LOCATION)
 
     @get:Rule
+    var writePermissionRule = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+    @get:Rule
     var snapshotRule: SnapshotRule = SnapshotRule()
+
+    @Rule @JvmField
+    val localeTestRule = LocaleTestRule()
 
     @Before
     fun setUp() {

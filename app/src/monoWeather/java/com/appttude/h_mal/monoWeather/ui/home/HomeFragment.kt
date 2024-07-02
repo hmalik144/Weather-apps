@@ -10,6 +10,8 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.base.BaseFragment
 import com.appttude.h_mal.atlas_weather.model.forecast.Forecast
@@ -19,7 +21,7 @@ import com.appttude.h_mal.atlas_weather.utils.navigateTo
 import com.appttude.h_mal.atlas_weather.viewmodel.MainViewModel
 import com.appttude.h_mal.monoWeather.dialog.PermissionsDeclarationDialog
 import com.appttude.h_mal.monoWeather.ui.home.adapter.WeatherRecyclerAdapter
-import kotlinx.android.synthetic.main.fragment_home.*
+
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnPermissionDenied
@@ -36,13 +38,14 @@ import permissions.dispatcher.RuntimePermissions
 class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
 
     lateinit var recyclerAdapter: WeatherRecyclerAdapter
+    lateinit var swipeRefresh: SwipeRefreshLayout
 
     @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        swipe_refresh.apply {
+        swipeRefresh = view.findViewById<SwipeRefreshLayout>(R.id.swipe_refresh).apply {
             setOnRefreshListener {
                 showLocationWithPermissionCheck()
                 isRefreshing = true
@@ -53,7 +56,7 @@ class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
             navigateToFurtherDetails(it)
         })
 
-        forecast_listview.adapter = recyclerAdapter
+        view.findViewById<RecyclerView>(R.id.forecast_listview).adapter = recyclerAdapter
     }
 
     @SuppressLint("MissingPermission")
@@ -64,7 +67,7 @@ class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
 
     override fun onSuccess(data: Any?) {
         super.onSuccess(data)
-        swipe_refresh.isRefreshing = false
+        swipeRefresh.isRefreshing = false
 
         if (data is WeatherDisplay) {
             recyclerAdapter.addCurrent(data)
@@ -73,7 +76,7 @@ class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
 
     override fun onFailure(error: Any?) {
         super.onFailure(error)
-        swipe_refresh.isRefreshing = false
+        swipeRefresh.isRefreshing = false
     }
 
     private fun navigateToFurtherDetails(forecast: Forecast) {

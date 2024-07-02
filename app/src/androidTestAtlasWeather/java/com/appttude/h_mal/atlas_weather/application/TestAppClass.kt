@@ -16,12 +16,12 @@ import com.appttude.h_mal.atlas_weather.data.room.AppDatabase
 import com.appttude.h_mal.atlas_weather.data.room.Converter
 import java.io.BufferedReader
 
-class TestAppClass : BaseAppClass() {
+class TestAppClass : AtlasApp() {
     private val idlingResources = CountingIdlingResource("Data_loader")
     private val mockingNetworkInterceptor = MockingNetworkInterceptor(idlingResources)
 
     lateinit var database: AppDatabase
-    lateinit var locationProvider: MockLocationProvider
+    private val locationProvider: MockLocationProvider = MockLocationProvider()
 
     override fun onCreate() {
         super.onCreate()
@@ -38,12 +38,12 @@ class TestAppClass : BaseAppClass() {
     }
 
     override fun createLocationModule(): LocationProvider {
-        locationProvider = MockLocationProvider()
         return locationProvider
     }
 
     override fun createRoomDatabase(): AppDatabase {
-        database = Room.inMemoryDatabaseBuilder(this, AppDatabase::class.java)
+        database = Room.inMemoryDatabaseBuilder(applicationContext, AppDatabase::class.java)
+            .allowMainThreadQueries()
             .addTypeConverter(Converter(this))
             .build()
         return database
