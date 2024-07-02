@@ -15,13 +15,13 @@ Weather-apps contains two weather apps - Atlas weather and Mono weather. They ar
 ## Screenshots
 
 ### Atlas Weather
-![Home Screen](screenshots/home.png)
-![Forecast Screen](screenshots/forecast.png)
-![Settings Screen](screenshots/settings.png)
+![Home Screen](screenshots/atlas/home.png)
+![Forecast Screen](screenshots/atlas/forecast.png)
+![Settings Screen](screenshots/atlas/settings.png)
 ### Mono Weather
-![Home Screen](screenshots/home.png)
-![Forecast Screen](screenshots/forecast.png)
-![Settings Screen](screenshots/settings.png)
+![Home Screen](screenshots/mono/home.png)
+![Forecast Screen](screenshots/mono/forecast.png)
+![Settings Screen](screenshots/mono/settings.png)
 
 ## Usage
 

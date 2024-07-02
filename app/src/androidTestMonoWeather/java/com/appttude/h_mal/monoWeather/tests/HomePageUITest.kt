@@ -24,7 +24,6 @@ class HomePageUITest : BaseTest<MainActivity>(MainActivity::class.java) {
             isDisplayed()
             verifyCurrentTemperature(2)
             verifyCurrentLocation("Mock Location")
-            Screengrab.screenshot("HomeScreen")
         }
     }
 
@@ -40,7 +39,6 @@ class HomePageUITest : BaseTest<MainActivity>(MainActivity::class.java) {
             isDisplayed()
             verifyMaxTemperature(12)
             verifyAverageTemperature(9)
-            Screengrab.screenshot("FurtherInfoScreen")
         }
 
     }
@@ -57,7 +55,6 @@ class HomePageUITest : BaseTest<MainActivity>(MainActivity::class.java) {
         settingsScreen {
             selectWeatherUnits(UnitType.IMPERIAL)
             goBack()
-            Screengrab.screenshot("SettingsScreen")
         }
         weatherScreen {
             isDisplayed()

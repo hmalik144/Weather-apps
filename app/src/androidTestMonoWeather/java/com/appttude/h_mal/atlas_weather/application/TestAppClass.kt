@@ -21,7 +21,7 @@ class TestAppClass : MonoApp() {
     private val mockingNetworkInterceptor = MockingNetworkInterceptor(idlingResources)
 
     lateinit var database: AppDatabase
-    lateinit var locationProvider: MockLocationProvider
+    private val locationProvider: MockLocationProvider = MockLocationProvider()
 
     override fun onCreate() {
         super.onCreate()
@@ -38,7 +38,6 @@ class TestAppClass : MonoApp() {
     }
 
     override fun createLocationModule(): LocationProvider {
-        locationProvider = MockLocationProvider()
         return locationProvider
     }
 

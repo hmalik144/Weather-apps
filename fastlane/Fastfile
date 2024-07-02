@@ -43,7 +43,7 @@ platform :android do
         package_name: "com.appttude.h_mal.atlas_weather")
   end
 
-  desc "Capture screenshots"
+  desc "Capture screenshots on MonoWeather"
     lane :screenGrabMonoWeather do
       build_android_app(
         task: 'assemble',
@@ -61,6 +61,29 @@ platform :android do
         app_apk_path: "app/build/outputs/apk/monoWeather/debug/app-monoWeather-debug.apk",
         tests_apk_path: "app/build/outputs/apk/androidTest/monoWeather/debug/app-monoWeather-debug-androidTest.apk",
         test_instrumentation_runner: "com.appttude.h_mal.atlas_weather.application.TestRunner",
+        use_tests_in_packages: "com.appttude.h_mal.atlas_weather.snapshot"
       )
   end
+
+    desc "Capture screenshots on AtlasWeather"
+      lane :screenGrabAtlasWeather do
+        build_android_app(
+          task: 'assemble',
+          build_type: 'Debug',
+          flavor: 'AtlasWeather',
+        )
+        build_android_app(
+          task: 'assemble',
+          build_type: 'AndroidTest',
+          flavor: 'AtlasWeather',
+        )
+        screengrab(
+          app_package_name: "com.appttude.h_mal.atlas_weather",
+          locales: ["en-UK"],
+          app_apk_path: "app/build/outputs/apk/atlasWeather/debug/app-atlasWeather-debug.apk",
+          tests_apk_path: "app/build/outputs/apk/androidTest/atlasWeather/debug/app-atlasWeather-debug-androidTest.apk",
+          test_instrumentation_runner: "com.appttude.h_mal.atlas_weather.application.TestRunner",
+          use_tests_in_packages: "com.appttude.h_mal.atlas_weather.snapshot"
+        )
+    end
 end
