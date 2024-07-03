@@ -1,7 +1,9 @@
 package com.appttude.h_mal.atlas_weather.data.room
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -32,4 +34,7 @@ interface WeatherDao {
     @Query("DELETE FROM EntityItem WHERE id = :userId")
     fun deleteEntry(userId: String): Int
 
+    @VisibleForTesting
+    @Query("DELETE FROM EntityItem")
+    fun deleteAll(): Int
 }

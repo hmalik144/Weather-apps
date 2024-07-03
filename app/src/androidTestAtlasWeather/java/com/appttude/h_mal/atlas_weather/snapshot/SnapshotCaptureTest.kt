@@ -22,6 +22,13 @@ class SnapshotCaptureTest : BaseTest<MainActivity>(MainActivity::class.java) {
         clearPrefs()
     }
 
+    override fun testFinished() {
+        super.testFinished()
+        clearLocation("London")
+        clearDatabase()
+        clearPrefs()
+    }
+
     @Test
     fun homeAndFurtherInfoPageCapture() {
         weatherScreen {

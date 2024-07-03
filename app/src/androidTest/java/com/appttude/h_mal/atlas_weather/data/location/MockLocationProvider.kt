@@ -22,6 +22,16 @@ class MockLocationProvider : LocationProvider {
 
     fun addLocationToList(name: String, lat: Double, long: Double) {
         val latLong = Pair(lat, long)
-        feedMap.put(name, latLong)
+        feedMap[name] = latLong
+    }
+
+    fun removeLocationFromList(name: String) {
+        feedMap.remove(name)
+    }
+
+    fun removeLocationFromList(lat: Double, long: Double) {
+        feedMap.filterValues { it.first == lat && it.second == long }.keys.firstOrNull()?.let {
+            feedMap.remove(it)
+        }
     }
 }

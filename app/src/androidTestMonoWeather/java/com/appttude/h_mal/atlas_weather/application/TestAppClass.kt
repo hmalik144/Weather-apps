@@ -14,9 +14,13 @@ import com.appttude.h_mal.atlas_weather.data.network.interceptors.QueryParamsInt
 import com.appttude.h_mal.atlas_weather.data.network.networkUtils.loggingInterceptor
 import com.appttude.h_mal.atlas_weather.data.room.AppDatabase
 import com.appttude.h_mal.atlas_weather.data.room.Converter
+import org.kodein.di.LazyKodein
 import java.io.BufferedReader
 
-class TestAppClass : MonoApp() {
+class TestAppClass : AppClass() {
+
+    override val kodein: LazyKodein = super.kodein
+
     private val idlingResources = CountingIdlingResource("Data_loader")
     private val mockingNetworkInterceptor = MockingNetworkInterceptor(idlingResources)
 
@@ -64,4 +68,15 @@ class TestAppClass : MonoApp() {
         locationProvider.addLocationToList(location, lat, long)
     }
 
+    fun removeLocation(location: String) {
+        locationProvider.removeLocationFromList(location)
+    }
+
+    fun removeLocation(lat: Double, long: Double) {
+        locationProvider.removeLocationFromList(lat, long)
+    }
+
+    fun clearDatabase() {
+        database.getWeatherDao().deleteAll()
+    }
 }

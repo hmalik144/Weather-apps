@@ -15,16 +15,16 @@ import androidx.navigation.ui.onNavDestinationSelected
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.appttude.h_mal.atlas_weather.R
-import com.appttude.h_mal.atlas_weather.application.AtlasApp
 import com.appttude.h_mal.atlas_weather.base.BaseFragment
 import com.appttude.h_mal.atlas_weather.model.forecast.Forecast
 import com.appttude.h_mal.atlas_weather.model.forecast.WeatherDisplay
+import com.appttude.h_mal.atlas_weather.service.notification.NotificationService
 import com.appttude.h_mal.atlas_weather.ui.dialog.PermissionsDeclarationDialog
 import com.appttude.h_mal.atlas_weather.ui.home.adapter.WeatherRecyclerAdapter
 import com.appttude.h_mal.atlas_weather.utils.displayToast
 import com.appttude.h_mal.atlas_weather.utils.navigateTo
 import com.appttude.h_mal.atlas_weather.viewmodel.MainViewModel
-
+import org.kodein.di.generic.instance
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnPermissionDenied
@@ -39,6 +39,8 @@ import permissions.dispatcher.RuntimePermissions
  */
 @RuntimePermissions
 class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
+
+    private val notificationService by instance<NotificationService>()
 
     private lateinit var recyclerAdapter: WeatherRecyclerAdapter
     private lateinit var swipeRefresh: SwipeRefreshLayout
@@ -100,7 +102,11 @@ class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
     }
 
     @Deprecated("Deprecated in Java")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         // NOTE: delegate the permission handling to generated method
         onRequestPermissionsResult(requestCode, grantResults)
@@ -110,7 +116,7 @@ class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             sendNotification()
         } else {
-            (requireActivity().application as AtlasApp).scheduleNotifications()
+            notificationService.schedulePushNotifications()
         }
     }
 
@@ -142,7 +148,7 @@ class HomeFragment : BaseFragment<MainViewModel>(R.layout.fragment_home) {
     @SuppressLint("MissingPermission")
     @NeedsPermission(POST_NOTIFICATIONS)
     fun sendNotification() {
-        (requireActivity().application as AtlasApp).scheduleNotifications()
+        notificationService.schedulePushNotifications()
     }
 
     @OnShowRationale(POST_NOTIFICATIONS)
