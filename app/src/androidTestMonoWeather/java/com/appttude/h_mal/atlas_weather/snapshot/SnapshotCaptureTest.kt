@@ -27,6 +27,7 @@ class SnapshotCaptureTest : BaseTest<MainActivity>(MainActivity::class.java) {
         super.testFinished()
         clearLocation("London")
         clearDatabase()
+        clearPrefs()
     }
 
 
