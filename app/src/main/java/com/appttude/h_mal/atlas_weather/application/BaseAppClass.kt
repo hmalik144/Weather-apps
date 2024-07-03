@@ -12,6 +12,7 @@ import com.appttude.h_mal.atlas_weather.helper.ServicesHelper
 import com.google.gson.Gson
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
+import org.kodein.di.KodeinContainer
 import org.kodein.di.android.x.androidXModule
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
@@ -22,7 +23,7 @@ abstract class BaseAppClass : Application(), KodeinAware {
     // Kodein aware to initialise the classes used for DI
     override val kodein = Kodein.lazy {
         import(parentModule)
-        import(flavourModule)
+        import(getFlavourModule(application = this@BaseAppClass))
     }
 
     val parentModule = Kodein.Module("Parent Module", allowSilentOverride = true) {
@@ -38,10 +39,6 @@ abstract class BaseAppClass : Application(), KodeinAware {
         bind() from singleton { SettingsRepositoryImpl(instance()) }
         bind() from singleton { ServicesHelper(instance(), instance(), instance()) }
         bind() from singleton { WeatherSource(instance(), instance()) }
-    }
-
-    open val flavourModule = Kodein.Module("Flavour") {
-        import(parentModule)
     }
 
     abstract fun createNetworkModule(): WeatherApi

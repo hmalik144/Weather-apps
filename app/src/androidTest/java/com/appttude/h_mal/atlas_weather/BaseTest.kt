@@ -92,7 +92,17 @@ open class BaseTest<A : Activity>(
         testApp.stubLocation(location, lat, long)
     }
 
+    fun clearLocation(location: String) {
+        testApp.removeLocation(location)
+    }
+
+    fun clearLocation(lat: Double, long: Double) {
+        testApp.removeLocation(lat, long)
+    }
+
     fun clearPrefs() = prefs.clearPrefs()
+
+    fun clearDatabase() = testApp.clearDatabase()
 
     fun getActivity() = testActivity
 

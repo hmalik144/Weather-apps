@@ -8,6 +8,7 @@ import com.appttude.h_mal.atlas_weather.utils.Stubs
 import com.appttude.h_mal.monoWeather.robot.furtherInfoScreen
 import com.appttude.h_mal.monoWeather.robot.settingsScreen
 import com.appttude.h_mal.monoWeather.robot.weatherScreen
+import okio.IOException
 import org.junit.Test
 import tools.fastlane.screengrab.Screengrab
 
@@ -40,7 +41,6 @@ class HomePageUITest : BaseTest<MainActivity>(MainActivity::class.java) {
             verifyMaxTemperature(12)
             verifyAverageTemperature(9)
         }
-
     }
 
     @Test
