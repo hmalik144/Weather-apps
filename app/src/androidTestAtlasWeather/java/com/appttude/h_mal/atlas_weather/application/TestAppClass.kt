@@ -16,7 +16,7 @@ import com.appttude.h_mal.atlas_weather.data.room.AppDatabase
 import com.appttude.h_mal.atlas_weather.data.room.Converter
 import java.io.BufferedReader
 
-class TestAppClass : AtlasApp() {
+class TestAppClass : AppClass() {
     private val idlingResources = CountingIdlingResource("Data_loader")
     private val mockingNetworkInterceptor = MockingNetworkInterceptor(idlingResources)
 
@@ -64,4 +64,15 @@ class TestAppClass : AtlasApp() {
         locationProvider.addLocationToList(location, lat, long)
     }
 
+    fun removeLocation(location: String) {
+        locationProvider.removeLocationFromList(location)
+    }
+
+    fun removeLocation(lat: Double, long: Double) {
+        locationProvider.removeLocationFromList(lat, long)
+    }
+
+    fun clearDatabase() {
+        database.getWeatherDao().deleteAll()
+    }
 }
