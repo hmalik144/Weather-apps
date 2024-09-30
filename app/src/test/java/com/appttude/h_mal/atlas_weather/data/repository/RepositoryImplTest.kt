@@ -17,6 +17,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentMatchers.anyDouble
 import java.io.IOException
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -85,16 +86,18 @@ class RepositoryImplTest : BaseTest() {
     @Test
     fun getWeatherFromApi_validLatLong_validSearch() {
         //Arrange
+        val lat = anyDouble().toString()
+        val long = anyDouble().toString()
         val mockResponse = createSuccessfulRetrofitMock<WeatherApiResponse>()
 
         //Act
         //create a successful retrofit response
         every { prefs.getUnitsType() } returns (UnitType.METRIC)
-        coEvery { api.getFromApi(location = "") }.returns(mockResponse)
+        coEvery { api.getFromApi(location = lat + long) }.returns(mockResponse)
 
         // Assert
         runBlocking {
-            val result = repository.getWeatherFromApi("", "")
+            val result = repository.getWeatherFromApi(lat, long)
             assertIs<WeatherApiResponse>(result)
         }
     }

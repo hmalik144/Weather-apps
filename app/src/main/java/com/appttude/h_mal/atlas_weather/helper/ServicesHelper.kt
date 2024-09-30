@@ -144,7 +144,7 @@ class ServicesHelper(
 
             result.weather.let {
                 val bitmap = it.current?.icon
-                val location = locationProvider.getLocationNameFromLatLong(it.lat, it.lon)
+                val location = locationProvider.getLocationNameFromLatLong(it.lat!!, it.lon!!)
                 val temp = it.current?.temp?.toInt().toString()
 
                 WidgetData(location, bitmap, temp, epoc)
@@ -181,7 +181,7 @@ class ServicesHelper(
 
             val widgetData = result.weather.let {
                 val bitmap = it.current?.icon
-                val location = locationProvider.getLocationNameFromLatLong(it.lat, it.lon)
+                val location = locationProvider.getLocationNameFromLatLong(it.lat!!, it.lon!!)
                 val temp = it.current?.temp?.toInt().toString()
                 val epoc = System.currentTimeMillis()
 

@@ -67,7 +67,7 @@ open class BaseTest<A : Activity>(
         }
 
         testApp =
-            InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestAppClass
+            InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
         runBlocking {
             beforeLaunch()
         }

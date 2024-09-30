@@ -4,7 +4,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.appttude.h_mal.atlas_weather.model.IconMapper
 import com.appttude.h_mal.atlas_weather.utils.generateIconUrlString
-import com.appttude.h_mal.atlas_weather.data.network.response.forecast.Hour as ForecastHour
 import com.appttude.h_mal.atlas_weather.data.network.response.weather.Hours as WeatherHour
 
 
@@ -18,15 +17,9 @@ data class Hour(
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readValue(Double::class.java.classLoader) as? Double,
         parcel.readString()
-    ) {
-    }
-
-    constructor(hour: ForecastHour) : this(
-        hour.dt,
-        hour.temp,
-        generateIconUrlString(hour.weather?.getOrNull(0)?.icon)
     )
-    
+
+
     constructor(weatherHour: WeatherHour) : this(
         weatherHour.datetimeEpoch,
         weatherHour.temp,

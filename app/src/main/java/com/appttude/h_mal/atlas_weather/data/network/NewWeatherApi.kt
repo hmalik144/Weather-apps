@@ -9,8 +9,6 @@ import retrofit2.http.Query
 
 interface NewWeatherApi : Api {
 
-    // Todo: change the location
-    // Todo: add endpoint for lat/long
     @GET("{location}")
     suspend fun getFromApi(
         @Query("contentType") exclude: String = "json",

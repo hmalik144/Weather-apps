@@ -1,6 +1,5 @@
 package com.appttude.h_mal.atlas_weather.model.weather
 
-import com.appttude.h_mal.atlas_weather.data.network.response.forecast.Current
 import com.appttude.h_mal.atlas_weather.data.network.response.weather.CurrentConditions
 import com.appttude.h_mal.atlas_weather.model.IconMapper
 import com.appttude.h_mal.atlas_weather.utils.generateIconUrlString
@@ -25,27 +24,7 @@ data class Current(
     val windSpeed: Double? = null
 ) {
 
-    constructor(dailyItem: Current) : this(
-        dailyItem.dt,
-        dailyItem.sunrise,
-        dailyItem.sunset,
-        dailyItem.temp,
-        dailyItem.visibility,
-        dailyItem.uvi,
-        dailyItem.pressure,
-        dailyItem.clouds,
-        dailyItem.feelsLike,
-        dailyItem.windDeg,
-        dailyItem.dewPoint,
-        generateIconUrlString(dailyItem.weather?.getOrNull(0)?.icon),
-        dailyItem.weather?.get(0)?.description,
-        dailyItem.weather?.get(0)?.main,
-        dailyItem.weather?.get(0)?.id,
-        dailyItem.humidity,
-        dailyItem.windSpeed
-    )
-
-    constructor(currentConditions: CurrentConditions?): this(
+    constructor(currentConditions: CurrentConditions?) : this(
         dt = currentConditions?.datetimeEpoch,
         sunrise = currentConditions?.sunriseEpoch,
         sunset = currentConditions?.sunsetEpoch,

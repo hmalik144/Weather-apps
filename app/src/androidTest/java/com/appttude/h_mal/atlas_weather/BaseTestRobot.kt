@@ -60,7 +60,7 @@ open class BaseTestRobot {
             .atPosition(position).perform(click())
     }
 
-    fun <VH : ViewHolder> scrollToRecyclerItem(recyclerId: Int, text: String): ViewInteraction? {
+    fun <VH : ViewHolder> scrollToRecyclerItem(recyclerId: Int, text: String): ViewInteraction {
         return matchView(recyclerId)
             .perform(
                 // scrollTo will fail the test if no item matches.
@@ -73,7 +73,7 @@ open class BaseTestRobot {
     fun <VH : ViewHolder> scrollToRecyclerItem(
         recyclerId: Int,
         resIdForString: Int
-    ): ViewInteraction? {
+    ): ViewInteraction {
         return matchView(recyclerId)
             .perform(
                 // scrollTo will fail the test if no item matches.
@@ -86,7 +86,7 @@ open class BaseTestRobot {
     fun <VH : ViewHolder> scrollToRecyclerItemByPosition(
         recyclerId: Int,
         position: Int
-    ): ViewInteraction? {
+    ): ViewInteraction {
         return matchView(recyclerId)
             .perform(
                 // scrollTo will fail the test if no item matches.

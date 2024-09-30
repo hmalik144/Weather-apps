@@ -11,6 +11,7 @@ import org.junit.Test
 class HomePageNoDataUITest : BaseTest<MainActivity>(MainActivity::class.java) {
 
     override fun beforeLaunch() {
+        // Todo: change this
         stubEndpoint("https://api.openweathermap.org/data/2.5/onecall", Stubs.InvalidKey, 400)
     }
 

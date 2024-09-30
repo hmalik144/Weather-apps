@@ -1,6 +1,5 @@
 package com.appttude.h_mal.atlas_weather.model.weather
 
-import com.appttude.h_mal.atlas_weather.data.network.response.forecast.DailyItem
 import com.appttude.h_mal.atlas_weather.data.network.response.weather.Days
 import com.appttude.h_mal.atlas_weather.model.IconMapper
 import com.appttude.h_mal.atlas_weather.utils.generateIconUrlString
@@ -29,29 +28,6 @@ data class DailyWeather(
     val rain: Double?
 ) {
 
-    constructor(dailyItem: DailyItem) : this(
-        dailyItem.dt,
-        dailyItem.sunrise,
-        dailyItem.sunset,
-        dailyItem.temp?.min,
-        dailyItem.temp?.max,
-        dailyItem.temp?.day,
-        dailyItem.feelsLike?.day,
-        dailyItem.pressure,
-        dailyItem.humidity,
-        dailyItem.dewPoint,
-        dailyItem.windSpeed,
-        dailyItem.windDeg,
-        generateIconUrlString(dailyItem.weather?.getOrNull(0)?.icon),
-        dailyItem.weather?.get(0)?.description,
-        dailyItem.weather?.get(0)?.main,
-        dailyItem.weather?.get(0)?.id,
-        dailyItem.clouds,
-        dailyItem.pop,
-        dailyItem.uvi,
-        dailyItem.rain
-    )
-
     constructor(days: Days) : this(
         days.datetimeEpoch,
         days.sunriseEpoch,
@@ -76,6 +52,5 @@ data class DailyWeather(
         days.uvindex?.toDouble(),
         days.precip?.toDouble()
     )
-
 
 }
