@@ -11,14 +11,13 @@ import com.appttude.h_mal.atlas_weather.data.repository.Repository
 import com.appttude.h_mal.atlas_weather.data.repository.SettingsRepository
 import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
 import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
-import com.appttude.h_mal.atlas_weather.model.types.UnitType
-import com.appttude.h_mal.atlas_weather.model.weather.FullWeather
 import com.appttude.h_mal.atlas_weather.model.widget.InnerWidgetCellData
 import com.appttude.h_mal.atlas_weather.model.widget.InnerWidgetData
 import com.appttude.h_mal.atlas_weather.model.widget.WidgetData
 import com.appttude.h_mal.atlas_weather.model.widget.WidgetError
 import com.appttude.h_mal.atlas_weather.model.widget.WidgetState
 import com.appttude.h_mal.atlas_weather.model.widget.WidgetWeatherCollection
+import com.appttude.h_mal.atlas_weather.utils.getSymbol
 import com.appttude.h_mal.atlas_weather.utils.toSmallDayName
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
@@ -45,9 +44,11 @@ class ServicesHelper(
             // Get weather from api
             val weather = repository
                 .getWeatherFromApi(latLong.first.toString(), latLong.second.toString())
+            val lat = weather.latitude ?: latLong.first
+            val long = weather.longitude ?: latLong.second
             val currentLocation =
-                locationProvider.getLocationNameFromLatLong(weather.lat, weather.lon)
-            val fullWeather = FullWeather(weather).apply {
+                locationProvider.getLocationNameFromLatLong(lat, long)
+            val fullWeather = weather.mapData().apply {
                 temperatureUnit = "°C"
                 locationString = currentLocation
             }
@@ -105,8 +106,11 @@ class ServicesHelper(
             return WidgetState.HasError(error)
         }
 
+        val lat = weather.latitude ?: latLong.first
+        val long = weather.longitude ?: latLong.second
+
         val currentLocation = try {
-            locationProvider.getLocationNameFromLatLong(weather.lat, weather.lon)
+            locationProvider.getLocationNameFromLatLong(lat, long)
         } catch (e: IOException) {
             val data = getWidgetWeatherCollection()
             data?.let {
@@ -120,8 +124,8 @@ class ServicesHelper(
             return WidgetState.HasError(error)
         }
 
-        val fullWeather = FullWeather(weather).apply {
-            temperatureUnit = if (repository.getUnitType() == UnitType.METRIC) "°C" else "°F"
+        val fullWeather = weather.mapData().apply {
+            temperatureUnit = repository.getUnitType().getSymbol()
             locationString = currentLocation
         }
         val entityItem = EntityItem(CURRENT_LOCATION, fullWeather)

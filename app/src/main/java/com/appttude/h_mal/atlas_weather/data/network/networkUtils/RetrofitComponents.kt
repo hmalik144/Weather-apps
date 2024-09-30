@@ -1,11 +1,13 @@
 package com.appttude.h_mal.atlas_weather.data.network.networkUtils
 
 import com.appttude.h_mal.atlas_weather.data.network.interceptors.NetworkInterceptor
+import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.reflect.Modifier
 import java.util.concurrent.TimeUnit
 
 val loggingInterceptor = HttpLoggingInterceptor().apply {
@@ -32,6 +34,13 @@ fun buildOkHttpClient(
         .readTimeout(timeoutSeconds, TimeUnit.SECONDS)
 
     return builder.build()
+}
+
+fun createGsonConverterFactory(): GsonConverterFactory {
+    val gson = GsonBuilder()
+        .excludeFieldsWithModifiers(Modifier.TRANSIENT)
+        .create()
+    return GsonConverterFactory.create(gson)
 }
 
 fun <T> createRetrofit(

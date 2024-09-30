@@ -1,7 +1,7 @@
 package com.appttude.h_mal.atlas_weather.data.repository
 
-import com.appttude.h_mal.atlas_weather.data.network.WeatherApi
-import com.appttude.h_mal.atlas_weather.data.network.response.forecast.WeatherResponse
+import com.appttude.h_mal.atlas_weather.data.network.NewWeatherApi
+import com.appttude.h_mal.atlas_weather.data.network.response.weather.WeatherApiResponse
 import com.appttude.h_mal.atlas_weather.data.prefs.LOCATION_CONST
 import com.appttude.h_mal.atlas_weather.data.prefs.PreferenceProvider
 import com.appttude.h_mal.atlas_weather.data.room.AppDatabase
@@ -29,8 +29,7 @@ class RepositoryImplTest : BaseTest() {
 
     lateinit var repository: RepositoryImpl
 
-    @MockK
-    lateinit var api: WeatherApi
+    @MockK lateinit var api: NewWeatherApi
 
     @MockK
     lateinit var db: AppDatabase
@@ -86,29 +85,29 @@ class RepositoryImplTest : BaseTest() {
     @Test
     fun getWeatherFromApi_validLatLong_validSearch() {
         //Arrange
-        val mockResponse = createSuccessfulRetrofitMock<WeatherResponse>()
+        val mockResponse = createSuccessfulRetrofitMock<WeatherApiResponse>()
 
         //Act
         //create a successful retrofit response
         every { prefs.getUnitsType() } returns (UnitType.METRIC)
-        coEvery { api.getFromApi("", "") }.returns(mockResponse)
+        coEvery { api.getFromApi(location = "") }.returns(mockResponse)
 
         // Assert
         runBlocking {
             val result = repository.getWeatherFromApi("", "")
-            assertIs<WeatherResponse>(result)
+            assertIs<WeatherApiResponse>(result)
         }
     }
 
     @Test
     fun getWeatherFromApi_validLatLong_invalidResponse() {
         //Arrange
-        val mockResponse = createErrorRetrofitMock<WeatherResponse>()
+        val mockResponse = createErrorRetrofitMock<WeatherApiResponse>()
 
         //Act
         //create a successful retrofit response
         every { prefs.getUnitsType() } returns (UnitType.METRIC)
-        coEvery { api.getFromApi(any(), any()) } returns (mockResponse)
+        coEvery { api.getFromApi(location = any()) } returns (mockResponse)
 
         // Assert
         val ioExceptionReturned = assertFailsWith<IOException> {

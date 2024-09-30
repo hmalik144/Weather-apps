@@ -24,10 +24,7 @@ class SettingsScreen : BaseTestRobot() {
                 RecyclerViewActions.actionOnItem<ViewHolder>(
                     ViewMatchers.hasDescendant(withText(R.string.weather_units)),
                     click()))
-        val label = when (unitType) {
-            UnitType.METRIC -> "Metric"
-            UnitType.IMPERIAL -> "Imperial"
-        }
+        val label = unitType.getLabel()
 
         onView(withText(label))
             .inRoot(isDialog())

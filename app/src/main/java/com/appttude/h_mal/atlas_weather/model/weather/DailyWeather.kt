@@ -1,6 +1,8 @@
 package com.appttude.h_mal.atlas_weather.model.weather
 
 import com.appttude.h_mal.atlas_weather.data.network.response.forecast.DailyItem
+import com.appttude.h_mal.atlas_weather.data.network.response.weather.Days
+import com.appttude.h_mal.atlas_weather.model.IconMapper
 import com.appttude.h_mal.atlas_weather.utils.generateIconUrlString
 
 
@@ -48,6 +50,31 @@ data class DailyWeather(
         dailyItem.pop,
         dailyItem.uvi,
         dailyItem.rain
+    )
+
+    constructor(days: Days) : this(
+        days.datetimeEpoch,
+        days.sunriseEpoch,
+        days.sunsetEpoch,
+        days.tempmin,
+        days.tempmax,
+        days.temp?.toDouble(),
+        days.feelslike,
+        days.pressure?.toInt(),
+        days.humidity?.toInt(),
+        days.dew,
+        days.windspeed,
+        days.winddir?.toInt(),
+        generateIconUrlString(
+            IconMapper.findIconCode(days.icon)
+        ),
+        days.description,
+        days.conditions,
+        days.datetimeEpoch,
+        days.cloudcover?.toInt(),
+        days.precipprob?.toDouble(),
+        days.uvindex?.toDouble(),
+        days.precip?.toDouble()
     )
 
 

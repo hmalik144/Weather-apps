@@ -1,5 +1,7 @@
 package com.appttude.h_mal.atlas_weather.utils
 
+import com.appttude.h_mal.atlas_weather.model.types.UnitType
+
 
 fun generateIconUrlString(icon: String?): String? {
     return icon?.let {
@@ -10,3 +12,5 @@ fun generateIconUrlString(icon: String?): String? {
             .toString()
     }
 }
+
+fun UnitType.getSymbol(): String = if (this == UnitType.METRIC) "°C" else "°F"

@@ -7,6 +7,7 @@ import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
 import com.appttude.h_mal.atlas_weather.model.types.LocationType
 import com.appttude.h_mal.atlas_weather.model.types.UnitType
 import com.appttude.h_mal.atlas_weather.model.weather.FullWeather
+import com.appttude.h_mal.atlas_weather.utils.getSymbol
 import java.io.IOException
 
 class WeatherSource(
@@ -38,7 +39,7 @@ class WeatherSource(
         // get data from database
         val weatherEntity = repository.loadSingleCurrentWeatherFromRoom(CURRENT_LOCATION)
         // check unit type - if same do nothing
-        val units = if (repository.getUnitType() == UnitType.METRIC) "°C" else "°F"
+        val units = repository.getUnitType().getSymbol()
         if (weatherEntity.weather.temperatureUnit == units) return weatherEntity.weather
         // load data for forced
         return fetchWeather(
@@ -55,11 +56,13 @@ class WeatherSource(
         // Get weather from api
         val weather = repository
             .getWeatherFromApi(latLon.first.toString(), latLon.second.toString())
+        val lat = weather.latitude ?: latLon.first
+        val long = weather.longitude ?: latLon.second
         val currentLocation =
-            locationProvider.getLocationNameFromLatLong(weather.lat, weather.lon, locationType)
-        val unit = repository.getUnitType()
-        val fullWeather = FullWeather(weather).apply {
-            temperatureUnit = if (unit == UnitType.METRIC) "°C" else "°F"
+            locationProvider.getLocationNameFromLatLong(lat, long, locationType)
+        val unit = repository.getUnitType().getSymbol()
+        val fullWeather = weather.mapData().apply {
+            temperatureUnit = unit
             locationString = currentLocation
         }
         val entityItem = EntityItem(locationName, fullWeather)

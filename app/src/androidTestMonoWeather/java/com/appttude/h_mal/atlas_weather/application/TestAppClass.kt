@@ -7,7 +7,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
 import com.appttude.h_mal.atlas_weather.data.location.MockLocationProvider
 import com.appttude.h_mal.atlas_weather.data.network.NetworkModule
-import com.appttude.h_mal.atlas_weather.data.network.WeatherApi
+import com.appttude.h_mal.atlas_weather.data.network.NewWeatherApi
 import com.appttude.h_mal.atlas_weather.data.network.interceptors.MockingNetworkInterceptor
 import com.appttude.h_mal.atlas_weather.data.network.interceptors.NetworkConnectionInterceptor
 import com.appttude.h_mal.atlas_weather.data.network.interceptors.QueryParamsInterceptor
@@ -32,13 +32,13 @@ class TestAppClass : AppClass() {
         IdlingRegistry.getInstance().register(idlingResources)
     }
 
-    override fun createNetworkModule(): WeatherApi {
-        return NetworkModule().invoke<WeatherApi>(
+    override fun createNetworkModule(): NewWeatherApi {
+        return NetworkModule().invoke<NewWeatherApi>(
             mockingNetworkInterceptor,
             NetworkConnectionInterceptor(this),
             QueryParamsInterceptor(),
             loggingInterceptor
-        ) as WeatherApi
+        ) as NewWeatherApi
     }
 
     override fun createLocationModule(): LocationProvider {

@@ -10,7 +10,7 @@ data class WeatherDisplay(
     val averageTemp: Double?,
     var unit: String?,
     var location: String?,
-    val iconURL: String?,
+    var iconURL: String?,
     val description: String?,
     val hourly: List<Hour>?,
     val forecast: List<Forecast>?,
