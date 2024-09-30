@@ -51,7 +51,7 @@ fun <T> createRetrofit(
     return Retrofit.Builder()
         .client(okHttpClient)
         .baseUrl(baseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(createGsonConverterFactory())
         .build()
         .create(service)
 }

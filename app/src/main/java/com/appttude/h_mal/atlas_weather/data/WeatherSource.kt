@@ -5,7 +5,6 @@ import com.appttude.h_mal.atlas_weather.data.repository.Repository
 import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
 import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
 import com.appttude.h_mal.atlas_weather.model.types.LocationType
-import com.appttude.h_mal.atlas_weather.model.types.UnitType
 import com.appttude.h_mal.atlas_weather.model.weather.FullWeather
 import com.appttude.h_mal.atlas_weather.utils.getSymbol
 import java.io.IOException
@@ -34,8 +33,10 @@ class WeatherSource(
     }
 
     @Throws(IOException::class)
-    suspend fun forceFetchWeather(latLon: Pair<Double, Double>,
-                                  locationType: LocationType = LocationType.Town): FullWeather {
+    suspend fun forceFetchWeather(
+        latLon: Pair<Double, Double>,
+        locationType: LocationType = LocationType.Town
+    ): FullWeather {
         // get data from database
         val weatherEntity = repository.loadSingleCurrentWeatherFromRoom(CURRENT_LOCATION)
         // check unit type - if same do nothing

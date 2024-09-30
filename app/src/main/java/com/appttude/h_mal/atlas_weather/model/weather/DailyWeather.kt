@@ -58,7 +58,7 @@ data class DailyWeather(
         days.sunsetEpoch,
         days.tempmin,
         days.tempmax,
-        days.temp?.toDouble(),
+        days.temp,
         days.feelslike,
         days.pressure?.toInt(),
         days.humidity?.toInt(),
@@ -72,7 +72,7 @@ data class DailyWeather(
         days.conditions,
         days.datetimeEpoch,
         days.cloudcover?.toInt(),
-        days.precipprob?.toDouble(),
+        days.precipprob,
         days.uvindex?.toDouble(),
         days.precip?.toDouble()
     )
