@@ -8,11 +8,15 @@ enum class UnitType {
 
     companion object {
         fun getByName(name: String?): UnitType? {
-            return values().firstOrNull {
+            return entries.firstOrNull {
                 it.name.lowercase(Locale.ROOT) == name?.lowercase(
                     Locale.ROOT
                 )
             }
+        }
+
+        fun UnitType.getLabel() = name.lowercase().replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
         }
     }
 }

@@ -7,7 +7,7 @@
     android:paddingTop="6dp"
     android:paddingRight="24dp"
     android:paddingBottom="6dp"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/weather_cell_colour"
     android:orientation="horizontal">
 
     <ImageView

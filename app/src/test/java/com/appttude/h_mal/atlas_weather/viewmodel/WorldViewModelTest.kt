@@ -3,7 +3,7 @@ package com.appttude.h_mal.atlas_weather.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.appttude.h_mal.atlas_weather.data.WeatherSource
 import com.appttude.h_mal.atlas_weather.data.location.LocationProviderImpl
-import com.appttude.h_mal.atlas_weather.data.network.response.forecast.WeatherResponse
+import com.appttude.h_mal.atlas_weather.data.network.response.weather.WeatherApiResponse
 import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
 import com.appttude.h_mal.atlas_weather.model.ViewState
 import com.appttude.h_mal.atlas_weather.model.types.LocationType
@@ -21,10 +21,10 @@ import io.mockk.impl.annotations.RelaxedMockK
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.anyList
 import org.mockito.ArgumentMatchers.anyString
 import java.io.IOException
+import kotlin.properties.Delegates
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 
@@ -43,12 +43,23 @@ class WorldViewModelTest : BaseTest() {
     @MockK
     lateinit var locationProvider: LocationProviderImpl
 
-    private lateinit var weatherResponse: WeatherResponse
+    private lateinit var weatherResponse: WeatherApiResponse
+    private var lat by Delegates.notNull<Double>()
+    private var long by Delegates.notNull<Double>()
+    private lateinit var latlon: Pair<Double, Double>
+    private lateinit var fullWeather: FullWeather
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        weatherResponse = getTestData("weather_sample.json", WeatherResponse::class.java)
+        weatherResponse = getTestData("new_response.json", WeatherApiResponse::class.java)
+        lat = weatherResponse.latitude!!
+        long = weatherResponse.longitude!!
+        latlon = Pair(lat, long)
+        fullWeather = weatherResponse.mapData().apply {
+            temperatureUnit = "°C"
+            locationString = CURRENT_LOCATION
+        }
     }
 
     @Test
@@ -58,13 +69,13 @@ class WorldViewModelTest : BaseTest() {
 
         // Act
         coEvery { locationProvider.getLatLongFromLocationName(CURRENT_LOCATION) } returns Pair(
-            weatherResponse.lat,
-            weatherResponse.lon
+            lat,
+            long
         )
         coEvery {
             locationProvider.getLocationNameFromLatLong(
-                weatherResponse.lat,
-                weatherResponse.lon,
+                lat,
+                long,
                 LocationType.City
             )
         }.returns(CURRENT_LOCATION)
@@ -74,7 +85,7 @@ class WorldViewModelTest : BaseTest() {
                 CURRENT_LOCATION,
                 locationType = LocationType.City
             )
-        } returns FullWeather(weatherResponse)
+        } returns fullWeather
 
         // Assert
         viewModel.fetchDataForSingleLocation(CURRENT_LOCATION)
@@ -86,17 +97,17 @@ class WorldViewModelTest : BaseTest() {
     @Test
     fun fetchDataForSingleLocation_failedLocation_validReturn() {
         // Arrange
-        val errorMessage = ArgumentMatchers.anyString()
+        val errorMessage = anyString()
 
         // Act
         coEvery { locationProvider.getLatLongFromLocationName(CURRENT_LOCATION) } returns Pair(
-            weatherResponse.lat,
-            weatherResponse.lon
+            lat,
+            long
         )
         coEvery {
             locationProvider.getLocationNameFromLatLong(
-                weatherResponse.lat,
-                weatherResponse.lon,
+                lat,
+                long,
                 LocationType.City
             )
         } throws IOException(errorMessage)
@@ -112,18 +123,17 @@ class WorldViewModelTest : BaseTest() {
     @Test
     fun fetchDataForSingleLocation_failedApi_validReturn() {
         // Arrange
-        val latlon = Pair(weatherResponse.lat, weatherResponse.lon)
-        val errorMessage = ArgumentMatchers.anyString()
+        val errorMessage = anyString()
 
         // Act
         coEvery { locationProvider.getLatLongFromLocationName(CURRENT_LOCATION) } returns Pair(
-            weatherResponse.lat,
-            weatherResponse.lon
+            lat,
+            long
         )
         coEvery {
             locationProvider.getLocationNameFromLatLong(
-                weatherResponse.lat,
-                weatherResponse.lon,
+                lat,
+                long,
                 LocationType.City
             )
         }.returns(CURRENT_LOCATION)
@@ -146,15 +156,14 @@ class WorldViewModelTest : BaseTest() {
     @Test
     fun fetchDataForSingleLocationSearch_validLocation_validReturn() {
         // Arrange
-        val latlon = Pair(weatherResponse.lat, weatherResponse.lon)
 
         // Act
         every { weatherSource.repository.getSavedLocations() } returns anyList()
         coEvery { locationProvider.getLatLongFromLocationName(CURRENT_LOCATION) } returns latlon
         coEvery {
             locationProvider.getLocationNameFromLatLong(
-                weatherResponse.lat,
-                weatherResponse.lon,
+                lat,
+                long,
                 LocationType.City
             )
         }.returns(CURRENT_LOCATION)
@@ -164,7 +173,7 @@ class WorldViewModelTest : BaseTest() {
                 CURRENT_LOCATION,
                 locationType = LocationType.City
             )
-        } returns FullWeather(weatherResponse).apply { locationString = CURRENT_LOCATION }
+        } returns fullWeather.apply { locationString = CURRENT_LOCATION }
 
         // Assert
         viewModel.fetchDataForSingleLocationSearch(CURRENT_LOCATION)
@@ -192,7 +201,6 @@ class WorldViewModelTest : BaseTest() {
     @Test
     fun fetchDataForSingleLocationSearch_retrievedLocationExists_validError() {
         // Arrange
-        val latlon = Pair(weatherResponse.lat, weatherResponse.lon)
         val retrievedLocation = anyString()
 
         // Act
@@ -200,8 +208,7 @@ class WorldViewModelTest : BaseTest() {
         coEvery { locationProvider.getLatLongFromLocationName(CURRENT_LOCATION) } returns latlon
         coEvery {
             locationProvider.getLocationNameFromLatLong(
-                weatherResponse.lat,
-                weatherResponse.lon,
+                lat, long,
                 LocationType.City
             )
         }.returns(CURRENT_LOCATION)
@@ -211,7 +218,7 @@ class WorldViewModelTest : BaseTest() {
                 CURRENT_LOCATION,
                 locationType = LocationType.City
             )
-        } returns FullWeather(weatherResponse).apply { locationString = retrievedLocation }
+        } returns fullWeather.apply { locationString = retrievedLocation }
 
         // Assert
         viewModel.fetchDataForSingleLocationSearch(CURRENT_LOCATION)

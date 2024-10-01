@@ -4,7 +4,9 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.mockk.every
 import io.mockk.mockk
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
 
 
@@ -29,9 +31,17 @@ open class BaseTest {
 
     fun <T: Any> createErrorRetrofitMock(code: Int = 400): Response<T> {
         val responseBody = mockk<ResponseBody>(relaxed = true)
-        val rawResponse = mockk<okhttp3.Response>().also {
-            every { it.code } returns code
-        }
         return Response.error<T>(code, responseBody)
+    }
+
+    fun <T: Any> createErrorRetrofitMock(errorMessage: String, code: Int = 400): Response<T> {
+        val responseBody = errorMessage.toResponseBody("application/json".toMediaType())
+        val rawResponse = mockk<okhttp3.Response>(relaxed = true).also {
+            every { it.code } returns code
+            every { it.isSuccessful } returns false
+            every { it.body } returns responseBody
+            every { it.message } returns errorMessage
+        }
+        return Response.error<T>(responseBody, rawResponse)
     }
 }

@@ -11,7 +11,9 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.appttude.h_mal.atlas_weather.BaseTestRobot
 import com.appttude.h_mal.atlas_weather.R
+import com.appttude.h_mal.atlas_weather.helpers.EspressoHelper.waitForView
 import com.appttude.h_mal.atlas_weather.model.types.UnitType
+import com.appttude.h_mal.atlas_weather.model.types.UnitType.Companion.getLabel
 
 
 fun settingsScreen(func: SettingsScreen.() -> Unit) = SettingsScreen().apply { func() }
@@ -23,10 +25,7 @@ class SettingsScreen : BaseTestRobot() {
                 RecyclerViewActions.actionOnItem<ViewHolder>(
                     ViewMatchers.hasDescendant(withText(R.string.weather_units)),
                     click()))
-        val label = when (unitType) {
-            UnitType.METRIC -> "Metric"
-            UnitType.IMPERIAL -> "Imperial"
-        }
+        val label = unitType.getLabel()
 
         onView(withText(label))
             .inRoot(isDialog())
@@ -44,5 +43,11 @@ class SettingsScreen : BaseTestRobot() {
     fun verifyUnableToRetrieve() {
         matchText(R.id.header_text, R.string.retrieve_warning)
         matchText(R.id.body_text, R.string.empty_retrieve_warning)
+    }
+
+    fun isDisplayed() {
+        waitForView(
+            withText("Metric")
+        )
     }
 }

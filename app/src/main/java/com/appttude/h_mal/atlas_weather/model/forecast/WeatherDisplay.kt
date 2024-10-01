@@ -10,7 +10,7 @@ data class WeatherDisplay(
     val averageTemp: Double?,
     var unit: String?,
     var location: String?,
-    val iconURL: String?,
+    var iconURL: String?,
     val description: String?,
     val hourly: List<Hour>?,
     val forecast: List<Forecast>?,
@@ -40,8 +40,7 @@ data class WeatherDisplay(
         parcel.readDouble(),
         parcel.readDouble(),
         parcel.readString()
-    ) {
-    }
+    )
 
     constructor(entity: EntityItem) : this(
         entity.weather.current?.temp,
@@ -56,8 +55,8 @@ data class WeatherDisplay(
         entity.weather.daily?.get(0)?.pop?.times(100)?.toInt()?.toString(),
         entity.weather.current?.humidity?.toString(),
         entity.weather.current?.clouds?.toString(),
-        entity.weather.lat,
-        entity.weather.lon,
+        entity.weather.lat!!,
+        entity.weather.lon!!,
         entity.weather.locationString
     )
 

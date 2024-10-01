@@ -1,7 +1,7 @@
 package com.appttude.h_mal.atlas_weather.helper
 
 import com.appttude.h_mal.atlas_weather.data.location.LocationProviderImpl
-import com.appttude.h_mal.atlas_weather.data.network.response.forecast.WeatherResponse
+import com.appttude.h_mal.atlas_weather.data.network.response.weather.WeatherApiResponse
 import com.appttude.h_mal.atlas_weather.data.repository.Repository
 import com.appttude.h_mal.atlas_weather.data.repository.SettingsRepository
 import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
@@ -17,6 +17,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import java.io.IOException
+import kotlin.properties.Delegates
 
 class ServicesHelperTest : BaseTest() {
 
@@ -31,40 +32,45 @@ class ServicesHelperTest : BaseTest() {
     @MockK
     lateinit var locationProvider: LocationProviderImpl
 
-    lateinit var weatherResponse: WeatherResponse
+    lateinit var weatherResponse: WeatherApiResponse
+    private var lat by Delegates.notNull<Double>()
+    private var long by Delegates.notNull<Double>()
+    private lateinit var latlon: Pair<Double, Double>
+    private lateinit var fullWeather: FullWeather
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
         helper = ServicesHelper(repository, settingsRepository, locationProvider)
 
-        weatherResponse = getTestData("weather_sample.json", WeatherResponse::class.java)
+        weatherResponse = getTestData("new_response.json", WeatherApiResponse::class.java)
+        lat = weatherResponse.latitude!!
+        long = weatherResponse.longitude!!
+        latlon = Pair(lat, long)
+        fullWeather = weatherResponse.mapData().apply {
+            temperatureUnit = "°C"
+            locationString = CURRENT_LOCATION
+        }
     }
 
     @Test
     fun testWidgetDataAsync_successfulResponse() = runBlocking {
         // Arrange
-        val entityItem = EntityItem(CURRENT_LOCATION, FullWeather(weatherResponse).apply {
-            temperatureUnit = "°C"
-            locationString = CURRENT_LOCATION
-        })
+        val entityItem = EntityItem(CURRENT_LOCATION, fullWeather)
 
         // Act
-        coEvery { locationProvider.getCurrentLatLong() } returns Pair(
-            weatherResponse.lat,
-            weatherResponse.lon
-        )
+        coEvery { locationProvider.getCurrentLatLong() } returns Pair(lat, long)
         every { repository.isSearchValid(CURRENT_LOCATION) }.returns(true)
         coEvery {
             repository.getWeatherFromApi(
-                weatherResponse.lat.toString(),
-                weatherResponse.lon.toString()
+                lat.toString(),
+                long.toString()
             )
         }.returns(weatherResponse)
         coEvery {
             locationProvider.getLocationNameFromLatLong(
-                weatherResponse.lat,
-                weatherResponse.lon
+                lat,
+                long
             )
         }.returns(CURRENT_LOCATION)
         every { repository.saveLastSavedAt(CURRENT_LOCATION) } returns Unit

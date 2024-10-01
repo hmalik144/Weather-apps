@@ -2,17 +2,17 @@ package com.appttude.h_mal.monoWeather.tests
 
 
 import com.appttude.h_mal.atlas_weather.BaseTest
-import com.appttude.h_mal.atlas_weather.model.types.UnitType
 import com.appttude.h_mal.atlas_weather.ui.MainActivity
 import com.appttude.h_mal.atlas_weather.utils.Stubs
-import com.appttude.h_mal.monoWeather.robot.settingsScreen
+import com.appttude.h_mal.atlas_weather.utils.baseUrl
+import com.appttude.h_mal.monoWeather.robot.furtherInfoScreen
 import com.appttude.h_mal.monoWeather.robot.weatherScreen
 import org.junit.Test
 
 class HomePageUITest : BaseTest<MainActivity>(MainActivity::class.java) {
 
     override fun beforeLaunch() {
-        stubEndpoint("https://api.openweathermap.org/data/2.5/onecall", Stubs.Metric)
+        stubEndpoint(baseUrl, Stubs.Metric)
         clearPrefs()
     }
 
@@ -20,29 +20,24 @@ class HomePageUITest : BaseTest<MainActivity>(MainActivity::class.java) {
     fun loadApp_validWeatherResponse_returnsValidPage() {
         weatherScreen {
             isDisplayed()
-            verifyCurrentTemperature(2)
+            verifyCurrentTemperature(13)
             verifyCurrentLocation("Mock Location")
         }
     }
 
     @Test
-    fun loadApp_changeToImperial_returnsValidPage() {
+    fun loadApp_validWeatherResponse_viewFurtherDetailsPage() {
         weatherScreen {
             isDisplayed()
-            verifyCurrentTemperature(2)
+            verifyCurrentTemperature(13)
             verifyCurrentLocation("Mock Location")
-            stubEndpoint("https://api.openweathermap.org/data/2.5/onecall", Stubs.Imperial)
-            openMenuItem()
+            tapDayInformationByPosition(4)
         }
-        settingsScreen {
-            selectWeatherUnits(UnitType.IMPERIAL)
-            goBack()
-        }
-        weatherScreen {
+        furtherInfoScreen {
             isDisplayed()
-            refresh()
-            verifyCurrentTemperature(58)
-            verifyCurrentLocation("Mock Location")
+            verifyMaxTemperature(15)
+            verifyAverageTemperature(11)
         }
     }
+
 }

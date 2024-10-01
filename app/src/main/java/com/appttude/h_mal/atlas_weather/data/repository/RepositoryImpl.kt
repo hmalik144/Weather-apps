@@ -2,7 +2,7 @@ package com.appttude.h_mal.atlas_weather.data.repository
 
 import com.appttude.h_mal.atlas_weather.data.network.ResponseUnwrap
 import com.appttude.h_mal.atlas_weather.data.network.WeatherApi
-import com.appttude.h_mal.atlas_weather.data.network.response.forecast.WeatherResponse
+import com.appttude.h_mal.atlas_weather.data.network.response.weather.WeatherApiResponse
 import com.appttude.h_mal.atlas_weather.data.prefs.LOCATION_CONST
 import com.appttude.h_mal.atlas_weather.data.prefs.PreferenceProvider
 import com.appttude.h_mal.atlas_weather.data.room.AppDatabase
@@ -20,8 +20,9 @@ class RepositoryImpl(
     override suspend fun getWeatherFromApi(
         lat: String,
         long: String
-    ): WeatherResponse {
-        return responseUnwrap { api.getFromApi(lat, long, units = prefs.getUnitsType().name.lowercase()) }
+    ): WeatherApiResponse {
+        val unit = if (prefs.getUnitsType() == UnitType.METRIC) "metric" else "us"
+        return responseUnwrap { api.getFromApi(location = "$lat,$long", units = unit) }
     }
 
     override suspend fun saveCurrentWeatherToRoom(entityItem: EntityItem) {

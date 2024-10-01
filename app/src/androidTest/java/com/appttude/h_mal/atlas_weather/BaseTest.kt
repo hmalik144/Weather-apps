@@ -30,6 +30,7 @@ import org.junit.Before
 import org.junit.Rule
 import tools.fastlane.screengrab.Screengrab
 import tools.fastlane.screengrab.UiAutomatorScreenshotStrategy
+import tools.fastlane.screengrab.locale.LocaleTestRule
 
 @Suppress("EmptyMethod")
 open class BaseTest<A : Activity>(
@@ -48,7 +49,13 @@ open class BaseTest<A : Activity>(
     var permissionRule = GrantPermissionRule.grant(Manifest.permission.ACCESS_COARSE_LOCATION)
 
     @get:Rule
+    var writePermissionRule = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+    @get:Rule
     var snapshotRule: SnapshotRule = SnapshotRule()
+
+    @Rule @JvmField
+    val localeTestRule = LocaleTestRule()
 
     @Before
     fun setUp() {
@@ -73,8 +80,8 @@ open class BaseTest<A : Activity>(
         afterLaunch()
     }
 
-    fun stubEndpoint(url: String, stub: Stubs, code: Int = 200) {
-        testApp.stubUrl(url, stub.id, code)
+    fun stubEndpoint(url: String, stub: Stubs, code: Int = 200, extension: String = ".json") {
+        testApp.stubUrl(url, stub.id, code, extension)
     }
 
     fun unstubEndpoint(url: String) {
@@ -85,7 +92,17 @@ open class BaseTest<A : Activity>(
         testApp.stubLocation(location, lat, long)
     }
 
+    fun clearLocation(location: String) {
+        testApp.removeLocation(location)
+    }
+
+    fun clearLocation(lat: Double, long: Double) {
+        testApp.removeLocation(lat, long)
+    }
+
     fun clearPrefs() = prefs.clearPrefs()
+
+    fun clearDatabase() = testApp.clearDatabase()
 
     fun getActivity() = testActivity
 
@@ -108,7 +125,6 @@ open class BaseTest<A : Activity>(
         })
     }
 
-    @Suppress("DEPRECATION")
     fun checkToastMessage(message: String) {
         Espresso.onView(ViewMatchers.withText(message)).inRoot(withDecorView(Matchers.not(decorView)))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))

@@ -16,7 +16,7 @@ class QueryParamsInterceptor : Interceptor {
         val original = chain.request()
 
         val url = original.url.newBuilder()
-            .addQueryParameter("appid", id)
+            .addQueryParameter("key", id)
             .build()
 
         // Request customization: add request headers
