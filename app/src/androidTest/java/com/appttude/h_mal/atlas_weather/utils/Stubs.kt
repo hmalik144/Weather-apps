@@ -9,5 +9,4 @@ enum class Stubs(
     WrongLocation("wrong_location_response"),
     InvalidKey("invalid_api_key_response"),
     Sydney("valid_response_metric_sydney"),
-    New("new_response")
 }

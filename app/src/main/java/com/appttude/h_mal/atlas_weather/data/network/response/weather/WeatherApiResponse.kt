@@ -18,7 +18,7 @@ data class WeatherApiResponse(
     @SerializedName("tzoffset") var tzoffset: Int? = null,
     @SerializedName("description") var description: String? = null,
     @SerializedName("days") var days: ArrayList<Days> = arrayListOf(),
-    @SerializedName("alerts") var alerts: ArrayList<String> = arrayListOf(),
+    @SerializedName("alerts") var alerts: ArrayList<Alerts> = arrayListOf(),
     @SerializedName("currentConditions") var currentConditions: CurrentConditions? = CurrentConditions()
 ): DataMapper<FullWeather> {
 

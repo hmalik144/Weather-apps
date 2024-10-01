@@ -16,9 +16,9 @@ class MockingNetworkInterceptor(
     override fun intercept(chain: Interceptor.Chain): Response {
         idlingResource.increment()
         val original = chain.request()
-        val originalHttpUrl = original.url.toString().split("?")[0]
+        val originalHttpUrl = original.url.toString()
 
-        feedMap[originalHttpUrl]?.let { responsePair ->
+        feedMap[feedMap.keys.first { originalHttpUrl.contains(it) }]?.let { responsePair ->
             val code = responsePair.second
             val jsonBody = responsePair.first
 

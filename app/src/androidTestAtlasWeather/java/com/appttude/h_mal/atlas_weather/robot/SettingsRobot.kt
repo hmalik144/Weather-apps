@@ -13,6 +13,7 @@ import com.appttude.h_mal.atlas_weather.BaseTestRobot
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.atlas_weather.helpers.EspressoHelper.waitForView
 import com.appttude.h_mal.atlas_weather.model.types.UnitType
+import com.appttude.h_mal.atlas_weather.model.types.UnitType.Companion.getLabel
 
 
 fun settingsScreen(func: SettingsScreen.() -> Unit) = SettingsScreen().apply { func() }

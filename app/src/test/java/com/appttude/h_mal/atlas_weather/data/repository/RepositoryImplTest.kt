@@ -1,6 +1,6 @@
 package com.appttude.h_mal.atlas_weather.data.repository
 
-import com.appttude.h_mal.atlas_weather.data.network.NewWeatherApi
+import com.appttude.h_mal.atlas_weather.data.network.WeatherApi
 import com.appttude.h_mal.atlas_weather.data.network.response.weather.WeatherApiResponse
 import com.appttude.h_mal.atlas_weather.data.prefs.LOCATION_CONST
 import com.appttude.h_mal.atlas_weather.data.prefs.PreferenceProvider
@@ -18,7 +18,8 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyDouble
-import java.io.IOException
+import org.mockito.ArgumentMatchers.anyString
+import retrofit2.HttpException
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertIs
@@ -30,7 +31,7 @@ class RepositoryImplTest : BaseTest() {
 
     lateinit var repository: RepositoryImpl
 
-    @MockK lateinit var api: NewWeatherApi
+    @MockK lateinit var api: WeatherApi
 
     @MockK
     lateinit var db: AppDatabase
@@ -93,7 +94,7 @@ class RepositoryImplTest : BaseTest() {
         //Act
         //create a successful retrofit response
         every { prefs.getUnitsType() } returns (UnitType.METRIC)
-        coEvery { api.getFromApi(location = lat + long) }.returns(mockResponse)
+        coEvery { api.getFromApi(location = "$lat,$long") }.returns(mockResponse)
 
         // Assert
         runBlocking {
@@ -105,20 +106,25 @@ class RepositoryImplTest : BaseTest() {
     @Test
     fun getWeatherFromApi_validLatLong_invalidResponse() {
         //Arrange
-        val mockResponse = createErrorRetrofitMock<WeatherApiResponse>()
+        val errorMessage = "Why dont you have a valid api key?"
+        val mockResponse = createErrorRetrofitMock<WeatherApiResponse>(errorMessage)
+        val lat = anyString()
+        val long = anyString()
 
         //Act
         //create a successful retrofit response
         every { prefs.getUnitsType() } returns (UnitType.METRIC)
-        coEvery { api.getFromApi(location = any()) } returns (mockResponse)
+        coEvery { api.getFromApi(location = "$lat,$long") } returns (mockResponse)
 
         // Assert
-        val ioExceptionReturned = assertFailsWith<IOException> {
+        val ioExceptionReturned = assertFailsWith<HttpException> {
             runBlocking {
-                repository.getWeatherFromApi("", "")
+                repository.getWeatherFromApi(lat, long)
             }
         }
-        assertEquals(ioExceptionReturned.message, "Error Code: 400")
+
+        assertEquals(ioExceptionReturned.code(), 400)
+        assertEquals(ioExceptionReturned.message(), "Why dont you have a valid api key?")
     }
 
     @Test

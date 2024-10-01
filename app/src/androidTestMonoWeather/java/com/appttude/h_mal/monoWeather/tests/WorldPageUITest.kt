@@ -15,8 +15,8 @@ import org.junit.Test
 class WorldPageUITest : BaseTest<MainActivity>(MainActivity::class.java) {
 
     override fun beforeLaunch() {
-        stubEndpoint(baseUrl, Stubs.New)
-        stubLocation("London", 51.5064, -0.12721)
+        stubEndpoint(baseUrl, Stubs.Metric)
+        stubLocation("London",   51.5064,-0.12721)
     }
 
     @Test
@@ -28,9 +28,8 @@ class WorldPageUITest : BaseTest<MainActivity>(MainActivity::class.java) {
             clickFab()
         }
         addLocation {
-            // Todo: change this
-            stubEndpoint("https://api.openweathermap.org/data/2.5/onecall", Stubs.Sydney)
-            stubLocation("Sydney", -33.89, -151.12)
+            stubEndpoint(baseUrl, Stubs.Sydney)
+            stubLocation("Sydney",-33.8696,151.207)
             setLocation("Sydney")
             submit()
         }
@@ -39,7 +38,7 @@ class WorldPageUITest : BaseTest<MainActivity>(MainActivity::class.java) {
         }
         weatherScreen {
             isDisplayed()
-            verifyCurrentTemperature(12)
+            verifyCurrentTemperature(16)
             verifyCurrentLocation("Sydney")
         }
     }

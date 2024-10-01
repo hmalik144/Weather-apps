@@ -4,6 +4,7 @@ import android.app.Application
 import com.appttude.h_mal.atlas_weather.data.WeatherSource
 import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
 import com.appttude.h_mal.atlas_weather.data.network.Api
+import com.appttude.h_mal.atlas_weather.data.network.WeatherApi
 import com.appttude.h_mal.atlas_weather.data.prefs.PreferenceProvider
 import com.appttude.h_mal.atlas_weather.data.repository.RepositoryImpl
 import com.appttude.h_mal.atlas_weather.data.repository.SettingsRepositoryImpl
@@ -28,7 +29,7 @@ abstract class BaseAppClass : Application(), KodeinAware {
     val parentModule = Kodein.Module("Parent Module", allowSilentOverride = true) {
         import(androidXModule(this@BaseAppClass))
 
-        bind() from singleton { createNetworkModule() }
+        bind() from singleton { createNetworkModule() as WeatherApi }
         bind() from singleton { createLocationModule() }
 
         bind() from singleton { Gson() }

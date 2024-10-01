@@ -67,7 +67,7 @@ open class BaseTest<A : Activity>(
         }
 
         testApp =
-            InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
+            InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestAppClass
         runBlocking {
             beforeLaunch()
         }
@@ -80,8 +80,8 @@ open class BaseTest<A : Activity>(
         afterLaunch()
     }
 
-    fun stubEndpoint(url: String, stub: Stubs, code: Int = 200) {
-        testApp.stubUrl(url, stub.id, code)
+    fun stubEndpoint(url: String, stub: Stubs, code: Int = 200, extension: String = ".json") {
+        testApp.stubUrl(url, stub.id, code, extension)
     }
 
     fun unstubEndpoint(url: String) {
@@ -125,7 +125,6 @@ open class BaseTest<A : Activity>(
         })
     }
 
-    @Suppress("DEPRECATION")
     fun checkToastMessage(message: String) {
         Espresso.onView(ViewMatchers.withText(message)).inRoot(withDecorView(Matchers.not(decorView)))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))

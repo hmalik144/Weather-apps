@@ -9,6 +9,7 @@ import com.appttude.h_mal.atlas_weather.utils.Stubs
 import com.appttude.h_mal.atlas_weather.robot.furtherInfoScreen
 import com.appttude.h_mal.atlas_weather.robot.settingsScreen
 import com.appttude.h_mal.atlas_weather.robot.weatherScreen
+import com.appttude.h_mal.atlas_weather.utils.baseUrl
 import org.junit.Test
 import tools.fastlane.screengrab.Screengrab
 
@@ -17,7 +18,7 @@ import tools.fastlane.screengrab.Screengrab
 class SnapshotCaptureTest : BaseTest<MainActivity>(MainActivity::class.java) {
 
     override fun beforeLaunch() {
-        stubEndpoint("https://api.openweathermap.org/data/2.5/onecall", Stubs.Metric)
+        stubEndpoint(baseUrl, Stubs.Metric)
         stubLocation("London", 51.51, -0.13)
         clearPrefs()
     }
@@ -50,7 +51,7 @@ class SnapshotCaptureTest : BaseTest<MainActivity>(MainActivity::class.java) {
             openMenuItem()
         }
         settingsScreen {
-            stubEndpoint("https://api.openweathermap.org/data/2.5/onecall", Stubs.Imperial)
+            stubEndpoint(baseUrl, Stubs.Imperial)
             Screengrab.screenshot("SettingsScreen")
         }
     }

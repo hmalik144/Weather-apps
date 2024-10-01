@@ -2,14 +2,15 @@ package com.appttude.h_mal.monoWeather.tests
 
 
 import com.appttude.h_mal.atlas_weather.BaseTest
+import com.appttude.h_mal.atlas_weather.model.types.UnitType
 import com.appttude.h_mal.atlas_weather.ui.MainActivity
 import com.appttude.h_mal.atlas_weather.utils.Stubs
 import com.appttude.h_mal.atlas_weather.utils.baseUrl
-import com.appttude.h_mal.monoWeather.robot.furtherInfoScreen
+import com.appttude.h_mal.monoWeather.robot.settingsScreen
 import com.appttude.h_mal.monoWeather.robot.weatherScreen
 import org.junit.Test
 
-class HomePageUITest : BaseTest<MainActivity>(MainActivity::class.java) {
+class SettingsPageUITest : BaseTest<MainActivity>(MainActivity::class.java) {
 
     override fun beforeLaunch() {
         stubEndpoint(baseUrl, Stubs.Metric)
@@ -17,27 +18,23 @@ class HomePageUITest : BaseTest<MainActivity>(MainActivity::class.java) {
     }
 
     @Test
-    fun loadApp_validWeatherResponse_returnsValidPage() {
+    fun loadApp_changeToImperial_returnsValidPage() {
         weatherScreen {
             isDisplayed()
             verifyCurrentTemperature(13)
             verifyCurrentLocation("Mock Location")
+            stubEndpoint(baseUrl, Stubs.Imperial)
+            openMenuItem()
         }
-    }
-
-    @Test
-    fun loadApp_validWeatherResponse_viewFurtherDetailsPage() {
+        settingsScreen {
+            selectWeatherUnits(UnitType.IMPERIAL)
+            goBack()
+        }
         weatherScreen {
             isDisplayed()
-            verifyCurrentTemperature(13)
+            refresh()
+            verifyCurrentTemperature(56)
             verifyCurrentLocation("Mock Location")
-            tapDayInformationByPosition(4)
-        }
-        furtherInfoScreen {
-            isDisplayed()
-            verifyMaxTemperature(15)
-            verifyAverageTemperature(11)
         }
     }
-
 }

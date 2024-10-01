@@ -7,13 +7,13 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 
-interface NewWeatherApi : Api {
+interface WeatherApi : Api {
 
     @GET("{location}")
     suspend fun getFromApi(
+        @Path("location") location: String,
         @Query("contentType") exclude: String = "json",
-        @Query("unitGroup") units: String = "uk",
-        @Path("location") location: String
+        @Query("unitGroup") units: String = "metric"
     ): Response<WeatherApiResponse>
 
 }

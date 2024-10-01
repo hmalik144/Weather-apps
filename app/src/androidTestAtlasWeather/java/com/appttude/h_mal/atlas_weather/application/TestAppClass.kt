@@ -7,7 +7,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.appttude.h_mal.atlas_weather.data.location.LocationProvider
 import com.appttude.h_mal.atlas_weather.data.location.MockLocationProvider
 import com.appttude.h_mal.atlas_weather.data.network.NetworkModule
-import com.appttude.h_mal.atlas_weather.data.network.NewWeatherApi
+import com.appttude.h_mal.atlas_weather.data.network.WeatherApi
 import com.appttude.h_mal.atlas_weather.data.network.interceptors.MockingNetworkInterceptor
 import com.appttude.h_mal.atlas_weather.data.network.interceptors.NetworkConnectionInterceptor
 import com.appttude.h_mal.atlas_weather.data.network.interceptors.QueryParamsInterceptor
@@ -28,8 +28,8 @@ class TestAppClass : AppClass() {
         IdlingRegistry.getInstance().register(idlingResources)
     }
 
-    override fun createNetworkModule(): NewWeatherApi {
-        return NetworkModule().invoke<NewWeatherApi>(
+    override fun createNetworkModule(): WeatherApi {
+        return NetworkModule().invoke<WeatherApi>(
             mockingNetworkInterceptor,
             NetworkConnectionInterceptor(this),
             QueryParamsInterceptor(),
@@ -49,9 +49,9 @@ class TestAppClass : AppClass() {
         return database
     }
 
-    fun stubUrl(url: String, rawPath: String, code: Int = 200) {
+    fun stubUrl(url: String, rawPath: String, code: Int = 200, extension: String = ".json") {
         val iStream =
-            InstrumentationRegistry.getInstrumentation().context.assets.open("$rawPath.json")
+            InstrumentationRegistry.getInstrumentation().context.assets.open("$rawPath$extension")
         val data = iStream.bufferedReader().use(BufferedReader::readText)
         mockingNetworkInterceptor.addUrlStub(url = url, data = data, code = code)
     }

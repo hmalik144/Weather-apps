@@ -190,7 +190,7 @@ class ServicesHelper(
 
             val list = mutableListOf<InnerWidgetCellData>()
 
-            result.weather.daily?.drop(1)?.dropLast(2)?.forEach { dailyWeather ->
+            result.weather.daily?.drop(1)?.dropLast(1)?.forEach { dailyWeather ->
                 val day = dailyWeather.dt?.toSmallDayName()
                 val icon = dailyWeather.icon
                 val temp = dailyWeather.max?.toInt().toString()
@@ -220,7 +220,7 @@ class ServicesHelper(
 
         val list = mutableListOf<InnerWidgetCellData>()
 
-        result.weather.daily?.drop(1)?.dropLast(2)?.forEach { dailyWeather ->
+        result.weather.daily?.drop(1)?.dropLast(1)?.forEach { dailyWeather ->
             val day = dailyWeather.dt?.toSmallDayName()
             val icon = dailyWeather.icon
             val temp = dailyWeather.max?.toInt().toString()
