@@ -18,7 +18,6 @@ import org.kodein.di.LazyKodein
 import java.io.BufferedReader
 
 class TestAppClass : AppClass() {
-
     override val kodein: LazyKodein = super.kodein
 
     private val idlingResources = CountingIdlingResource("Data_loader")
@@ -53,9 +52,9 @@ class TestAppClass : AppClass() {
         return database
     }
 
-    fun stubUrl(url: String, rawPath: String, code: Int = 200) {
+    fun stubUrl(url: String, rawPath: String, code: Int = 200, extension: String = ".json") {
         val iStream =
-            InstrumentationRegistry.getInstrumentation().context.assets.open("$rawPath.json")
+            InstrumentationRegistry.getInstrumentation().context.assets.open("$rawPath$extension")
         val data = iStream.bufferedReader().use(BufferedReader::readText)
         mockingNetworkInterceptor.addUrlStub(url = url, data = data, code = code)
     }

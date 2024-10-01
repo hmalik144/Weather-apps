@@ -3,7 +3,6 @@ package com.appttude.h_mal.monoWeather.robot
 import com.appttude.h_mal.atlas_weather.BaseTestRobot
 import com.appttude.h_mal.atlas_weather.R
 import com.appttude.h_mal.monoWeather.ui.home.adapter.forecastDaily.ViewHolderForecastDaily
-import com.appttude.h_mal.monoWeather.ui.home.adapter.further.ViewHolderFurtherDetails
 
 fun weatherScreen(func: WeatherScreen.() -> Unit) = WeatherScreen().apply { func() }
 class WeatherScreen : BaseTestRobot() {

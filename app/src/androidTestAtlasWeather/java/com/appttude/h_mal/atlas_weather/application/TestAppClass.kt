@@ -49,9 +49,9 @@ class TestAppClass : AppClass() {
         return database
     }
 
-    fun stubUrl(url: String, rawPath: String, code: Int = 200) {
+    fun stubUrl(url: String, rawPath: String, code: Int = 200, extension: String = ".json") {
         val iStream =
-            InstrumentationRegistry.getInstrumentation().context.assets.open("$rawPath.json")
+            InstrumentationRegistry.getInstrumentation().context.assets.open("$rawPath$extension")
         val data = iStream.bufferedReader().use(BufferedReader::readText)
         mockingNetworkInterceptor.addUrlStub(url = url, data = data, code = code)
     }

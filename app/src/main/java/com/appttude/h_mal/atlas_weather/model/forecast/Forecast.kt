@@ -40,8 +40,7 @@ data class Forecast(
         parcel.readString(),
         parcel.readString(),
         parcel.readString()
-    ) {
-    }
+    )
 
     constructor(dailyWeather: DailyWeather) : this(
         dailyWeather.dt?.toDayString(),

@@ -17,7 +17,12 @@ import androidx.test.espresso.action.ViewActions.swipeDown
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.PickerActions
 import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isRoot
+import androidx.test.espresso.matcher.ViewMatchers.withClassName
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.appttude.h_mal.atlas_weather.helpers.EspressoHelper.waitForView
 import com.appttude.h_mal.atlas_weather.helpers.checkErrorMessage
 import com.appttude.h_mal.atlas_weather.helpers.checkImage
@@ -60,7 +65,7 @@ open class BaseTestRobot {
             .atPosition(position).perform(click())
     }
 
-    fun <VH : ViewHolder> scrollToRecyclerItem(recyclerId: Int, text: String): ViewInteraction? {
+    fun <VH : ViewHolder> scrollToRecyclerItem(recyclerId: Int, text: String): ViewInteraction {
         return matchView(recyclerId)
             .perform(
                 // scrollTo will fail the test if no item matches.
@@ -73,7 +78,7 @@ open class BaseTestRobot {
     fun <VH : ViewHolder> scrollToRecyclerItem(
         recyclerId: Int,
         resIdForString: Int
-    ): ViewInteraction? {
+    ): ViewInteraction {
         return matchView(recyclerId)
             .perform(
                 // scrollTo will fail the test if no item matches.
@@ -86,7 +91,7 @@ open class BaseTestRobot {
     fun <VH : ViewHolder> scrollToRecyclerItemByPosition(
         recyclerId: Int,
         position: Int
-    ): ViewInteraction? {
+    ): ViewInteraction {
         return matchView(recyclerId)
             .perform(
                 // scrollTo will fail the test if no item matches.

@@ -1,7 +1,7 @@
 package com.appttude.h_mal.atlas_weather.data
 
 import com.appttude.h_mal.atlas_weather.data.location.LocationProviderImpl
-import com.appttude.h_mal.atlas_weather.data.network.response.forecast.WeatherResponse
+import com.appttude.h_mal.atlas_weather.data.network.response.weather.WeatherApiResponse
 import com.appttude.h_mal.atlas_weather.data.repository.RepositoryImpl
 import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
 import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
@@ -18,6 +18,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 import java.io.IOException
+import kotlin.properties.Delegates
 import kotlin.test.assertEquals
 
 class WeatherSourceTest : BaseTest() {
@@ -31,41 +32,43 @@ class WeatherSourceTest : BaseTest() {
     @MockK
     lateinit var locationProvider: LocationProviderImpl
 
-    private lateinit var weatherResponse: WeatherResponse
+    private lateinit var weatherResponse: WeatherApiResponse
+    private var lat by Delegates.notNull<Double>()
+    private var long by Delegates.notNull<Double>()
+    private lateinit var latlon: Pair<Double, Double>
+    private lateinit var fullWeather: FullWeather
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        weatherResponse = getTestData("weather_sample.json", WeatherResponse::class.java)
+        weatherResponse = getTestData("new_response.json", WeatherApiResponse::class.java)
+        lat = weatherResponse.latitude!!
+        long = weatherResponse.longitude!!
+        latlon = Pair(lat, long)
+        fullWeather = weatherResponse.mapData().apply {
+            temperatureUnit = "°C"
+            locationString = CURRENT_LOCATION
+        }
     }
 
     @Test
     fun fetchDataForSingleLocation_validLocation_validReturn() {
         // Arrange
-        val latlon = Pair(
-            weatherResponse.lat,
-            weatherResponse.lon
-        )
-        val fullWeather = FullWeather(weatherResponse).apply {
-            temperatureUnit = "°C"
-            locationString = CURRENT_LOCATION
-        }
         val entityItem = EntityItem(CURRENT_LOCATION, fullWeather)
-
 
         // Act
         every { repository.isSearchValid(CURRENT_LOCATION) }.returns(true)
         coEvery { locationProvider.getLatLongFromLocationName(CURRENT_LOCATION) } returns latlon
         coEvery {
             repository.getWeatherFromApi(
-                weatherResponse.lat.toString(),
-                weatherResponse.lon.toString()
+                lat.toString(),
+                long.toString()
             )
         }.returns(weatherResponse)
         coEvery {
             locationProvider.getLocationNameFromLatLong(
-                weatherResponse.lat,
-                weatherResponse.lon,
+                lat,
+                long,
                 LocationType.City
             )
         }.returns(CURRENT_LOCATION)
@@ -82,17 +85,13 @@ class WeatherSourceTest : BaseTest() {
     @Test(expected = IOException::class)
     fun fetchDataForSingleLocation_failedWeatherApi_invalidReturn() {
         // Arrange
-        val latlon = Pair(
-            weatherResponse.lat,
-            weatherResponse.lon
-        )
 
         // Act
         every { repository.isSearchValid(CURRENT_LOCATION) }.returns(true)
         coEvery {
             repository.getWeatherFromApi(
-                weatherResponse.lat.toString(),
-                weatherResponse.lon.toString()
+                lat.toString(),
+                long.toString()
             )
         } throws IOException("Unable fetch data")
 
@@ -103,23 +102,19 @@ class WeatherSourceTest : BaseTest() {
     @Test(expected = IOException::class)
     fun fetchDataForSingleLocation_failedLocation_invalidReturn() {
         // Arrange
-        val latlon = Pair(
-            weatherResponse.lat,
-            weatherResponse.lon
-        )
 
         // Act
         every { repository.isSearchValid(CURRENT_LOCATION) }.returns(true)
         coEvery {
             repository.getWeatherFromApi(
-                weatherResponse.lat.toString(),
-                weatherResponse.lon.toString()
+                lat.toString(),
+                long.toString()
             )
         } returns weatherResponse
         coEvery {
             locationProvider.getLocationNameFromLatLong(
-                weatherResponse.lat,
-                weatherResponse.lon
+                lat,
+                long
             )
         }.throws(IOException())
 
@@ -130,14 +125,6 @@ class WeatherSourceTest : BaseTest() {
     @Test
     fun searchAboveFallbackTime_validLocation_validReturn() {
         // Arrange
-        val latlon = Pair(
-            weatherResponse.lat,
-            weatherResponse.lon
-        )
-        val fullWeather = FullWeather(weatherResponse).apply {
-            temperatureUnit = "°C"
-            locationString = CURRENT_LOCATION
-        }
         val entityItem = EntityItem(CURRENT_LOCATION, fullWeather)
 
         // Act
@@ -153,14 +140,6 @@ class WeatherSourceTest : BaseTest() {
     @Test
     fun forceFetchDataForSingleLocation_validLocation_validReturn() {
         // Arrange
-        val latlon = Pair(
-            weatherResponse.lat,
-            weatherResponse.lon
-        )
-        val fullWeather = FullWeather(weatherResponse).apply {
-            temperatureUnit = "°C"
-            locationString = CURRENT_LOCATION
-        }
         val entityItem = EntityItem(CURRENT_LOCATION, fullWeather)
 
         // Act
@@ -169,14 +148,14 @@ class WeatherSourceTest : BaseTest() {
         coEvery { locationProvider.getLatLongFromLocationName(CURRENT_LOCATION) } returns latlon
         coEvery {
             repository.getWeatherFromApi(
-                weatherResponse.lat.toString(),
-                weatherResponse.lon.toString()
+                weatherResponse.latitude.toString(),
+                weatherResponse.longitude.toString()
             )
         }.returns(weatherResponse)
         coEvery {
             locationProvider.getLocationNameFromLatLong(
-                weatherResponse.lat,
-                weatherResponse.lon,
+                lat,
+                long,
                 LocationType.City
             )
         }.returns(CURRENT_LOCATION)
