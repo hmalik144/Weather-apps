@@ -15,7 +15,7 @@ data class WeatherApiResponse(
     @SerializedName("resolvedAddress") var resolvedAddress: String? = null,
     @SerializedName("address") var address: String? = null,
     @SerializedName("timezone") var timezone: String? = null,
-    @SerializedName("tzoffset") var tzoffset: Int? = null,
+    @SerializedName("tzoffset") var tzoffset: Double? = null,
     @SerializedName("description") var description: String? = null,
     @SerializedName("days") var days: ArrayList<Days> = arrayListOf(),
     @SerializedName("alerts") var alerts: ArrayList<Alerts> = arrayListOf(),
@@ -28,7 +28,7 @@ data class WeatherApiResponse(
         return FullWeather(
             current = Current(currentConditions),
             timezone = timezone,
-            timezoneOffset = tzoffset,
+            timezoneOffset = tzoffset?.toInt(),
             hourly = hours,
             daily = collectedDays,
             lat = latitude,
