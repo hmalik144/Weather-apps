@@ -49,8 +49,8 @@ data class DailyWeather(
         days.datetimeEpoch,
         days.cloudcover?.toInt(),
         days.precipprob,
-        days.uvindex?.toDouble(),
-        days.precip?.toDouble()
+        days.uvindex,
+        days.precipprob
     )
 
 }

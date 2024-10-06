@@ -12,7 +12,6 @@ import com.appttude.h_mal.atlas_weather.data.repository.SettingsRepository
 import com.appttude.h_mal.atlas_weather.data.room.entity.CURRENT_LOCATION
 import com.appttude.h_mal.atlas_weather.data.room.entity.EntityItem
 import com.appttude.h_mal.atlas_weather.model.widget.InnerWidgetCellData
-import com.appttude.h_mal.atlas_weather.model.widget.InnerWidgetData
 import com.appttude.h_mal.atlas_weather.model.widget.WidgetData
 import com.appttude.h_mal.atlas_weather.model.widget.WidgetError
 import com.appttude.h_mal.atlas_weather.model.widget.WidgetState
@@ -21,8 +20,6 @@ import com.appttude.h_mal.atlas_weather.utils.getSymbol
 import com.appttude.h_mal.atlas_weather.utils.toSmallDayName
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import java.io.IOException
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -135,44 +132,6 @@ class ServicesHelper(
 
         val data = createWidgetWeatherCollection(entityItem, currentLocation)
         return WidgetState.HasData(data)
-    }
-
-    suspend fun getWidgetWeather(): WidgetData? {
-        return try {
-            val result = repository.loadSingleCurrentWeatherFromRoom(CURRENT_LOCATION)
-            val epoc = System.currentTimeMillis()
-
-            result.weather.let {
-                val bitmap = it.current?.icon
-                val location = locationProvider.getLocationNameFromLatLong(it.lat!!, it.lon!!)
-                val temp = it.current?.temp?.toInt().toString()
-
-                WidgetData(location, bitmap, temp, epoc)
-            }
-        } catch (e: Exception) {
-            null
-        }
-    }
-
-    suspend fun getWidgetInnerWeather(): List<InnerWidgetData>? {
-        return try {
-            val result = repository.loadSingleCurrentWeatherFromRoom(CURRENT_LOCATION)
-            val list = mutableListOf<InnerWidgetData>()
-
-            result.weather.daily?.drop(1)?.dropLast(2)?.forEach { dailyWeather ->
-                val day = dailyWeather.dt?.toSmallDayName()
-                val bitmap = withContext(Dispatchers.Main) {
-                    getBitmapFromUrl(dailyWeather.icon)
-                }
-                val temp = dailyWeather.max?.toInt().toString()
-
-                val item = InnerWidgetData(day, bitmap, temp)
-                list.add(item)
-            }
-            list.toList()
-        } catch (e: Exception) {
-            null
-        }
     }
 
     suspend fun getWidgetWeatherCollection(): WidgetWeatherCollection? {

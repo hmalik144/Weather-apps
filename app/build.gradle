@@ -5,12 +5,12 @@ plugins {
     id 'androidx.navigation.safeargs'
 }
 
-def relStorePassword = System.getenv("RELEASE_STORE_PASSWORD")
-def relKeyPassword = System.getenv("RELEASE_KEY_PASSWORD")
-def relKeyAlias = System.getenv("RELEASE_KEY_ALIAS")
+Properties properties = new Properties()
+boolean propertiesFileExists = project.rootProject.file('local.properties').canRead()
+if (propertiesFileExists) properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
-def keystorePath = System.getenv('PWD') + "/app/keystore.jks"
-def keystore = file(keystorePath).exists() ? file(keystorePath) : null
+def keystoreFile = project.rootProject.file("app/keystore.jks")
+
 android {
     namespace 'com.appttude.h_mal.atlas_weather'
     compileSdk = Integer.parseInt(TARGET_SDK_VERSION)
@@ -23,15 +23,8 @@ android {
         testInstrumentationRunner "com.appttude.h_mal.atlas_weather.application.TestRunner"
         vectorDrawables.useSupportLibrary = true
 
-        Properties properties = new Properties()
-        if (project.rootProject.file('local.properties').canRead()) {
-            properties.load(project.rootProject.file('local.properties').newDataInputStream())
-            buildConfigField "String", "ParamOne", properties.getProperty('WEATHER_API')
-            buildConfigField "String", "ParamTwo", properties.getProperty('SEARCH_API')
-        } else {
-            buildConfigField "String", "ParamOne", System.getenv('WEATHER_API')
-            buildConfigField "String", "ParamTwo", System.getenv('SEARCH_API')
-        }
+        buildConfigField "String", "ParamOne", System.getenv('WEATHER_API') ?: properties.getProperty('WEATHER_API')
+        buildConfigField "String", "ParamTwo", System.getenv('SEARCH_API') ?: properties.getProperty('SEARCH_API')
 
         packagingOptions {
             resources.excludes.add("META-INF/*")
@@ -50,10 +43,10 @@ android {
     }
     signingConfigs {
         release {
-            storePassword relStorePassword
-            keyPassword relKeyPassword
-            keyAlias relKeyAlias
-            storeFile keystore
+            storePassword System.getProperty("RELEASE_STORE_PASSWORD") ?: properties.getProperty('RELEASE_STORE_PASSWORD')
+            keyPassword System.getProperty("RELEASE_KEY_PASSWORD") ?: properties.getProperty('RELEASE_KEY_PASSWORD')
+            keyAlias System.getProperty("RELEASE_KEY_ALIAS") ?: properties.getProperty('RELEASE_KEY_ALIAS')
+            storeFile keystoreFile.exists() ? keystoreFile : null
         }
     }
     testOptions {
@@ -221,4 +214,6 @@ dependencies {
     implementation "com.github.permissions-dispatcher:permissionsdispatcher:$PERMISSIONS_DISPATCHER"
     kapt "com.github.permissions-dispatcher:permissionsdispatcher-processor:$PERMISSIONS_DISPATCHER"
     implementation "com.github.permissions-dispatcher:permissionsdispatcher-annotation:$PERMISSIONS_DISPATCHER"
+    / * kotlinx-coroutines-rx2 * /
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:$KOTLINX_COROUTINES_RX2"
 }
